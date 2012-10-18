@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_userEmailItem" structureRef="String" />
+  <itemDefinition id="_removeSubItem" structureRef="Boolean" />
+  <itemDefinition id="_emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_8-userEmailItem" structureRef="String" />
+  <itemDefinition id="_8-removeSubItem" structureRef="Boolean" />
+  <itemDefinition id="_8-emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_11-userEmailItem" structureRef="String" />
+  <itemDefinition id="_11-removeSubItem" structureRef="Boolean" />
+  <itemDefinition id="_11-emailFooterItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="com.cohesiva.basket.unsubscribe" name="Zakończ subskrypcję grupy Cohesiva Basket" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="userEmail" itemSubjectRef="_userEmailItem"/>
+    <property id="removeSub" itemSubjectRef="_removeSubItem"/>
+    <property id="emailFooter" itemSubjectRef="_emailFooterItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <task id="_8" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_8_userEmailInput" name="userEmail" />
+        <dataInput id="_8_BodyInput" name="Body" />
+        <dataInput id="_8_SubjectInput" name="Subject" />
+        <dataInput id="_8_ToInput" name="To" />
+        <dataInput id="_8_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_8_userEmailInput</dataInputRefs>
+          <dataInputRefs>_8_BodyInput</dataInputRefs>
+          <dataInputRefs>_8_SubjectInput</dataInputRefs>
+          <dataInputRefs>_8_ToInput</dataInputRefs>
+          <dataInputRefs>_8_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>userEmail</sourceRef>
+        <targetRef>_8_userEmailInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Zakończyłeś subskrypcję  grupy Cohesiva Basket.#{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_8_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_8_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{userEmail}</from>
+          <to xsi:type="tFormalExpression">_8_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_8_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_10" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_11" name="RemoveSubscriber" tns:taskName="RemoveSubscriber" >
+      <ioSpecification>
+        <dataInput id="_11_userEmailInput" name="userEmail" />
+        <inputSet>
+          <dataInputRefs>_11_userEmailInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>userEmail</sourceRef>
+        <targetRef>_11_userEmailInput</targetRef>
+      </dataInputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_11-_8" sourceRef="_11" targetRef="_8" />
+    <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" />
+    <sequenceFlow id="_1-_11" sourceRef="_1" targetRef="_11" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.cohesiva.basket.unsubscribe" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="16" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="228" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="360" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="96" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_11-_8" >
+        <di:waypoint x="146" y="40" />
+        <di:waypoint x="278" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_10" >
+        <di:waypoint x="278" y="40" />
+        <di:waypoint x="384" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_11" >
+        <di:waypoint x="40" y="40" />
+        <di:waypoint x="146" y="40" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

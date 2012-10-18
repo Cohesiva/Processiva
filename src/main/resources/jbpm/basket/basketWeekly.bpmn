@@ -1,0 +1,1198 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_listItem" structureRef="java.util.List" />
+  <itemDefinition id="_playersListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_summaryReportItem" structureRef="String" />
+  <itemDefinition id="_sufficientPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_guestListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_maxPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_subscribersItem" structureRef="java.util.List" />
+  <itemDefinition id="_newPlayerBlockedItem" structureRef="Boolean" />
+  <itemDefinition id="_callOffReasonItem" structureRef="String" />
+  <itemDefinition id="_dateItem" structureRef="String" />
+  <itemDefinition id="_emailFooterItem" structureRef="String" />
+  <itemDefinition id="_answerLinkItem" structureRef="String" />
+
+  <itemDefinition id="_2-2-3-itemItem" />
+
+  <itemDefinition id="_2-2-4-itemItem" />
+
+  <itemDefinition id="_2-2-7-itemItem" />
+
+  <itemDefinition id="_2-2-10-itemItem" />
+
+  <itemDefinition id="_10-2-2-itemGuestItem" />
+
+  <itemDefinition id="_10-2-5-itemGuestItem" />
+
+  <itemDefinition id="_10-2-9-itemGuestItem" />
+
+  <itemDefinition id="_10-2-12-itemGuestItem" />
+
+  <itemDefinition id="_15-2-3-subscriberItem" />
+
+  <itemDefinition id="_16-listItem" structureRef="java.util.List" />
+  <itemDefinition id="_16-playersListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_16-summaryReportItem" structureRef="String" />
+  <itemDefinition id="_16-sufficientPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_16-guestListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_16-maxPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_16-subscribersItem" structureRef="java.util.List" />
+  <itemDefinition id="_16-newPlayerBlockedItem" structureRef="Boolean" />
+  <itemDefinition id="_16-callOffReasonItem" structureRef="String" />
+  <itemDefinition id="_16-dateItem" structureRef="String" />
+  <itemDefinition id="_16-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_16-answerLinkItem" structureRef="String" />
+
+  <itemDefinition id="_23-2-3-subItem" />
+
+  <itemDefinition id="_22-listItem" structureRef="java.util.List" />
+  <itemDefinition id="_22-playersListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_22-summaryReportItem" structureRef="String" />
+  <itemDefinition id="_22-sufficientPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_22-guestListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_22-maxPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_22-subscribersItem" structureRef="java.util.List" />
+  <itemDefinition id="_22-newPlayerBlockedItem" structureRef="Boolean" />
+  <itemDefinition id="_22-callOffReasonItem" structureRef="String" />
+  <itemDefinition id="_22-dateItem" structureRef="String" />
+  <itemDefinition id="_22-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_22-answerLinkItem" structureRef="String" />
+
+  <itemDefinition id="_25-listItem" structureRef="java.util.List" />
+  <itemDefinition id="_25-playersListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_25-summaryReportItem" structureRef="String" />
+  <itemDefinition id="_25-sufficientPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_25-guestListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_25-maxPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_25-subscribersItem" structureRef="java.util.List" />
+  <itemDefinition id="_25-newPlayerBlockedItem" structureRef="Boolean" />
+  <itemDefinition id="_25-callOffReasonItem" structureRef="String" />
+  <itemDefinition id="_25-dateItem" structureRef="String" />
+  <itemDefinition id="_25-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_25-answerLinkItem" structureRef="String" />
+
+  <itemDefinition id="_30-listItem" structureRef="java.util.List" />
+  <itemDefinition id="_30-playersListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_30-summaryReportItem" structureRef="String" />
+  <itemDefinition id="_30-sufficientPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_30-guestListItem" structureRef="java.util.Vector" />
+  <itemDefinition id="_30-maxPlayersNumberItem" structureRef="Integer" />
+  <itemDefinition id="_30-subscribersItem" structureRef="java.util.List" />
+  <itemDefinition id="_30-newPlayerBlockedItem" structureRef="Boolean" />
+  <itemDefinition id="_30-callOffReasonItem" structureRef="String" />
+  <itemDefinition id="_30-dateItem" structureRef="String" />
+  <itemDefinition id="_30-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_30-answerLinkItem" structureRef="String" />
+
+  <itemDefinition id="_2_multiInstanceItemType" />
+
+  <itemDefinition id="_10_multiInstanceItemType" />
+
+  <itemDefinition id="_15_multiInstanceItemType" />
+
+  <itemDefinition id="_23_multiInstanceItemType" />
+
+  <process processType="Private" isExecutable="true" id="com.cohesiva.basket.weekly" name="Basket weekly process" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="list" itemSubjectRef="_listItem"/>
+    <property id="playersList" itemSubjectRef="_playersListItem"/>
+    <property id="summaryReport" itemSubjectRef="_summaryReportItem"/>
+    <property id="sufficientPlayersNumber" itemSubjectRef="_sufficientPlayersNumberItem"/>
+    <property id="guestList" itemSubjectRef="_guestListItem"/>
+    <property id="maxPlayersNumber" itemSubjectRef="_maxPlayersNumberItem"/>
+    <property id="subscribers" itemSubjectRef="_subscribersItem"/>
+    <property id="newPlayerBlocked" itemSubjectRef="_newPlayerBlockedItem"/>
+    <property id="callOffReason" itemSubjectRef="_callOffReasonItem"/>
+    <property id="date" itemSubjectRef="_dateItem"/>
+    <property id="emailFooter" itemSubjectRef="_emailFooterItem"/>
+    <property id="answerLink" itemSubjectRef="_answerLinkItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="Start" />
+    <subProcess id="_2" name="Multiple Instances"  >
+      <ioSpecification>
+        <dataInput id="_2_input" name="MultiInstanceInput" />
+        <inputSet/>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>list</sourceRef>
+        <targetRef>_2_input</targetRef>
+      </dataInputAssociation>
+      <multiInstanceLoopCharacteristics>
+        <loopDataInputRef>_2_input</loopDataInputRef>
+        <inputDataItem id="item" itemSubjectRef="_2_multiInstanceItemType"/>
+      </multiInstanceLoopCharacteristics>
+    <!-- nodes -->
+    <startEvent id="_2-2-1" name="Start" />
+    <endEvent id="_2-2-2" name="End" />
+    <userTask id="_2-2-3" name="User Task" >
+      <ioSpecification>
+        <dataInput id="_2-2-3_CommentInput" name="Comment" />
+        <dataInput id="_2-2-3_TaskNameInput" name="TaskName" />
+        <inputSet>
+          <dataInputRefs>_2-2-3_CommentInput</dataInputRefs>
+          <dataInputRefs>_2-2-3_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_2-2-3_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00.</from>
+          <to xsi:type="tFormalExpression">_2-2-3_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2-2-3_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">BasketPresenceConfirmation</from>
+          <to xsi:type="tFormalExpression">_2-2-3_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{item}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_2-2-4" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_2-2-4_BodyInput" name="Body" />
+        <dataInput id="_2-2-4_SubjectInput" name="Subject" />
+        <dataInput id="_2-2-4_ToInput" name="To" />
+        <dataInput id="_2-2-4_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_2-2-4_BodyInput</dataInputRefs>
+          <dataInputRefs>_2-2-4_SubjectInput</dataInputRefs>
+          <dataInputRefs>_2-2-4_ToInput</dataInputRefs>
+          <dataInputRefs>_2-2-4_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_2-2-4_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00 #{answerLink}. #{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_2-2-4_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2-2-4_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_2-2-4_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2-2-4_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{item}</from>
+          <to xsi:type="tFormalExpression">_2-2-4_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2-2-4_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_2-2-4_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <exclusiveGateway id="_2-2-6" name="Gateway" gatewayDirection="Diverging" />
+    <task id="_2-2-7" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_2-2-7_BodyInput" name="Body" />
+        <dataInput id="_2-2-7_SubjectInput" name="Subject" />
+        <dataInput id="_2-2-7_ToInput" name="To" />
+        <dataInput id="_2-2-7_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_2-2-7_BodyInput</dataInputRefs>
+          <dataInputRefs>_2-2-7_SubjectInput</dataInputRefs>
+          <dataInputRefs>_2-2-7_ToInput</dataInputRefs>
+          <dataInputRefs>_2-2-7_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_2-2-7_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Zdecydowałeś się na udział w zajęciach zbyt późno - mamy już komplet #{maxPlayersNumber} graczy. Zapraszamy za tydzień.#{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_2-2-7_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2-2-7_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_2-2-7_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2-2-7_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{item}</from>
+          <to xsi:type="tFormalExpression">_2-2-7_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2-2-7_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_2-2-7_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_2-2-8" name="End" />
+    <task id="_2-2-10" name="HandleNewPlayer" tns:taskName="HandleNewPlayer" >
+      <ioSpecification>
+        <dataInput id="_2-2-10_newPlayerBlockedInput" name="newPlayerBlocked" />
+        <dataInput id="_2-2-10_itemInput" name="item" />
+        <dataInput id="_2-2-10_playersListInput" name="playersList" />
+        <dataOutput id="_2-2-10_playersListOutput" name="playersList" />
+        <inputSet>
+          <dataInputRefs>_2-2-10_newPlayerBlockedInput</dataInputRefs>
+          <dataInputRefs>_2-2-10_itemInput</dataInputRefs>
+          <dataInputRefs>_2-2-10_playersListInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_2-2-10_playersListOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>newPlayerBlocked</sourceRef>
+        <targetRef>_2-2-10_newPlayerBlockedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>item</sourceRef>
+        <targetRef>_2-2-10_itemInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>playersList</sourceRef>
+        <targetRef>_2-2-10_playersListInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_2-2-10_playersListOutput</sourceRef>
+        <targetRef>playersList</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <!-- connections -->
+    <sequenceFlow id="_2-2-10-_2-2-2" sourceRef="_2-2-10" targetRef="_2-2-2" />
+    <sequenceFlow id="_2-2-4-_2-2-3" sourceRef="_2-2-4" targetRef="_2-2-3" />
+    <sequenceFlow id="_2-2-1-_2-2-4" sourceRef="_2-2-1" targetRef="_2-2-4" />
+    <sequenceFlow id="_2-2-3-_2-2-6" sourceRef="_2-2-3" targetRef="_2-2-6" />
+    <sequenceFlow id="_2-2-6-_2-2-7" sourceRef="_2-2-6" targetRef="_2-2-7" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return playersList.size() &gt;= maxPlayersNumber;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_2-2-7-_2-2-8" sourceRef="_2-2-7" targetRef="_2-2-8" />
+    <sequenceFlow id="_2-2-6-_2-2-10" sourceRef="_2-2-6" targetRef="_2-2-10" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return playersList.size() &lt; maxPlayersNumber;</conditionExpression>
+    </sequenceFlow>
+    </subProcess>
+    <endEvent id="_3" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <intermediateCatchEvent id="_4" name="Signal" >
+      <signalEventDefinition signalRef="basket_weekly_end_event"/>
+    </intermediateCatchEvent>
+    <parallelGateway id="_7" name="Gateway" gatewayDirection="Diverging" />
+    <endEvent id="_8" name="End" />
+    <subProcess id="_10" name="Multiple Instances"  >
+      <ioSpecification>
+        <dataInput id="_10_input" name="MultiInstanceInput" />
+        <inputSet/>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>guestList</sourceRef>
+        <targetRef>_10_input</targetRef>
+      </dataInputAssociation>
+      <multiInstanceLoopCharacteristics>
+        <loopDataInputRef>_10_input</loopDataInputRef>
+        <inputDataItem id="itemGuest" itemSubjectRef="_10_multiInstanceItemType"/>
+      </multiInstanceLoopCharacteristics>
+    <!-- nodes -->
+    <startEvent id="_10-2-1" name="Start" />
+    <task id="_10-2-2" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_10-2-2_BodyInput" name="Body" />
+        <dataInput id="_10-2-2_SubjectInput" name="Subject" />
+        <dataInput id="_10-2-2_ToInput" name="To" />
+        <dataInput id="_10-2-2_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_10-2-2_BodyInput</dataInputRefs>
+          <dataInputRefs>_10-2-2_SubjectInput</dataInputRefs>
+          <dataInputRefs>_10-2-2_ToInput</dataInputRefs>
+          <dataInputRefs>_10-2-2_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_10-2-2_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00 #{answerLink}. Nie posiadasz ważnego karnetu. Opłata za zajęcia wynosi 15 PLN. #{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_10-2-2_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10-2-2_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_10-2-2_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10-2-2_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{itemGuest}</from>
+          <to xsi:type="tFormalExpression">_10-2-2_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10-2-2_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_10-2-2_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_10-2-4" name="End" />
+    <userTask id="_10-2-5" name="User Task" >
+      <ioSpecification>
+        <dataInput id="_10-2-5_CommentInput" name="Comment" />
+        <dataInput id="_10-2-5_TaskNameInput" name="TaskName" />
+        <inputSet>
+          <dataInputRefs>_10-2-5_CommentInput</dataInputRefs>
+          <dataInputRefs>_10-2-5_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_10-2-5_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00. Nie posiadasz ważnego karnetu. Opłata za zajęcia wynosi 15 PLN.</from>
+          <to xsi:type="tFormalExpression">_10-2-5_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10-2-5_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">BasketPresenceConfirmation</from>
+          <to xsi:type="tFormalExpression">_10-2-5_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{itemGuest}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_10-2-7" name="Gateway" gatewayDirection="Diverging" />
+    <task id="_10-2-9" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_10-2-9_BodyInput" name="Body" />
+        <dataInput id="_10-2-9_SubjectInput" name="Subject" />
+        <dataInput id="_10-2-9_ToInput" name="To" />
+        <dataInput id="_10-2-9_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_10-2-9_BodyInput</dataInputRefs>
+          <dataInputRefs>_10-2-9_SubjectInput</dataInputRefs>
+          <dataInputRefs>_10-2-9_ToInput</dataInputRefs>
+          <dataInputRefs>_10-2-9_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_10-2-9_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Zdecydowałeś się na udział w zajęciach zbyt późno - mamy już komplet #{maxPlayersNumber} graczy. Zapraszamy za tydzień.#{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_10-2-9_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10-2-9_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_10-2-9_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10-2-9_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{itemGuest}</from>
+          <to xsi:type="tFormalExpression">_10-2-9_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10-2-9_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket.@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_10-2-9_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_10-2-10" name="End" />
+    <task id="_10-2-12" name="HandleNewPlayer" tns:taskName="HandleNewPlayer" >
+      <ioSpecification>
+        <dataInput id="_10-2-12_newPlayerBlockedInput" name="newPlayerBlocked" />
+        <dataInput id="_10-2-12_itemInput" name="item" />
+        <dataInput id="_10-2-12_playersListInput" name="playersList" />
+        <dataOutput id="_10-2-12_playersListOutput" name="playersList" />
+        <inputSet>
+          <dataInputRefs>_10-2-12_newPlayerBlockedInput</dataInputRefs>
+          <dataInputRefs>_10-2-12_itemInput</dataInputRefs>
+          <dataInputRefs>_10-2-12_playersListInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_10-2-12_playersListOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>newPlayerBlocked</sourceRef>
+        <targetRef>_10-2-12_newPlayerBlockedInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>itemGuest</sourceRef>
+        <targetRef>_10-2-12_itemInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>playersList</sourceRef>
+        <targetRef>_10-2-12_playersListInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_10-2-12_playersListOutput</sourceRef>
+        <targetRef>playersList</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <!-- connections -->
+    <sequenceFlow id="_10-2-1-_10-2-2" sourceRef="_10-2-1" targetRef="_10-2-2" />
+    <sequenceFlow id="_10-2-12-_10-2-4" sourceRef="_10-2-12" targetRef="_10-2-4" />
+    <sequenceFlow id="_10-2-2-_10-2-5" sourceRef="_10-2-2" targetRef="_10-2-5" />
+    <sequenceFlow id="_10-2-5-_10-2-7" sourceRef="_10-2-5" targetRef="_10-2-7" />
+    <sequenceFlow id="_10-2-7-_10-2-9" sourceRef="_10-2-7" targetRef="_10-2-9" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return playersList.size() &gt;= maxPlayersNumber;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_10-2-9-_10-2-10" sourceRef="_10-2-9" targetRef="_10-2-10" />
+    <sequenceFlow id="_10-2-7-_10-2-12" sourceRef="_10-2-7" targetRef="_10-2-12" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return playersList.size() &lt; maxPlayersNumber;</conditionExpression>
+    </sequenceFlow>
+    </subProcess>
+    <endEvent id="_11" name="End" />
+    <exclusiveGateway id="_12" name="Gateway" gatewayDirection="Diverging" />
+    <endEvent id="_13" name="End" />
+    <subProcess id="_15" name="Multiple Instances"  >
+      <ioSpecification>
+        <dataInput id="_15_input" name="MultiInstanceInput" />
+        <inputSet/>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>subscribers</sourceRef>
+        <targetRef>_15_input</targetRef>
+      </dataInputAssociation>
+      <multiInstanceLoopCharacteristics>
+        <loopDataInputRef>_15_input</loopDataInputRef>
+        <inputDataItem id="subscriber" itemSubjectRef="_15_multiInstanceItemType"/>
+      </multiInstanceLoopCharacteristics>
+    <!-- nodes -->
+    <startEvent id="_15-2-1" name="Start" />
+    <endEvent id="_15-2-2" name="End" />
+    <task id="_15-2-3" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_15-2-3_summaryReportInput" name="summaryReport" />
+        <dataInput id="_15-2-3_playersListInput" name="playersList" />
+        <dataInput id="_15-2-3_BodyInput" name="Body" />
+        <dataInput id="_15-2-3_SubjectInput" name="Subject" />
+        <dataInput id="_15-2-3_ToInput" name="To" />
+        <dataInput id="_15-2-3_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_15-2-3_summaryReportInput</dataInputRefs>
+          <dataInputRefs>_15-2-3_playersListInput</dataInputRefs>
+          <dataInputRefs>_15-2-3_BodyInput</dataInputRefs>
+          <dataInputRefs>_15-2-3_SubjectInput</dataInputRefs>
+          <dataInputRefs>_15-2-3_ToInput</dataInputRefs>
+          <dataInputRefs>_15-2-3_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>summaryReport</sourceRef>
+        <targetRef>_15-2-3_summaryReportInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>playersList</sourceRef>
+        <targetRef>_15-2-3_playersListInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15-2-3_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{summaryReport}</from>
+          <to xsi:type="tFormalExpression">_15-2-3_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15-2-3_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_15-2-3_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15-2-3_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{subscriber}</from>
+          <to xsi:type="tFormalExpression">_15-2-3_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15-2-3_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_15-2-3_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <!-- connections -->
+    <sequenceFlow id="_15-2-3-_15-2-2" sourceRef="_15-2-3" targetRef="_15-2-2" />
+    <sequenceFlow id="_15-2-1-_15-2-3" sourceRef="_15-2-1" targetRef="_15-2-3" />
+    </subProcess>
+    <intermediateCatchEvent id="_17" name="Signal" >
+      <signalEventDefinition signalRef="basketWeeklyKill"/>
+    </intermediateCatchEvent>
+    <task id="_16" name="LoadPlayersList" tns:taskName="LoadPlayersList" >
+      <ioSpecification>
+        <dataInput id="_16_guestListInput" name="guestList" />
+        <dataInput id="_16_sufficientPlayersNumberInput" name="sufficientPlayersNumber" />
+        <dataInput id="_16_playersListInput" name="playersList" />
+        <dataInput id="_16_listInput" name="list" />
+        <dataInput id="_16_maxPlayersNumberInput" name="maxPlayersNumber" />
+        <dataInput id="_16_subscribersInput" name="subscribers" />
+        <dataOutput id="_16_guestListOutput" name="guestList" />
+        <dataOutput id="_16_newPlayerBlockedOutput" name="newPlayerBlocked" />
+        <dataOutput id="_16_sufficientPlayersNumberOutput" name="sufficientPlayersNumber" />
+        <dataOutput id="_16_playersListOutput" name="playersList" />
+        <dataOutput id="_16_listOutput" name="list" />
+        <dataOutput id="_16_maxPlayersNumberOutput" name="maxPlayersNumber" />
+        <dataOutput id="_16_subscribersOutput" name="subscribers" />
+        <dataOutput id="_16_dateOutput" name="date" />
+        <inputSet>
+          <dataInputRefs>_16_guestListInput</dataInputRefs>
+          <dataInputRefs>_16_sufficientPlayersNumberInput</dataInputRefs>
+          <dataInputRefs>_16_playersListInput</dataInputRefs>
+          <dataInputRefs>_16_listInput</dataInputRefs>
+          <dataInputRefs>_16_maxPlayersNumberInput</dataInputRefs>
+          <dataInputRefs>_16_subscribersInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_16_guestListOutput</dataOutputRefs>
+          <dataOutputRefs>_16_newPlayerBlockedOutput</dataOutputRefs>
+          <dataOutputRefs>_16_sufficientPlayersNumberOutput</dataOutputRefs>
+          <dataOutputRefs>_16_playersListOutput</dataOutputRefs>
+          <dataOutputRefs>_16_listOutput</dataOutputRefs>
+          <dataOutputRefs>_16_maxPlayersNumberOutput</dataOutputRefs>
+          <dataOutputRefs>_16_subscribersOutput</dataOutputRefs>
+          <dataOutputRefs>_16_dateOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>guestList</sourceRef>
+        <targetRef>_16_guestListInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>sufficientPlayersNumber</sourceRef>
+        <targetRef>_16_sufficientPlayersNumberInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>playersList</sourceRef>
+        <targetRef>_16_playersListInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>list</sourceRef>
+        <targetRef>_16_listInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>maxPlayersNumber</sourceRef>
+        <targetRef>_16_maxPlayersNumberInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>subscribers</sourceRef>
+        <targetRef>_16_subscribersInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_guestListOutput</sourceRef>
+        <targetRef>guestList</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_newPlayerBlockedOutput</sourceRef>
+        <targetRef>newPlayerBlocked</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_sufficientPlayersNumberOutput</sourceRef>
+        <targetRef>sufficientPlayersNumber</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_playersListOutput</sourceRef>
+        <targetRef>playersList</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_listOutput</sourceRef>
+        <targetRef>list</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_maxPlayersNumberOutput</sourceRef>
+        <targetRef>maxPlayersNumber</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_subscribersOutput</sourceRef>
+        <targetRef>subscribers</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_dateOutput</sourceRef>
+        <targetRef>date</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <parallelGateway id="_19" name="Gateway" gatewayDirection="Diverging" />
+    <endEvent id="_18" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <endEvent id="_21" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <subProcess id="_23" name="Multiple Instances"  >
+      <ioSpecification>
+        <dataInput id="_23_input" name="MultiInstanceInput" />
+        <inputSet/>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>subscribers</sourceRef>
+        <targetRef>_23_input</targetRef>
+      </dataInputAssociation>
+      <multiInstanceLoopCharacteristics>
+        <loopDataInputRef>_23_input</loopDataInputRef>
+        <inputDataItem id="sub" itemSubjectRef="_23_multiInstanceItemType"/>
+      </multiInstanceLoopCharacteristics>
+    <!-- nodes -->
+    <startEvent id="_23-2-1" name="Start" />
+    <endEvent id="_23-2-2" name="End" />
+    <task id="_23-2-3" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_23-2-3_BodyInput" name="Body" />
+        <dataInput id="_23-2-3_SubjectInput" name="Subject" />
+        <dataInput id="_23-2-3_ToInput" name="To" />
+        <dataInput id="_23-2-3_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_23-2-3_BodyInput</dataInputRefs>
+          <dataInputRefs>_23-2-3_SubjectInput</dataInputRefs>
+          <dataInputRefs>_23-2-3_ToInput</dataInputRefs>
+          <dataInputRefs>_23-2-3_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_23-2-3_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Zajęcia koszykówki w dniu #{date} zostały odwołane. Przyczyna odwołania: #{callOffReason}. #{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_23-2-3_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_23-2-3_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_23-2-3_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_23-2-3_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{sub}</from>
+          <to xsi:type="tFormalExpression">_23-2-3_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_23-2-3_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_23-2-3_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <!-- connections -->
+    <sequenceFlow id="_23-2-3-_23-2-2" sourceRef="_23-2-3" targetRef="_23-2-2" />
+    <sequenceFlow id="_23-2-1-_23-2-3" sourceRef="_23-2-1" targetRef="_23-2-3" />
+    </subProcess>
+    <userTask id="_22" name="User Task" >
+      <ioSpecification>
+        <dataInput id="_22_CommentInput" name="Comment" />
+        <dataInput id="_22_TaskNameInput" name="TaskName" />
+        <dataOutput id="_22_callOffReasonOutput" name="callOffReason" />
+        <inputSet>
+          <dataInputRefs>_22_CommentInput</dataInputRefs>
+          <dataInputRefs>_22_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_22_callOffReasonOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_22_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Odwołaj zajecia koszykowki w dniu #{date}.</from>
+          <to xsi:type="tFormalExpression">_22_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CallBasketOff</from>
+          <to xsi:type="tFormalExpression">_22_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_22_callOffReasonOutput</sourceRef>
+        <targetRef>callOffReason</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>wojciech.ganczarski@cohesiva.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression> przemyslaw.skrzek@cohesiva.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_25" name="MakePayments" tns:taskName="MakePayments" >
+      <ioSpecification>
+        <dataInput id="_25_playersListInput" name="playersList" />
+        <dataInput id="_25_listInput" name="list" />
+        <inputSet>
+          <dataInputRefs>_25_playersListInput</dataInputRefs>
+          <dataInputRefs>_25_listInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>playersList</sourceRef>
+        <targetRef>_25_playersListInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>list</sourceRef>
+        <targetRef>_25_listInput</targetRef>
+      </dataInputAssociation>
+    </task>
+    <scriptTask id="_24" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>kcontext.setVariable("newPlayerBlocked", true);</script>
+    </scriptTask>
+    <scriptTask id="_27" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>System.out.println("Jest wystarczajaco karnetowcow. Potrzebna liczba: - "+sufficientPlayersNumber);</script>
+    </scriptTask>
+    <scriptTask id="_26" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>System.out.println("Consider rozeslanie mejli do subskrybentow bez karnetow");</script>
+    </scriptTask>
+    <intermediateCatchEvent id="_29" name="Signal" >
+      <signalEventDefinition signalRef="informAll"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_28" name="Signal" >
+      <signalEventDefinition signalRef="chargePlayers"/>
+    </intermediateCatchEvent>
+    <task id="_30" name="BasketWeeklySummary" tns:taskName="BasketWeeklySummary" >
+      <ioSpecification>
+        <dataInput id="_30_playersListInput" name="playersList" />
+        <dataInput id="_30_dateInput" name="date" />
+        <dataInput id="_30_emailFooterInput" name="emailFooter" />
+        <dataOutput id="_30_summaryReportOutput" name="summaryReport" />
+        <inputSet>
+          <dataInputRefs>_30_playersListInput</dataInputRefs>
+          <dataInputRefs>_30_dateInput</dataInputRefs>
+          <dataInputRefs>_30_emailFooterInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_30_summaryReportOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>playersList</sourceRef>
+        <targetRef>_30_playersListInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>date</sourceRef>
+        <targetRef>_30_dateInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>emailFooter</sourceRef>
+        <targetRef>_30_emailFooterInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_30_summaryReportOutput</sourceRef>
+        <targetRef>summaryReport</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_7-_2" sourceRef="_7" targetRef="_2" />
+    <sequenceFlow id="_23-_3" sourceRef="_23" targetRef="_3" />
+    <sequenceFlow id="_7-_4" sourceRef="_7" targetRef="_4" />
+    <sequenceFlow id="_16-_7" sourceRef="_16" targetRef="_7" />
+    <sequenceFlow id="_2-_8" sourceRef="_2" targetRef="_8" />
+    <sequenceFlow id="_12-_10" sourceRef="_12" targetRef="_10" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return playersList.size() &lt; sufficientPlayersNumber;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_10-_11" sourceRef="_10" targetRef="_11" />
+    <sequenceFlow id="_26-_12" sourceRef="_26" targetRef="_12" />
+    <sequenceFlow id="_27-_13" sourceRef="_27" targetRef="_13" />
+    <sequenceFlow id="_30-_15" sourceRef="_30" targetRef="_15" />
+    <sequenceFlow id="_1-_16" sourceRef="_1" targetRef="_16" />
+    <sequenceFlow id="_15-_19" sourceRef="_15" targetRef="_19" />
+    <sequenceFlow id="_17-_18" sourceRef="_17" targetRef="_18" />
+    <sequenceFlow id="_25-_21" sourceRef="_25" targetRef="_21" />
+    <sequenceFlow id="_22-_23" sourceRef="_22" targetRef="_23" />
+    <sequenceFlow id="_19-_22" sourceRef="_19" targetRef="_22" />
+    <sequenceFlow id="_28-_25" sourceRef="_28" targetRef="_25" />
+    <sequenceFlow id="_19-_24" sourceRef="_19" targetRef="_24" />
+    <sequenceFlow id="_12-_27" sourceRef="_12" targetRef="_27" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return playersList.size() &gt;= sufficientPlayersNumber;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_29-_26" sourceRef="_29" targetRef="_26" />
+    <sequenceFlow id="_7-_29" sourceRef="_7" targetRef="_29" />
+    <sequenceFlow id="_24-_28" sourceRef="_24" targetRef="_28" />
+    <sequenceFlow id="_4-_30" sourceRef="_4" targetRef="_30" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.cohesiva.basket.weekly" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="16" y="294" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="309" y="16" width="699" height="246" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-1" >
+        <dc:Bounds x="320" y="100" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-2" >
+        <dc:Bounds x="929" y="34" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-3" >
+        <dc:Bounds x="564" y="101" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-4" >
+        <dc:Bounds x="427" y="101" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-6" >
+        <dc:Bounds x="711" y="99" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-7" >
+        <dc:Bounds x="749" y="171" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-8" >
+        <dc:Bounds x="926" y="170" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2-2-10" >
+        <dc:Bounds x="792" y="44" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="2606" y="135" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="634" y="294" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="228" y="294" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="1056" y="115" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="1152" y="339" width="744" height="204" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-1" >
+        <dc:Bounds x="1169" y="392" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-2" >
+        <dc:Bounds x="1252" y="394" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-4" >
+        <dc:Bounds x="1823" y="345" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-5" >
+        <dc:Bounds x="1446" y="399" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-7" >
+        <dc:Bounds x="1615" y="396" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-9" >
+        <dc:Bounds x="1698" y="468" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-10" >
+        <dc:Bounds x="1848" y="488" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10-2-12" >
+        <dc:Bounds x="1698" y="359" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="1928" y="417" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="1056" y="417" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="1500" y="575" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15" >
+        <dc:Bounds x="1152" y="147" width="744" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15-2-1" >
+        <dc:Bounds x="1177" y="203" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15-2-2" >
+        <dc:Bounds x="1425" y="203" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15-2-3" >
+        <dc:Bounds x="1284" y="201" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_17" >
+        <dc:Bounds x="16" y="435" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="96" y="294" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" >
+        <dc:Bounds x="1928" y="203" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18" >
+        <dc:Bounds x="122" y="435" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_21" >
+        <dc:Bounds x="2712" y="266" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" >
+        <dc:Bounds x="2141" y="84" width="407" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23-2-1" >
+        <dc:Bounds x="2172" y="134" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23-2-2" >
+        <dc:Bounds x="2443" y="132" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23-2-3" >
+        <dc:Bounds x="2296" y="134" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_22" >
+        <dc:Bounds x="2009" y="161" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_25" >
+        <dc:Bounds x="2580" y="266" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_24" >
+        <dc:Bounds x="2009" y="241" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_27" >
+        <dc:Bounds x="1285" y="587" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_26" >
+        <dc:Bounds x="848" y="448" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_29" >
+        <dc:Bounds x="613" y="395" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_28" >
+        <dc:Bounds x="2326" y="272" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_30" >
+        <dc:Bounds x="934" y="281" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_2-2-10-_2-2-2" >
+        <di:waypoint x="533" y="52" />
+        <di:waypoint x="644" y="42" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-2-4-_2-2-3" >
+        <di:waypoint x="168" y="109" />
+        <di:waypoint x="305" y="109" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-2-1-_2-2-4" >
+        <di:waypoint x="35" y="108" />
+        <di:waypoint x="168" y="109" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-2-3-_2-2-6" >
+        <di:waypoint x="305" y="109" />
+        <di:waypoint x="426" y="107" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-2-6-_2-2-7" >
+        <di:waypoint x="426" y="107" />
+        <di:waypoint x="490" y="179" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-2-7-_2-2-8" >
+        <di:waypoint x="490" y="179" />
+        <di:waypoint x="641" y="178" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-2-6-_2-2-10" >
+        <di:waypoint x="426" y="107" />
+        <di:waypoint x="533" y="52" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-2-1-_10-2-2" >
+        <di:waypoint x="41" y="77" />
+        <di:waypoint x="150" y="79" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-2-12-_10-2-4" >
+        <di:waypoint x="596" y="44" />
+        <di:waypoint x="695" y="30" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-2-2-_10-2-5" >
+        <di:waypoint x="150" y="79" />
+        <di:waypoint x="344" y="84" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-2-5-_10-2-7" >
+        <di:waypoint x="344" y="84" />
+        <di:waypoint x="487" y="81" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-2-7-_10-2-9" >
+        <di:waypoint x="487" y="81" />
+        <di:waypoint x="596" y="153" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-2-9-_10-2-10" >
+        <di:waypoint x="596" y="153" />
+        <di:waypoint x="720" y="173" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-2-7-_10-2-12" >
+        <di:waypoint x="487" y="81" />
+        <di:waypoint x="596" y="44" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-2-3-_15-2-2" >
+        <di:waypoint x="182" y="78" />
+        <di:waypoint x="297" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-2-1-_15-2-3" >
+        <di:waypoint x="49" y="80" />
+        <di:waypoint x="182" y="78" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-2-3-_23-2-2" >
+        <di:waypoint x="205" y="74" />
+        <di:waypoint x="326" y="72" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-2-1-_23-2-3" >
+        <di:waypoint x="55" y="74" />
+        <di:waypoint x="205" y="74" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_2" >
+        <di:waypoint x="252" y="318" />
+        <di:waypoint x="658" y="139" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-_3" >
+        <di:waypoint x="2344" y="159" />
+        <di:waypoint x="2630" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_4" >
+        <di:waypoint x="252" y="318" />
+        <di:waypoint x="658" y="318" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_7" >
+        <di:waypoint x="146" y="318" />
+        <di:waypoint x="252" y="318" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_8" >
+        <di:waypoint x="658" y="139" />
+        <di:waypoint x="1080" y="139" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_10" >
+        <di:waypoint x="1080" y="441" />
+        <di:waypoint x="1524" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_11" >
+        <di:waypoint x="1524" y="441" />
+        <di:waypoint x="1952" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26-_12" >
+        <di:waypoint x="888" y="472" />
+        <di:waypoint x="1080" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_27-_13" >
+        <di:waypoint x="1325" y="611" />
+        <di:waypoint x="1524" y="599" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_30-_15" >
+        <di:waypoint x="984" y="305" />
+        <di:waypoint x="1524" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_16" >
+        <di:waypoint x="40" y="318" />
+        <di:waypoint x="146" y="318" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-_19" >
+        <di:waypoint x="1524" y="227" />
+        <di:waypoint x="1952" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_18" >
+        <di:waypoint x="40" y="459" />
+        <di:waypoint x="146" y="459" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_25-_21" >
+        <di:waypoint x="2630" y="290" />
+        <di:waypoint x="2736" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_22-_23" >
+        <di:waypoint x="2059" y="185" />
+        <di:waypoint x="2344" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_22" >
+        <di:waypoint x="1952" y="227" />
+        <di:waypoint x="2059" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_25" >
+        <di:waypoint x="2350" y="296" />
+        <di:waypoint x="2630" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_24" >
+        <di:waypoint x="1952" y="227" />
+        <di:waypoint x="2059" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_27" >
+        <di:waypoint x="1080" y="441" />
+        <di:waypoint x="1325" y="611" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29-_26" >
+        <di:waypoint x="637" y="419" />
+        <di:waypoint x="888" y="472" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_29" >
+        <di:waypoint x="252" y="318" />
+        <di:waypoint x="637" y="419" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_24-_28" >
+        <di:waypoint x="2059" y="265" />
+        <di:waypoint x="2350" y="296" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_30" >
+        <di:waypoint x="658" y="318" />
+        <di:waypoint x="984" y="305" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_cellValueItem" structureRef="Object" />
+  <itemDefinition id="_bodyItem" structureRef="Object" />
+  <itemDefinition id="__mapItem" structureRef="java.util.Map" />
+
+  <itemDefinition id="_4-cellValueItem" structureRef="Object" />
+  <itemDefinition id="_4-bodyItem" structureRef="Object" />
+  <itemDefinition id="_4-_mapItem" structureRef="java.util.Map" />
+
+  <itemDefinition id="_5-cellValueItem" structureRef="Object" />
+  <itemDefinition id="_5-bodyItem" structureRef="Object" />
+  <itemDefinition id="_5-_mapItem" structureRef="java.util.Map" />
+
+  <itemDefinition id="_6-cellValueItem" structureRef="Object" />
+  <itemDefinition id="_6-bodyItem" structureRef="Object" />
+  <itemDefinition id="_6-_mapItem" structureRef="java.util.Map" />
+
+  <itemDefinition id="_13-cellValueItem" structureRef="Object" />
+  <itemDefinition id="_13-bodyItem" structureRef="Object" />
+  <itemDefinition id="_13-_mapItem" structureRef="java.util.Map" />
+
+  <itemDefinition id="_19-cellValueItem" structureRef="Object" />
+  <itemDefinition id="_19-bodyItem" structureRef="Object" />
+  <itemDefinition id="_19-_mapItem" structureRef="java.util.Map" />
+
+  <process processType="Private" isExecutable="true" id="com.sample.bpmn.poc" name="PocProcess" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.HashMap" />
+     <tns:import name="java.util.Map" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="cellValue" itemSubjectRef="_cellValueItem"/>
+    <property id="body" itemSubjectRef="_bodyItem"/>
+    <property id="_map" itemSubjectRef="__mapItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_3" name="EndProcess" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_4" name="GetSpreadsheetValue" tns:taskName="GetSpreadsheetValue" >
+      <ioSpecification>
+        <dataOutput id="_4_bodyOutput" name="body" />
+        <dataOutput id="_4_cellValueOutput" name="cellValue" />
+        <inputSet>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_4_bodyOutput</dataOutputRefs>
+          <dataOutputRefs>_4_cellValueOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataOutputAssociation>
+        <sourceRef>_4_bodyOutput</sourceRef>
+        <targetRef>body</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_cellValueOutput</sourceRef>
+        <targetRef>cellValue</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_5" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_5_bodyInput" name="body" />
+        <dataInput id="_5_BodyInput" name="Body" />
+        <dataInput id="_5_SubjectInput" name="Subject" />
+        <dataInput id="_5_ToInput" name="To" />
+        <dataInput id="_5_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_5_bodyInput</dataInputRefs>
+          <dataInputRefs>_5_BodyInput</dataInputRefs>
+          <dataInputRefs>_5_SubjectInput</dataInputRefs>
+          <dataInputRefs>_5_ToInput</dataInputRefs>
+          <dataInputRefs>_5_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>body</sourceRef>
+        <targetRef>_5_bodyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_5_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{body}</from>
+          <to xsi:type="tFormalExpression">_5_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_5_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Test</from>
+          <to xsi:type="tFormalExpression">_5_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_5_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">kardanski.damian@gmail.com</from>
+          <to xsi:type="tFormalExpression">_5_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_5_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">damian.kardanski@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_5_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_6" name="User Task" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <script>Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+map.put("userId", "krisv");
+
+kcontext.getKnowledgeRuntime().signalEvent(
+  "humanTaskStart", map, kcontext.getProcessInstance().getId());</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_6_cellValueInput" name="cellValue" />
+        <dataInput id="_6_CommentInput" name="Comment" />
+        <dataInput id="_6_SkippableInput" name="Skippable" />
+        <dataInput id="_6_TaskNameInput" name="TaskName" />
+        <dataInput id="_6_GroupIdInput" name="GroupId" />
+        <inputSet>
+          <dataInputRefs>_6_cellValueInput</dataInputRefs>
+          <dataInputRefs>_6_CommentInput</dataInputRefs>
+          <dataInputRefs>_6_SkippableInput</dataInputRefs>
+          <dataInputRefs>_6_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_6_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>cellValue</sourceRef>
+        <targetRef>_6_cellValueInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_6_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">pocProcess/confirmValue</from>
+          <to xsi:type="tFormalExpression">_6_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_6_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_6_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_6_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Value confirmation</from>
+          <to xsi:type="tFormalExpression">_6_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_6_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_6_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>damian.kardanski@cohesiva.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression> kardanski.damian@gmail.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <parallelGateway id="_7" name="Gateway" gatewayDirection="Diverging" />
+    <parallelGateway id="_8" name="Gateway" gatewayDirection="Converging" />
+    <scriptTask id="_10" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>System.out.println("event - weszlo do noda human task usera "+_map.get("userId"));
+</script>
+    </scriptTask>
+    <endEvent id="_11" name="End" />
+    <intermediateCatchEvent id="_12" name="Signal" >
+      <dataOutput id="_12_Output" name="event" />
+      <dataOutputAssociation>
+      <sourceRef>_12_Output</sourceRef>
+      <targetRef>_map</targetRef>
+      </dataOutputAssociation>
+      <outputSet>
+        <dataOutputRefs>_12_Output</dataOutputRefs>
+      </outputSet>
+      <signalEventDefinition signalRef="humanTaskStart"/>
+    </intermediateCatchEvent>
+    <task id="_13" name="GetSpreadsheetValue" tns:taskName="GetSpreadsheetValue" >
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+    </task>
+    <intermediateCatchEvent id="_14" name="Signal" >
+      <signalEventDefinition signalRef="wybilaGodzina"/>
+    </intermediateCatchEvent>
+    <scriptTask id="_17" name="Script" >
+      <script>System.out.println("Wybila godzina, czas zakonczyc proces");</script>
+    </scriptTask>
+    <task id="_19" name="GetSpreadsheetValue" tns:taskName="GetSpreadsheetValue" >
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+    </task>
+    <parallelGateway id="_18" name="Gateway" gatewayDirection="Converging" />
+
+    <!-- connections -->
+    <sequenceFlow id="_19-_3" sourceRef="_19" targetRef="_3" />
+    <sequenceFlow id="_1-_4" sourceRef="_1" targetRef="_4" />
+    <sequenceFlow id="_7-_5" sourceRef="_7" targetRef="_5" />
+    <sequenceFlow id="_7-_6" sourceRef="_7" targetRef="_6" />
+    <sequenceFlow id="_4-_7" sourceRef="_4" targetRef="_7" />
+    <sequenceFlow id="_5-_8" sourceRef="_5" targetRef="_8" />
+    <sequenceFlow id="_6-_8" sourceRef="_6" targetRef="_8" />
+    <sequenceFlow id="_12-_10" sourceRef="_12" targetRef="_10" />
+    <sequenceFlow id="_10-_11" sourceRef="_10" targetRef="_11" />
+    <sequenceFlow id="_8-_13" sourceRef="_8" targetRef="_13" />
+    <sequenceFlow id="_14-_17" sourceRef="_14" targetRef="_17" />
+    <sequenceFlow id="_18-_19" sourceRef="_18" targetRef="_19" />
+    <sequenceFlow id="_13-_18" sourceRef="_13" targetRef="_18" />
+    <sequenceFlow id="_17-_18" sourceRef="_17" targetRef="_18" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.sample.bpmn.poc" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="16" y="56" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="983" y="95" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="96" y="56" width="143" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="352" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="352" y="96" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="271" y="56" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="484" y="55" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="96" y="137" width="143" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="271" y="137" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="16" y="137" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="565" y="55" width="173" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" >
+        <dc:Bounds x="484" y="136" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_17" >
+        <dc:Bounds x="565" y="135" width="173" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" >
+        <dc:Bounds x="851" y="95" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18" >
+        <dc:Bounds x="770" y="95" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_19-_3" >
+        <di:waypoint x="901" y="119" />
+        <di:waypoint x="1007" y="119" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_4" >
+        <di:waypoint x="40" y="80" />
+        <di:waypoint x="167" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_5" >
+        <di:waypoint x="295" y="80" />
+        <di:waypoint x="402" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_6" >
+        <di:waypoint x="295" y="80" />
+        <di:waypoint x="402" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_7" >
+        <di:waypoint x="167" y="80" />
+        <di:waypoint x="295" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_8" >
+        <di:waypoint x="402" y="40" />
+        <di:waypoint x="508" y="79" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_8" >
+        <di:waypoint x="402" y="120" />
+        <di:waypoint x="508" y="79" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_10" >
+        <di:waypoint x="40" y="161" />
+        <di:waypoint x="167" y="161" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_11" >
+        <di:waypoint x="167" y="161" />
+        <di:waypoint x="295" y="161" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_13" >
+        <di:waypoint x="508" y="79" />
+        <di:waypoint x="651" y="79" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14-_17" >
+        <di:waypoint x="508" y="160" />
+        <di:waypoint x="651" y="159" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_18-_19" >
+        <di:waypoint x="794" y="119" />
+        <di:waypoint x="901" y="119" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_18" >
+        <di:waypoint x="651" y="79" />
+        <di:waypoint x="794" y="119" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_18" >
+        <di:waypoint x="651" y="159" />
+        <di:waypoint x="794" y="119" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

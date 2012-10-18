@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- START METHODS LOCATIONS TRIGGERING EVENTS -->
+	<bean id="runBasketWeekly"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="eventStarter" />
+		<property name="targetMethod" value="startBasketWeeklyProcess" />
+	</bean>
+
+	<bean id="endBasketWeeklyEvent"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="eventStarter" />
+		<property name="targetMethod" value="signal" />
+		<property name="arguments">
+			<array value-type="java.lang.String">
+				<value>basket_weekly_end_event</value>
+				<value>com.cohesiva.basket.weekly</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="informAllEvent"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="eventStarter" />
+		<property name="targetMethod" value="signal" />
+		<property name="arguments">
+			<array value-type="java.lang.String">
+				<value>informAll</value>
+				<value>com.cohesiva.basket.weekly</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="chargePlayersEvent"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="eventStarter" />
+		<property name="targetMethod" value="signal" />
+		<property name="arguments">
+			<array value-type="java.lang.String">
+				<value>chargePlayers</value>
+				<value>com.cohesiva.basket.weekly</value>
+			</array>
+		</property>
+	</bean>
+	<!-- END METHODS LOCATIONS TRIGGERING EVENTS -->
+
+	<!-- START TIMERS DEFINITION -->
+	<bean id="triggerBasketWeeklyProcess" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="runBasketWeekly" />
+		<property name="cronExpression" value="0 40 9 ? * 2" />
+	</bean>
+
+	<bean id="triggerBasekWeeklyEndEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="endBasketWeeklyEvent" />
+		<property name="cronExpression" value="00 42 9 ? * 2" />
+	</bean>
+	
+	<bean id="triggerInformAllEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="informAllEvent" />
+		<property name="cronExpression" value="00 41 9 ? * 2" />
+	</bean>
+	
+	<bean id="triggerChargePlayersEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="chargePlayersEvent" />
+		<property name="cronExpression" value="00 43 9 ? * 2" />
+	</bean>
+	<!-- END TIMERS DEFINITION -->
+
+	<!-- START LISTS OF EVENTS AND TIMERS -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="runBasketWeekly" />
+				<ref bean="endBasketWeeklyEvent" />
+				<ref bean="informAllEvent" />
+				<ref bean="chargePlayersEvent" />
+			</list>
+		</property>
+
+		<property name="triggers">
+			<list>
+				<ref bean="triggerBasketWeeklyProcess" />
+				<ref bean="triggerBasekWeeklyEndEvent" />
+				<ref bean="triggerInformAllEvent" />
+				<ref bean="triggerChargePlayersEvent" />
+			</list>
+		</property>
+	</bean>
+	<!-- END LISTS OF EVENTS AND TIMERS -->
+
+</beans>

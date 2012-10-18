@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_userEmailItem" structureRef="String" />
+  <itemDefinition id="_answerBodyItem" structureRef="String" />
+  <itemDefinition id="_confirmedPaymentItem" structureRef="Boolean" />
+  <itemDefinition id="_emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_2-userEmailItem" structureRef="String" />
+  <itemDefinition id="_2-answerBodyItem" structureRef="String" />
+  <itemDefinition id="_2-confirmedPaymentItem" structureRef="Boolean" />
+  <itemDefinition id="_2-emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_3-userEmailItem" structureRef="String" />
+  <itemDefinition id="_3-answerBodyItem" structureRef="String" />
+  <itemDefinition id="_3-confirmedPaymentItem" structureRef="Boolean" />
+  <itemDefinition id="_3-emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_7-userEmailItem" structureRef="String" />
+  <itemDefinition id="_7-answerBodyItem" structureRef="String" />
+  <itemDefinition id="_7-confirmedPaymentItem" structureRef="Boolean" />
+  <itemDefinition id="_7-emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_8-userEmailItem" structureRef="String" />
+  <itemDefinition id="_8-answerBodyItem" structureRef="String" />
+  <itemDefinition id="_8-confirmedPaymentItem" structureRef="Boolean" />
+  <itemDefinition id="_8-emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_9-userEmailItem" structureRef="String" />
+  <itemDefinition id="_9-answerBodyItem" structureRef="String" />
+  <itemDefinition id="_9-confirmedPaymentItem" structureRef="Boolean" />
+  <itemDefinition id="_9-emailFooterItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="com.cohesiva.basket.payment" name="Zakup karnetu Cohesiva Basket" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="userEmail" itemSubjectRef="_userEmailItem"/>
+    <property id="answerBody" itemSubjectRef="_answerBodyItem"/>
+    <property id="confirmedPayment" itemSubjectRef="_confirmedPaymentItem"/>
+    <property id="emailFooter" itemSubjectRef="_emailFooterItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <task id="_2" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_2_userEmailInput" name="userEmail" />
+        <dataInput id="_2_BodyInput" name="Body" />
+        <dataInput id="_2_SubjectInput" name="Subject" />
+        <dataInput id="_2_ToInput" name="To" />
+        <dataInput id="_2_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_2_userEmailInput</dataInputRefs>
+          <dataInputRefs>_2_BodyInput</dataInputRefs>
+          <dataInputRefs>_2_SubjectInput</dataInputRefs>
+          <dataInputRefs>_2_ToInput</dataInputRefs>
+          <dataInputRefs>_2_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>userEmail</sourceRef>
+        <targetRef>_2_userEmailInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Proces rozpoczęty. Aby zakupić karnet, wpłać 50 PLN w sekretariacie Cohesiva.#{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_2_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_2_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{userEmail}</from>
+          <to xsi:type="tFormalExpression">_2_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_2_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_3" name="User Task" >
+      <ioSpecification>
+        <dataInput id="_3_userEmailInput" name="userEmail" />
+        <dataInput id="_3_CommentInput" name="Comment" />
+        <dataInput id="_3_TaskNameInput" name="TaskName" />
+        <dataOutput id="_3_confirmedPaymentOutput" name="confirmedPayment" />
+        <inputSet>
+          <dataInputRefs>_3_userEmailInput</dataInputRefs>
+          <dataInputRefs>_3_CommentInput</dataInputRefs>
+          <dataInputRefs>_3_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_3_confirmedPaymentOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>userEmail</sourceRef>
+        <targetRef>_3_userEmailInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Zatwierdzenie zakupu karnetu Cohesiva Basket od użytkownika: #{userEmail}.</from>
+          <to xsi:type="tFormalExpression">_3_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">confirmBasketPayment</from>
+          <to xsi:type="tFormalExpression">_3_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_3_confirmedPaymentOutput</sourceRef>
+        <targetRef>confirmedPayment</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>iga.barburska@cohesiva.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression> wojciech.ganczarski@cohesiva.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression> damian.kardanski@cohesiva.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <endEvent id="_5" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_6" name="Gateway" gatewayDirection="Diverging" />
+    <task id="_7" name="MakeBasketPayment" tns:taskName="MakeBasketPayment" >
+      <ioSpecification>
+        <dataInput id="_7_userEmailInput" name="userEmail" />
+        <dataInput id="_7_emailFooterInput" name="emailFooter" />
+        <dataOutput id="_7_answerBodyOutput" name="answerBody" />
+        <inputSet>
+          <dataInputRefs>_7_userEmailInput</dataInputRefs>
+          <dataInputRefs>_7_emailFooterInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_7_answerBodyOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>userEmail</sourceRef>
+        <targetRef>_7_userEmailInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>emailFooter</sourceRef>
+        <targetRef>_7_emailFooterInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_7_answerBodyOutput</sourceRef>
+        <targetRef>answerBody</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_8" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_8_BodyInput" name="Body" />
+        <dataInput id="_8_SubjectInput" name="Subject" />
+        <dataInput id="_8_ToInput" name="To" />
+        <dataInput id="_8_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_8_BodyInput</dataInputRefs>
+          <dataInputRefs>_8_SubjectInput</dataInputRefs>
+          <dataInputRefs>_8_ToInput</dataInputRefs>
+          <dataInputRefs>_8_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_8_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{answerBody}</from>
+          <to xsi:type="tFormalExpression">_8_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_8_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{userEmail}</from>
+          <to xsi:type="tFormalExpression">_8_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_8_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <task id="_9" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_9_userEmailInput" name="userEmail" />
+        <dataInput id="_9_BodyInput" name="Body" />
+        <dataInput id="_9_SubjectInput" name="Subject" />
+        <dataInput id="_9_ToInput" name="To" />
+        <dataInput id="_9_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_9_userEmailInput</dataInputRefs>
+          <dataInputRefs>_9_BodyInput</dataInputRefs>
+          <dataInputRefs>_9_SubjectInput</dataInputRefs>
+          <dataInputRefs>_9_ToInput</dataInputRefs>
+          <dataInputRefs>_9_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>userEmail</sourceRef>
+        <targetRef>_9_userEmailInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_9_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Zakup karnetu Cohesiva Basket został odrzucony.#{emailFooter}</from>
+          <to xsi:type="tFormalExpression">_9_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_9_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_9_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_9_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{userEmail}</from>
+          <to xsi:type="tFormalExpression">_9_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_9_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_9_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_10" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+    <sequenceFlow id="_8-_5" sourceRef="_8" targetRef="_5" />
+    <sequenceFlow id="_3-_6" sourceRef="_3" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return confirmedPayment == true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_7-_8" sourceRef="_7" targetRef="_8" />
+    <sequenceFlow id="_6-_9" sourceRef="_6" targetRef="_9" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return confirmedPayment == false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.cohesiva.basket.payment" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="16" y="56" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="96" y="56" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="228" y="56" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="705" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="360" y="56" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="441" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="573" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="441" y="96" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="599" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="40" y="80" />
+        <di:waypoint x="146" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="146" y="80" />
+        <di:waypoint x="278" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_5" >
+        <di:waypoint x="623" y="40" />
+        <di:waypoint x="729" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_6" >
+        <di:waypoint x="278" y="80" />
+        <di:waypoint x="384" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="384" y="80" />
+        <di:waypoint x="491" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_8" >
+        <di:waypoint x="491" y="40" />
+        <di:waypoint x="623" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_9" >
+        <di:waypoint x="384" y="80" />
+        <di:waypoint x="491" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
+        <di:waypoint x="491" y="120" />
+        <di:waypoint x="623" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

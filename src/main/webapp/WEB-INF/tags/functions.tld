@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib>
+	<uri>Functions</uri>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.1</jsp-version>
+	
+	<!-- Define a Custom EL Function -->
+	<function>
+		<name>getUrlMapping</name>
+		<function-class>com.cohesiva.processes.jbpm.humanTask.HumanTaskFormMapper
+		</function-class>
+		<function-signature>java.lang.String getUrlMapping(java.lang.String,
+			java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<name>isTaskImmediete</name>
+		<function-class>com.cohesiva.processes.jbpm.humanTask.HumanTaskFormMapper
+		</function-class>
+		<function-signature>java.lang.Boolean isTaskImmediete(java.lang.String,
+			java.lang.String)</function-signature>
+	</function>
+
+</taglib> 

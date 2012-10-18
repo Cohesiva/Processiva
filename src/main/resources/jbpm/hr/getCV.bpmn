@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_userEmailItem" structureRef="String" />
+  <itemDefinition id="_heroEmailItem" structureRef="String" />
+  <itemDefinition id="_documentTypeItem" structureRef="String" />
+  <itemDefinition id="_documentItem" structureRef="String" />
+
+  <itemDefinition id="_2-userEmailItem" structureRef="String" />
+  <itemDefinition id="_2-heroEmailItem" structureRef="String" />
+  <itemDefinition id="_2-documentTypeItem" structureRef="String" />
+  <itemDefinition id="_2-documentItem" structureRef="String" />
+
+  <itemDefinition id="_3-userEmailItem" structureRef="String" />
+  <itemDefinition id="_3-heroEmailItem" structureRef="String" />
+  <itemDefinition id="_3-documentTypeItem" structureRef="String" />
+  <itemDefinition id="_3-documentItem" structureRef="String" />
+
+  <itemDefinition id="_4-userEmailItem" structureRef="String" />
+  <itemDefinition id="_4-heroEmailItem" structureRef="String" />
+  <itemDefinition id="_4-documentTypeItem" structureRef="String" />
+  <itemDefinition id="_4-documentItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="com.cohesiva.hr.getCV" name="Pobierz CV" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="userEmail" itemSubjectRef="_userEmailItem"/>
+    <property id="heroEmail" itemSubjectRef="_heroEmailItem"/>
+    <property id="documentType" itemSubjectRef="_documentTypeItem"/>
+    <property id="document" itemSubjectRef="_documentItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <userTask id="_2" name="User Task" >
+      <ioSpecification>
+        <dataInput id="_2_CommentInput" name="Comment" />
+        <dataInput id="_2_TaskNameInput" name="TaskName" />
+        <dataOutput id="_2_documentTypeOutput" name="documentType" />
+        <dataOutput id="_2_heroEmailOutput" name="heroEmail" />
+        <inputSet>
+          <dataInputRefs>_2_CommentInput</dataInputRefs>
+          <dataInputRefs>_2_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_2_documentTypeOutput</dataOutputRefs>
+          <dataOutputRefs>_2_heroEmailOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_2_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Skonfiguruj CV jakie chcesz wygenerować</from>
+          <to xsi:type="tFormalExpression">_2_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_2_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">configureCV</from>
+          <to xsi:type="tFormalExpression">_2_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_2_documentTypeOutput</sourceRef>
+        <targetRef>documentType</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_2_heroEmailOutput</sourceRef>
+        <targetRef>heroEmail</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userEmail}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_3" name="GetCV" tns:taskName="GetCV" >
+      <ioSpecification>
+        <dataInput id="_3_documentTypeInput" name="documentType" />
+        <dataInput id="_3_heroEmailInput" name="heroEmail" />
+        <dataOutput id="_3_documentOutput" name="document" />
+        <inputSet>
+          <dataInputRefs>_3_documentTypeInput</dataInputRefs>
+          <dataInputRefs>_3_heroEmailInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_3_documentOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>documentType</sourceRef>
+        <targetRef>_3_documentTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>heroEmail</sourceRef>
+        <targetRef>_3_heroEmailInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_3_documentOutput</sourceRef>
+        <targetRef>document</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_4" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_4_BodyInput" name="Body" />
+        <dataInput id="_4_SubjectInput" name="Subject" />
+        <dataInput id="_4_ToInput" name="To" />
+        <dataInput id="_4_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_4_BodyInput</dataInputRefs>
+          <dataInputRefs>_4_SubjectInput</dataInputRefs>
+          <dataInputRefs>_4_ToInput</dataInputRefs>
+          <dataInputRefs>_4_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_4_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Wygenerowano cv osoby: #{heroEmail}: #{document}</from>
+          <to xsi:type="tFormalExpression">_4_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_4_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Wygenerowano CV</from>
+          <to xsi:type="tFormalExpression">_4_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_4_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{userEmail}</from>
+          <to xsi:type="tFormalExpression">_4_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_4_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">processiva.cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_4_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_5" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+    <sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4" />
+    <sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.cohesiva.hr.getCV" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="16" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="96" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="228" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="360" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="492" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="40" y="40" />
+        <di:waypoint x="146" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="146" y="40" />
+        <di:waypoint x="278" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_4" >
+        <di:waypoint x="278" y="40" />
+        <di:waypoint x="410" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_5" >
+        <di:waypoint x="410" y="40" />
+        <di:waypoint x="516" y="40" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

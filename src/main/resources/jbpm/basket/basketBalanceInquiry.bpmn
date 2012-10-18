@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_answerBodyItem" structureRef="String" />
+  <itemDefinition id="_userEmailItem" structureRef="String" />
+  <itemDefinition id="_emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_2-answerBodyItem" structureRef="String" />
+  <itemDefinition id="_2-userEmailItem" structureRef="String" />
+  <itemDefinition id="_2-emailFooterItem" structureRef="String" />
+
+  <itemDefinition id="_3-answerBodyItem" structureRef="String" />
+  <itemDefinition id="_3-userEmailItem" structureRef="String" />
+  <itemDefinition id="_3-emailFooterItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="com.cohesiva.basket.balance.inquiry" name="Sprawdź stan konta Cohesiva Basket" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="answerBody" itemSubjectRef="_answerBodyItem"/>
+    <property id="userEmail" itemSubjectRef="_userEmailItem"/>
+    <property id="emailFooter" itemSubjectRef="_emailFooterItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <task id="_2" name="BalanceInquiry" tns:taskName="BalanceInquiry" >
+      <ioSpecification>
+        <dataInput id="_2_userEmailInput" name="userEmail" />
+        <dataInput id="_2_emailFooterInput" name="emailFooter" />
+        <dataOutput id="_2_answerBodyOutput" name="answerBody" />
+        <inputSet>
+          <dataInputRefs>_2_userEmailInput</dataInputRefs>
+          <dataInputRefs>_2_emailFooterInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_2_answerBodyOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>userEmail</sourceRef>
+        <targetRef>_2_userEmailInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>emailFooter</sourceRef>
+        <targetRef>_2_emailFooterInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_2_answerBodyOutput</sourceRef>
+        <targetRef>answerBody</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_3" name="Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_3_answerBodyInput" name="answerBody" />
+        <dataInput id="_3_BodyInput" name="Body" />
+        <dataInput id="_3_SubjectInput" name="Subject" />
+        <dataInput id="_3_ToInput" name="To" />
+        <dataInput id="_3_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_3_answerBodyInput</dataInputRefs>
+          <dataInputRefs>_3_BodyInput</dataInputRefs>
+          <dataInputRefs>_3_SubjectInput</dataInputRefs>
+          <dataInputRefs>_3_ToInput</dataInputRefs>
+          <dataInputRefs>_3_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>answerBody</sourceRef>
+        <targetRef>_3_answerBodyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{answerBody}</from>
+          <to xsi:type="tFormalExpression">_3_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Cohesiva Basket</from>
+          <to xsi:type="tFormalExpression">_3_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{userEmail}</from>
+          <to xsi:type="tFormalExpression">_3_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_3_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">cohesiva.basket@cohesiva.com</from>
+          <to xsi:type="tFormalExpression">_3_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_4" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+    <sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.cohesiva.basket.balance.inquiry" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="16" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="96" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="228" y="16" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="360" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="40" y="40" />
+        <di:waypoint x="146" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="146" y="40" />
+        <di:waypoint x="278" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_4" >
+        <di:waypoint x="278" y="40" />
+        <di:waypoint x="384" y="40" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

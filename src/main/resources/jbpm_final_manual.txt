@@ -1,0 +1,793 @@
+Guide do jbpm 5.3: http://docs.jboss.org/jbpm/v5.3/userguide/
+
+------------------------------------------- A) INSTALACJA ŒRODOWISKA DEVELOPERSKIEGO -------------------------------------------------------------
+
+1. Œci¹gn¹æ jbpm-5.3.0.Final-installer-full.zip 
+	http://sourceforge.net/projects/jbpm/files/jBPM%205/jbpm-5.3.0.Final/, rozpakowaæ.
+
+2. W g³ównym katalogu po rozpakowaniu znajduje siê plik build.xml, który mo¿na skonfigurowaæ aby wybraæ co ma byæ œci¹gane/instalowane (eclipse/jboss/webappy toolsowe).
+	Wszystko co niezbêdne znajduje siê ju¿ w g³ównym katalogu po rozpakowaniu. Dodatkowo bêdzie jeszcze potrzebny eclipse z wtyczkami.
+	
+	Aby wybraæ wersjê eclipsa, który bêdzie œci¹gniêty,
+	podmieniæ w build.xml w targecie "download.eclipse" urla np.
+	
+	 <target name="download.eclipse" depends="download.eclipse.check" if="eclipse.not.available">
+		<echo message="Getting Eclipse ..." />
+		<mkdir dir="${install.home}/lib"/>
+		<get src="http://download.eclipse.org/technology/epp/downloads/release/indigo/SR2/eclipse-jee-indigo-SR2-win32-x86_64.zip"
+         dest="${install.home}/lib/eclipse-java-helios-SR2-${download.type}.${download.extension}"  />
+	</target>
+	
+3. Aby doinstalowaæ jedynie eclipse z wtyczkami - wejœæ do g³ównego katalogu, odapliæ 'ant install.demo.eclipse'. 
+   Alternatywnie - doinstalowaæ wtyczki jBPM.runtime i droolsjbpm-eclipse do posiadanego eclipsa.
+   
+   Eclipsa zainstalowanego przez installera mo¿na odpalaæ poleceniem 'ant start.eclipse'.
+	
+4. W eclipsie œci¹gn¹c sobie projekt z svna,
+	Repo url: http://193.239.56.114/svn/jbpm.
+	Zaimportowaæ spring/trunk.
+	
+	Budowanie aplikacji: mvn clean install.
+
+POSTGRES
+
+8. Zainstalowaæ postgresql
+	
+9. Utworzyæ bazkê jbpm_processes oraz u¿ytkownika jbpm_processes/jbpm_processes 
+
+Utworzyæ bazkê jbpm5 oraz u¿ytkownika jbpm5/jbpm5 
+
+Utworzyæ bazkê task oraz u¿ytkownika task/task 
+
+Standardowy port to 5432, w przypadku u¿ycia innego portu, innego hosta ni¿ localhost, innego u¿ytkownika itp. pamiêtaæ o zmianach w konfiguracjach persistence
+
+persistance webapp - META-INF/persistence-spring.xml (spring container)
+persistence jbpm - standalone.xml (jboss)
+persistence humantasks - META-INF/persistence.xml (serwer human tasków)
+
+JBOSS
+
+10. Œci¹gn¹æ, rozpakowaæ Jbossa 7.1 
+	http://www.jboss.org/jbossas/downloads/
+	
+11. Dodaæ modu³ postgresql.
+	11.1. Stworzyæ katalog <G³ówny folder jbossa>/modules/org/postgresql/main
+	11.2. Wrzuciæ do katalogu z 1.1. driver do postgresa 
+	11.3 Utworzyæ w katalogu z 1.1. plik module.xml 
+		
+		module.xml:
+		<?xml version="1.0" encoding="UTF-8"?>
+		<module xmlns="urn:jboss:module:1.0" name="org.postgresql">
+			<resources>
+				<resource-root path="postgresql-9.1-902.jdbc4.jar"/>
+			</resources>
+			<dependencies><module name="javax.api"/></dependencies>
+		</module>
+
+12. Skonfigurowaæ datasourca.
+	12.1. Otworzyæ do edycji <G³ówny folder jbossa>/standalone/configuration/standalone.xml
+	12.2. ZnaleŸæ <datasources> i dodaæ nowy <datasource>
+		
+				<datasource jndi-name="java:jboss/datasources/jbpmDS" pool-name="PostgresDS">
+					<connection-url>jdbc:postgresql://localhost:5432/jbpm5</connection-url>
+					<driver-class>org.postgresql.Driver</driver-class>
+					<driver>postgresql-jdbc4</driver>
+					<pool>
+						<min-pool-size>2</min-pool-size>
+						<max-pool-size>20</max-pool-size>
+						<prefill>true</prefill>
+					</pool>
+					<security>
+						<user-name>jbpm5</user-name>
+						<password>jbpm5</password>
+					</security>
+					<validation>
+						<check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+					</validation>
+				</datasource>
+	
+	12.3 ZnaleŸæ <drivers> i dodaæ driver do postgresa 
+			
+			<drivers>
+                <driver name="h2" module="com.h2database.h2">
+                    <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                </driver>
+				<driver name="postgresql-jdbc4" module="org.postgresql"/>
+            </drivers>
+			
+13. W <G³ówny folder jbossa>/standalone/configuration/standalone.xml zmieniæ port <socket-binding name="http" port="4080"/>
+
+	Upewniæ siê, ¿e w kontrolerze UsersController w projekcie webowym jest ustawiony dobry port i host w callbackUrl (potrzebny do logowania przez konto googla)
+		private static final String callbackUrl = "http://localhost:4080/Jbpm_processes/handleLogged";
+
+	Uwaga! 
+	W razie gdyby by³ problem z deploymentem aplikacji na jbossie w defaultowym czasie, dodaæ atrybut deployment-timeout="<liczba sekund>" do
+	taga <deployment-scanner> np. 
+		<deployment-scanner deployment-timeout="9999" path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" />
+
+HUMAN TASK SERVER
+
+14. Konfiguracja persistence - otworzyæ <g³ówny katalog jbpm installer>/task-service/resources/META-INF/persistence.xml i zmieniæ properties na:
+
+	<properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+      <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/task" />
+      <property name="hibernate.connection.username" value="task"/>
+      <property name="hibernate.connection.password" value="task"/>
+      <property name="hibernate.connection.autocommit" value="false" />
+      <property name="hibernate.max_fetch_depth" value="3"/>
+      <property name="hibernate.hbm2ddl.auto" value="update" />
+      <property name="hibernate.show_sql" value="false" />
+    </properties>
+	
+15. Umieœciæ w <G³ówny folder jbpm installer>/db/driver driver do postgresa
+
+	
+------------------------------------------- B) URUCHAMIANIE APLIKACJI ŒRODOWISKO DEVELOPERSKIE -------------------------------------
+	
+1. Uruchomiæ postgresa.
+
+2. Uruchomiæ serwer human tasków - 'ant start.human.task'.
+
+3. Zdeployowaæ webappa na jbossa i odpaliæ jbossa.
+
+4. Odpaliæ w przegl¹darce np. http://localhost:4080/Jbpm_processes/login
+
+Przyk³adowy proces - com.sample.bpmn.poc wysy³a mejla korzystaj¹c z serwera smptp, do którego po³¹czenie skonfigurowane jest
+w workItemHandlers.conf w konstruktorze EmailWorkItemHandler( host, port, user, password). 
+
+
+------------------------------------------- C) DODANIE NOWEGO PROCESU -------------------------------------------------------------
+
+1. W projekcie pod eclipsem wejœæ do src/main/resources/jbpm, utworzyæ nowy plik .jbpm, który stanowi definicjê procesu
+	klikaj¹c prawym myszy na paczkê jbpm -> New -> Other -> jBPM -> BPMN2 Process.
+
+2. Po klikniêciu 2 razy w plik .jbpm otworzy siê graficzny edytor procesu.
+	Po lewej stronie mamy dostêpne elementy sk³adowe, wœród których na samym dole w zak³adce 'Service Tasks' widoczne s¹ tzw. 
+	'domain specific nodes' czyli nody uzywaj¹ce customowe 'handlery' napisane przez nas. Aby utworzyæ customowy node patrz 
+	'D) TWORZENIE DOMAIN SPECIFIC NODES'. Po zarejestrowanie noda jeœli nie jest on widoczny w edytorze procesu nale¿y zamkn¹æ 
+	zak³adkê z procesem i ponownie otworzyæ.
+	
+3. Properties procesu takie jak nazwa czy id mo¿emy ustawiæ nastêpuj¹co: otwieramy plik bpmn i bêd¹c w perspective jBPM w eclipsie
+	klikamy w bia³e t³o, pod nodami, w widoku Properties powinny pojawiæ siê properties procesu do edycji.
+	
+4. 	Definicjê procesu musimy dodaæ do bazy procesów aplikacji webowej. W klasie com.cohesiva.processes.jbpm.base.JbpmBase, 
+	w metodzie readKnowledgeBase():
+	
+		kbuilder.add(ResourceFactory.newClassPathResource("jbpm/<NAZWA_PLIKU>.bpmn"),
+				ResourceType.BPMN2);
+				
+5. Jeœli w naszym procesie wystêpuj¹ human taski wymagaj¹ce interakcji z u¿ytkownikiem patrz 'E) OBS£UGA HUMAN TASKÓW'.
+
+6. Nale¿y jeszcze zamapowaæ, dla jakich u¿ytkowników proces bêdzie dostêpny do uruchomienia. Otwieramy
+	AuthorizationService, 
+		w metodzie 
+	mapUsersGroups
+		mo¿emy przydzieliæ u¿ytkownika do okreœlonych grup np.
+		u¿ytkownika user@cohesiva.com przydzielamy do grup: "GROUP1" i "CEO":
+			List<String> userGroups = new ArrayList<String>();
+			userGroups.add("GROUP1");
+			userGroups.add("CEO");
+			userGroupsMapping.put("user@cohesiva.com", userGroups);
+			
+	Aby zamapowaæ dla jakich grup ma byæ widoczny dany proces u¿ywamy jako key identyfikatora procesu w metodzie
+		mapProcessGroups:
+		id procesu - com.sample.bpmn.poc, przydzielenie procesu do grupy GROUP1:
+			List<String> pocProcGroups = new ArrayList<String>();
+			pocProcGroups.add(GROUP1");
+			processGroupsMapping.put("com.sample.bpmn.poc", pocProcGroups);
+			
+		Aby proces by³ dostêpny dla wszystkich u¿ytkowników, mapujemy go do grupy ALL:
+			List<String> basketSubscribeGroups = new ArrayList<String>();
+			basketSubscribeGroups.add("ALL");
+			processGroupsMapping.put("com.cohesiva.basket.subscribe", basketSubscribeGroups);
+			
+7. Oprócz autoryzacji, do procesów mo¿na tak¿e ustawiæ dodatkowe warunki wyœwietlania procesu np. maj¹c proces zapisania siê 
+	na jakieœ wydarzenie, u¿ytkownik nie powinnien widzieæ tego procesu do uruchomienia jeœli jest ju¿ zapisany na to wydarzenie.
+	
+	Tego typu warunki mo¿na okresliæ w zale¿noœci od procesu i u¿ytkownika w serwisie
+		ProcessesContraintsService
+		w metodzie
+		public boolean isProcessAllowed(String processId, String userId)
+		np. 
+			if (processId.equals("com.cohesiva.basket.subscribe")) {
+				if (userDao.isSubscribingBasket(userId)) {
+					return false;
+				}
+			}		
+		
+8. Przekazywanie danych pomiêdzy nodami w procesie opisane jest w punkcie 'F) DANE W PROCESACH'.
+		
+9. Odpalanie procesów i eventów z zewnêtrznego schedulera Quartz opisane jest w punkcie 'G) SCHEDULING (QUARTZ SCHEDULER)'.
+
+	UWAGA!
+		Graficzny tool ma jakieœ problemy z kodowaniem UTF-8 (przynajmniej ja mia³em pod Windowsem). Pomimo tworzenia nowego procesu jbpm z kodowaniem pliku UTF-8, 
+		kodowanie pliku by³o inne. Nale¿y zmieniæ kodowanie pliku poza eclipsem najlepiej za pomoc¹ notepad++ na utf-8 bez BOM i przekopiowaæ plik z powrotem do eclipsa. Jeœli w jakiœ propertisach
+		node'a maj¹ znaleŸæ siê polskie znaki np. w property comment dla human taska, który jest wyœwietlany userowi na stronie nale¿y otworzyæ plik procesu w eclipsie lub
+		gdzie indziej za pomoc¹ edytora tekstu i wpisaæ odpowiedni¹ wartoœæ property, która w graficznym toolu w View properties bêdzie niepoprawnie wyœwietlana, jednak
+		kodowanie bêdzie prawid³owe.
+		
+	UWAGA2!
+		Robi¹c zmiany w pliku procesu bpmn, aby pojawi³y siê one w graficznym toolu pod eclipsem nale¿y zamkn¹æ zak³adkê z danym procesem i ponownie j¹ otworzyæ. 
+
+			
+------------------------------------------- D) TWORZENIE DOMAIN SPECIFIC NODES -------------------------------------------------------		
+
+1. Domain specific nodes dziel¹ sie na synchroniczne i asynchroniczne. Tylko asynchroniczne domain specific nodes s¹ persistowane, 
+	wiêc jest mo¿liwosc wznowienie procesu, który zosta³ przerwany np. padniêciem serwera w momencie wykonywania noda asynchronicznego.
+	Zadania, która nie wykonuj¹ siê natychmiastowo powinny byæ zaimplementowane w nodzie asynchronicznym. 
+	
+2. TWORZENIE SYNCHRONICZEGO DOMAIN SPECIFIC NODE:
+		Tworzymy klasê implementuj¹c¹ 
+			org.drools.runtime.process.WorkItemHandler 
+			i umieszczamy np. w paczce com.cohesiva.processes.jbpm.handlers. 
+		Kod odpowiedzialny za wykonanie danego noda idzie do metody
+		
+			executeWorkItem(WorkItem workItem, WorkItemManager manager). 
+			
+		Handler musi powiadomiæ silnik jbpm o zakoñczeniu wykonywania noda w procesie wywo³uj¹c metodê 
+			manager.completeWorkItem(workItem.getId(), data); 
+			
+			gdzie obiekt manager i workItem przekazywane s¹ jako parametr do metody executeWorkItem.
+		
+3. TWORZENIE ASYNCHRONICZNEGO DOMAIN SPECIFIC NODE:
+	3.1. Tworzymy klasê dziedzicz¹c¹ po BaseAsynchronousWorkItemHandler
+		i umieszczamy np. w paczce com.cohesiva.processes.jbpm.handlers.
+	
+	WA¯NE!
+		Ze wzglêdu na automatyczne przywracania niezakoñczonych procesów na starcie systemu, wa¿ne jest zachowanie
+		konwencji nazewnictwa przy tworzeniu nowego asynchronicznego handlera. Nazwa klasy nowego handlera to
+		<Nazwa handlera>WorkItemHandler np. GetSpreadsheetValueWorkItemHandler.
+	WA¯NE! END
+		
+	WA¯NE2!
+		Jeœli nowo utworzony handler umieszczamy w paczce com.cohesiva.processes.jbpm.handlers mo¿emy pomin¹æ informacje z akapitu WA¯NE2.
+	
+		Podczas przywracania niezakoñczonych procesów na starcie systemu, które zosta³y przerwane podczas wykonywania
+		asynchronicznego customowego handlera konieczne jest zainicjalizowanie obiektu danego handlera w aplikacji, metoda
+			
+			private void restoreWorkItems(StatefulKnowledgeSession ksession)
+			
+		na podstawie nazwy handlera przechowywanej w bazie danych, wyszukuje odpowiednio klasê w aplikacji i inicjalizuje
+		obiekt wyszukanej klasy. Przeszukiwane s¹ packages okreœlone w 
+		
+			private String[] workItemHandlersPackages = { "com.cohesiva.processes.jbpm.handlers" };
+			
+		Jeœli wiêc umieszczamy nowego handlera w paczce com.cohesiva.processes.jbpm.handlers, nie musimy siê niczym przejmowaæ,
+		jeœli jednak umieszczamy handler w innej paczce np. com.cohesiva.processes.jbpm.handlers.superHandlery to musimy
+		jedynie dopisaæ do workItemHandlersPackages dan¹ paczkê np.
+		
+			private String[] workItemHandlersPackages = { "com.cohesiva.processes.jbpm.handlers", "com.cohesiva.processes.jbpm.handlers.superHandlery"};
+	WA¯NE2! END
+	
+	3.2. Przeci¹¿amy metodê 
+	
+			public void executeWorkItem(WorkItem workItem, WorkItemManager manager). 
+		
+		W tej metodzie wykonywany jest kod handlera, ale ¿eby by³ asynchroniczny musimy uruchomiæ go w oddzielnym w¹tku. Wewn¹trz nowego
+		w¹tku, aby powiadomiæ silnik jbpm o zakoñczeniu noda wywo³aæ musimy metodê 
+	
+			ksession.getWorkItemManager().completeWorkItem(workItem.getId(), data);
+		
+		Podobnie jak w przypadku handlera synchronicznego, korzystamy z przekazanego do metody executeWorkItem obiektu
+		workItem, jednak nie mo¿emy skorzystaæ z przekazanego do metody obiektu WorkItemManager, ale z obiektu
+		WorkItemManager pobranego z utworzonej z silnikiem jbpm sesji - ksession.getWorkItemManager() (przekazanie 
+		obiektu sesji - ksession jest wyjaœnione w punkcie 4.)
+		
+	
+4. W klasie JbpmBase rejestrujemy nowo dodany workItemHandler w metodzie 
+
+	private void registerHandlers(StatefulKnowledgeSession ksession).
+	
+	Tworzymy instancjê handlera i rejestrujemy j¹ w obiekcie workItemManager. Jeœli handler jest asynchroniczny
+	(musi dziedziczyæ po BaseAsynchronousWorkItemHandler) przekazujemy mu obiekt sesji, aby móg³ po zakoñczeniu
+	wykonywania kodu powiadomiæ silnik jbpm o zakoñczeniu procesu. 
+	
+	WA¯NE!
+		Ze wzglêdu na automatyczne przywracania niezakoñczonych procesów na starcie systemu, wa¿ne jest zachowanie
+		konwencji nazewnictwa przy rejestracji handlera. W metodzie 
+			workItemManager.registerWorkItemHandler(workItemName, handler)
+			workItemName powinnien byæ nazw¹ nazw¹ handlera u¿yt¹ w nazwie klasy z punktu 3. Przyk³ad:
+		
+		GetSpreadsheetValueWorkItemHandler getSpreadsheetValueHandler = new GetSpreadsheetValueWorkItemHandler();
+		getSpreadsheetValueHandler.setKSession(ksession);
+		
+		workItemManager.registerWorkItemHandler("GetSpreadsheetValue",
+				getSpreadsheetValueHandler);
+	WA¯NE! END
+				
+	ALTERNATYWNA REJESTRACJA DLA HANDLERÓW SYNCHRONICZNYCH:
+		Alternatywnie zamiast inicjalizjowania i rejestrowania obiektu handlera synchronciznego w kodzie mo¿emy to zrobiæ w pliku
+		META-INF/workItemHandlers.conf np.
+			
+			[
+				"Email" : new org.jbpm.process.workitem.email.EmailWorkItemHandler("localhost","25","","")
+			]
+			
+		Nowe handlery mo¿emy dodawaæ po przecinku. W przypadku handlerów asynchronicznych, nale¿y jednak rejestrowaæ je w kodzie 
+		ze wzglêdu na koniecznoœæ przekazania do nich nowo utworzonego obiektu sesji z silnikiem jbpm.
+		
+		Rejestruj¹c handler w ten sposób nale¿y pamiêtaæ, ¿e u¿yta nazwa handlera, w tym przypadku - Email musi odpowiadaæ
+		nazwie pliku wid z punktu 5., w tym przypadku Email.wid.
+		
+	ALTERNATYWNA REJESTRACJA DLA HANDLERÓW SYNCHRONICZNYCH END
+	
+5. Aby customowy node widoczny by³ w graficznym toolu do projektowania tworzmy w META-INF nowy plik <Nazwa handlera>.wid,
+	gdzie <Nazwa handlera> to nazwa u¿yta do rejestracji obiektu z punktu 4. np. GetSpreadsheetValue.wid
+	
+	W pliku tym mo¿emy zdefiniowaæ ró¿ne w³aœciwoœci noda np. parametry, wyœwietlan¹ w graficznym toolu nazwê czy ikonê.
+	
+	Najprostsza konfiguracja zawiera name i displayName, zawartoœæ GetSpreadsheetValue.wid:
+		[
+		  // the GetSpreadsheetValue work item
+		  [
+			"name" : "GetSpreadsheetValue",
+			"displayName" : "GetSpreadsheetValue",
+		  ]
+		]
+		
+6. W pliku META-INF/drools.rulebase.conf dopisujemy po spacji nazwê nowego pliku .wid w property drools.workDefinitions np.
+	drools.workDefinitions = Email.wid GetSpreadsheetValue.wid 
+
+	
+------------------------------------------- E) OBS£UGA HUMAN TASKÓW ------------------------------------------------------------------
+
+1. Tworz¹c user taska w graficznym toolu, ustawiamy perspective eclipsa na jBPM, w którym jest view Properties, gdzie widoczne
+	s¹ propertisy danego noda po klikniêciu w niego. User Task node ma property ActorId, w którym mo¿emy ustawiæ po przecinku
+	kto ma dostêp do tego taska (wpisujemy email gmailowy np. damian.kardanski@cohesiva.com - w aplikacji po zalogowaniu przez 
+	konto googla mo¿emy wyœwietliæ listê human tasków, do których mamy dostêp).
+	
+2. Obs³uga human taska w aplikacji wymaga dodania odpowiedniego formularza i kontrolera do niego. Kontroler dodajemy np. 
+	w paczce com.cohesiva.processes.controllers.humanTasks dziedzicz¹c po 
+	
+		com.cohesiva.processes.controllers.humanTasks.HumanTaskBaseController.
+		
+	Nalezy pamiêtaæ o dodanie anotacji @Controller do nowego kontrolera oraz odpowiednich anotacji do parametrów metod 
+	kontrolera.
+		
+	Kontroler musi obs³u¿yæ wyœwietlenie w metodzie przyjmuj¹cej z urla parametr taskId oraz processInstanceId np.
+	
+		protected abstract ModelAndView completeTask(@PathVariable String taskId, @PathVariable long processInstanceId);
+		
+	Konieczne jest dodanie mappingu url np.:
+		@RequestMapping(value = "/pocProcess/confirmValue/{taskId}/{processInstanceId}", method = RequestMethod.GET)
+		public ModelAndView completeTask(@PathVariable String taskId,
+			@PathVariable long processInstanceId) {
+				...
+		}
+	W mappingu urla ostatnie 2 elementy œcie¿ki to obowi¹zkowo identyfikator human taska i identyfikator instancji procesu	
+		
+	Jeœli w formularzu maj¹ znaleŸæ siê jakieœ dane zwi¹zane z instancj¹ danego procesu to potrzebujemy obiekt
+	instancji danego procesu:
+		
+		ProcessInstance procInstance = this.getProcessInstance(processInstanceId);
+		
+	Maj¹c ten obiekt mo¿emy wyci¹gaæ dane zwi¹zane z danym procesem np.:
+		
+		if (procInstance != null) {
+			cellValue = (String) ((WorkflowProcessInstance) procInstance)
+					.getVariable("cellValue");
+		}
+		
+	Maj¹c obiekt procInstance, mo¿emy wyœwietliæ formularz zwi¹zany z danym human taskiem korzystaj¹c z mapowania z punktu 4.:
+	
+		String processId = procInstance.getProcessId();
+		
+		String viewPath = this.getViewPath(processId, taskId);
+		
+		return new ModelAndView(viewPath, data);
+	
+3. Tworzymy formularz odpowiadaj¹cy danemu human taskowi i umieszczamy go np. w 
+	WEB-INF/jsp/human_tasks_forms/<nazwa procesu>/{pliki .jsp formularzy dla human tasków w danym procesie}
+	Formularz powinnien zawieraæ pole 
+		<input type="hidden" name="taskId" value="${taskId}">
+	Wartoœæ ta jest potrzebna, jako unikatowy identyfikator taska, do komunikacji z serwerem human taskow po submitowaniu formularza.
+	Mo¿na wtedy wykorzystuj¹c serwis do komunikacji z serwerem human tasków - HumanTaskService np. zakoñczyæ dany task.
+	
+4. Aby widok listuj¹cy human taski danego uzytkownika aplikacji powi¹za³ dany human task z odpowiednim kontrolerem oraz
+	kontroler z odpowiednim widokiem (.jsp) nale¿y w serwisie 
+		
+		HumanTaskFormMapper 
+	dodaæ odpowiednie powi¹zania w metodzie
+	
+		mapUrls() oraz mapViews().
+		
+	Identyfikator danego taska, który stanowi key w mapach to 
+		'<processId>_<TaskName>'
+		
+		processId to unikatowy indentyfikator procesu, w którym znajdue siê dany human task
+		TaskName to property human taska, które mo¿na okreœliæ w graficznym edytorze definicji procesu klikaj¹c na user taska,
+		wybieraj¹c view Properties i wpisuj¹c odpowiedni¹ wartoœc do wartoœci pola TaskName
+		
+		Wartoœc property TaskName nie mo¿e siê wiêc powtarzaæ w obrêbie jednego procesu.
+		
+	Przyk³adowy mapping url:
+		urlMappings.put("com.sample.bpmn.poc_Value confirmation",
+				"/Jbpm_processes/pocProcess/confirmValue");		
+			Uwaga - mapping ten nie zawiera ostanich 2 elementów sæie¿ki - taskId i processInstanceId
+				
+	Przyk³adowy mapping widoku:
+		viewMappings.put("com.sample.bpmn.poc_Value confirmation",
+				"jsp/human_tasks/forms/pocProcess/confirmValueForm.jsp");
+				
+	W powy¿szym przypadku processId to 'com.sample.bpmn.poc', a TaskName - 'Value confirmation'
+	
+	Metoda kontrolera renderuj¹ca formularz powinna wygladaæ w tym przypadku nastêpuj¹co:
+	
+	@RequestMapping(value = "/pocProcess/confirmValue/{taskId}/{processInstanceId}", method = RequestMethod.GET)
+	public ModelAndView completeTask(@PathVariable String taskId,
+			@PathVariable long processInstanceId) {			
+			.....		
+	}
+	
+5. Human taski mog¹ byæ natychmiastowe np. kilkniêcie czy wybieramy siê na kosza, albo mog¹ zajmowaæ jakiœ czas i byæ wykonywane przez 
+1 z kilku osób. Takie taski powinny wiêc byæ najpierw zarezerwowane przez kogoœ, nastêpnie wystartowane i ostatecznie zakoñczone. 
+Domyœlnie nowo dodane human taski nie s¹ natychmiastowe, aby dany task by³ natychmiastowy nale¿y dodaæ wpis w klasie 
+	HumanTaskFormMapper
+w metodzie
+	private void mapImmediateTasks()
+identyfikator taska, który ma byæ natychmiastowy. Identyfikator wygl¹da nastêpuj¹co <nazwa_procesu>_<nazwa_human_taska> (tak samo jak
+w punkcie 4. dotycz¹cym mappingu human taska do kontrolera i widoku np.
+	immediateTasks.add("com.cohesiva.basket.weekly_CallBasketOff");
+
+------------------------------------------------- F) DANE W PROCESACH -----------------------------------------------------------------
+
+Przekazywanie danych w procesach opisane jest w punkcie 6.8.1 http://docs.jboss.org/jbpm/v5.3/userguide/ch.core-basics.html#sec.data.
+
+1. Korzystaj¹c z graficznego toola do projektowania procesu nale¿y pamiêtaæ aby:
+	1.1. Zadeklarowaæ u¿ywane w procesie zmienne ustawiaj¹c w 'Properties' ca³ego procesu property 'Variables'.
+		Uwaga! Przypisanie zmiennej wartoœci podczas inicjalizacji nie dzia³a³o, dlatego wartoœæ do zmiennej przypisywa³em
+			w skrypcie, lub w customowym handlerze
+	
+	1.2. Jeœli jakiœ node ma mieæ dostêp do danej zmiennej nale¿y ustawiæ 'Parameter Mapping' w 'Properties' danego noda.
+	
+	1.3. Jeœli jakiœ noda ma zwróciæ dane do procesu nale¿y ustawiæ 'Result Mapping' w 'Properties' danego noda.
+
+		Mapowania z punktu 2. oraz 3. polegaj¹ na zmapowaniu nazw zmiennych z punktu 1. na nazwy zmiennych u¿ywane w obrêbie
+		noda.
+	
+2. Jeœli chcemy przekazaæ do procesu dane na starcie z kodu robimy to nastêpuj¹co:
+	
+	Map<String, Object> params = new HashMap<String, Object>();
+	params.put("number", 4);
+
+	session.startProcess(processId, params);
+	
+3. Jeœli chcemy przekazaæ do procesu dane wynikowe z human taska koñczymy human taska nastêpuj¹co:
+	
+	Map<String, Object> results = new HashMap<String, Object>();
+	
+	results.put("answerBody",
+						"Zakoñczy³eœ subskrypcjê Cohesiva Basket");
+						
+	humanTaskService.finishTask(taskId, email, groups, results);
+
+4. Jeœli chcemy ustawiæ zmienn¹ w skrypcie:
+		kcontext.setVariable(variableName, variableValue);
+
+	
+------------------------------------------------- G) SCHEDULING (QUARTZ SCHEDULER) ----------------------------------------------------
+1. Odpalanie procesu.
+	1.1. Otwieramy klasê EventStarter i dodajemy now¹ metodê odpalaj¹c¹ proces np.
+	
+		public void startBasketWeeklyProcess() {
+			StatefulKnowledgeSession ksession = jbpmBase.getSession();
+			Map<String, Object> params = new HashMap<String, Object>();
+
+			List<String> subscribers = userDao.getSubscribers();
+			List<String> playersList = new Vector<String>();
+			List<String> nonPlayersList = new Vector<String>();
+
+			params.put("list", subscribers);
+			params.put("playersList", playersList);
+			params.put("nonPlayersList", nonPlayersList);
+			params.put("summaryReport", "default REPORT");
+
+			ksession.startProcess("com.cohesiva.basket.weekly", params);
+		}
+			
+		W powy¿szym przypadku inicjalizowane i przekazywane s¹ do procesu 4 zmienne. 
+		
+		Jeœli nie potrzebujemy przekazywaæ do procesu ¿adnej zmiennej, nie potrzebujemy tworzyæ ¿adnej nowej metody, ani wykonywaæ 
+		¿adnych dodatkowych operacji nie definiujemy ¿adnej nowej metody, a korzystamy z metody
+			public void startProcess(String processId)
+			
+	1.2. Otwieramy plik spring-quartz.xml
+		1.2.1.
+			Dodajemy nowy event np.
+				<bean id="runBasketWeekly"
+					class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+					<property name="targetObject" ref="eventStarter" />
+					<property name="targetMethod" value="startBasketWeeklyProcess" />
+				</bean>
+						
+				"targetObject" to bean, w którym znajduje siê metoda zwi¹zana z eventem, 
+				"targetMethod" to nazwa metody w beanie
+				
+				Jeœli odpalamy proces korzystaj¹c z metody 
+					public void startProcess(String processId):
+				
+				<bean id="runBasketWeekly"
+					class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+					<property name="targetObject" ref="eventStarter" />
+					<property name="targetMethod" value="startBasketWeeklyProcess" />
+					<property name="arguments">
+						<array value-type="java.lang.String">
+							<value>com.cohesiva.basket.weekly</value>							
+						</array>
+				</property>
+				</bean>
+				
+			1.2.2.
+				Nastêpnie dodajemy trigger zwi¹zany z eventem np.
+					
+					<bean id="triggerBasketWeeklyProcess" class="org.springframework.scheduling.quartz.CronTriggerBean">
+						<property name="jobDetail" ref="runBasketWeekly" />
+						<property name="cronExpression" value="0 42 15 * * ?" />
+					</bean>
+					
+					"jobDetail" to id beana wskazuj¹cego na metodê do odpalenie (w powy¿szym przyk³adzie - runBasketWeekly)
+					"cronExpression" to wyra¿enie cronn definiuj¹ce kiedy trigger ma siê odpalaæ, przyk³adowo:
+						"0 42 15 * * ?" onzacza uruchomienie codziennie o 15.42
+				
+			1.2.3.
+				Dodajemy event i trigger do list eventów i triggerów:
+					
+					<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+						<property name="jobDetails">
+							<list>
+								<ref bean="runPocProcessesEvent" />
+								<ref bean="runBasketWeekly" />
+								<ref bean="endBasketWeeklyEvent" />
+							</list>
+						</property>
+
+						<property name="triggers">
+							<list>
+								<ref bean="triggerPocProcessSignalEvent" />
+								<ref bean="triggerBasketWeeklyProcess" />
+								<ref bean="triggerBasekWeeklyEndEvent" />
+							</list>
+						</property>
+					</bean>
+	
+2. Odpalanie eventa w procesie. 
+	Analogicznie jak w punkcie 1.2. Jeœli nie potrzebujemy ¿adnych dodatkowych operacji, korzystamy z metody
+		private void signal(String signal, String processId)
+	Np. chcemy zasygnalizowaæ event "informAll" w procesie "com.cohesiva.basket.weekly":
+	
+		<bean id="informAllEvent"
+			class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+			<property name="targetObject" ref="eventStarter" />
+			<property name="targetMethod" value="signal" />
+			<property name="arguments">
+				<array value-type="java.lang.String">
+					<value>informAll</value>
+					<value>com.cohesiva.basket.weekly</value>
+				</array>
+			</property>
+		</bean>
+	
+------------------------------------------- G) PRZYGOTOWANIE ŒRODOWISKA PRODUKCYJNEGO -------------------------------------------------
+
+											<<<<<<<<<<<<<<<<< DEBIAN >>>>>>>>>>>>>>>>>											
+											
+POSTGRES
+
+1. Zainstalowaæ i skonfigurowaæ postgresql
+	1.1 apt-get install postgresql
+	
+	1.2 tworzymy has³o dla usera postgres w systemie 
+		passwd postgres
+		
+	1.2 mamy te¿ u¿ytkownika postgres w sewerze bazodanowym, tworzymy mu has³o (powinno byæ inne ni¿ w 1.1)
+		user:path# su - postgres
+		user:path# psql
+		postgres=# \password 
+		Enter new password: 
+		Enter it again: 
+		postgres=# \q
+	
+2. Utworzyæ bazkê jbpm_processes oraz u¿ytkownika jbpm_processes/jbpm_processes 
+
+	postgres=# createdb jbpm_processes; / create database jbpm_processes;
+	postgres=# createdb user jbpm_processes with password 'jbpm_processes' / create user jbpm_processes with password 'jbpm_processes';
+
+Utworzyæ bazkê jbpm5 oraz u¿ytkownika jbpm5/jbpm5 
+
+Utworzyæ bazkê task oraz u¿ytkownika task/task 
+
+Standardowy port to 5432, w przypadku u¿ycia innego portu, innego hosta ni¿ localhost, innego u¿ytkownika itp. 
+pamiêtaæ o zmianach w konfiguracjach persistence aplikacji
+
+persistance webapp - META-INF/persistence-spring.xml (spring container)
+persistence jbpm - standalone.xml (jboss)
+persistence humantasks -.../human_task_server/task_service/resources/META-INF/persistence.xml (serwer human tasków)
+
+JBOSS
+
+3. Œci¹gn¹æ, rozpakowaæ Jbossa 7.1 
+	http://www.jboss.org/jbossas/downloads/
+	
+4. Dodaæ modu³ postgresql.
+	11.1. Stworzyæ katalog <G³ówny folder jbossa>/modules/org/postgresql/main
+	11.2. Wrzuciæ do katalogu z 1.1. driver do postgresa 
+	11.3 Utworzyæ w katalogu z 1.1. plik module.xml 
+		
+		module.xml:
+		<?xml version="1.0" encoding="UTF-8"?>
+		<module xmlns="urn:jboss:module:1.0" name="org.postgresql">
+			<resources>
+				<resource-root path="postgresql-9.1-902.jdbc4.jar"/>
+			</resources>
+			<dependencies><module name="javax.api"/></dependencies>
+		</module>
+
+5. Skonfigurowaæ datasourca.
+	5.1. Otworzyæ do edycji <G³ówny folder jbossa>/standalone/configuration/standalone.xml
+	5.2. ZnaleŸæ <datasources> i dodaæ nowy <datasource>
+		
+				<datasource jndi-name="java:jboss/datasources/jbpmDS" pool-name="PostgresDS">
+					<connection-url>jdbc:postgresql://localhost:5432/jbpm5</connection-url>
+					<driver-class>org.postgresql.Driver</driver-class>
+					<driver>postgresql-jdbc4</driver>
+					<pool>
+						<min-pool-size>2</min-pool-size>
+						<max-pool-size>20</max-pool-size>
+						<prefill>true</prefill>
+					</pool>
+					<security>
+						<user-name>jbpm5</user-name>
+						<password>jbpm5</password>
+					</security>
+					<validation>
+						<check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+					</validation>
+				</datasource>
+	
+	5.3 ZnaleŸæ <drivers> i dodaæ driver do postgresa 
+			
+			<drivers>
+                <driver name="h2" module="com.h2database.h2">
+                    <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                </driver>
+				<driver name="postgresql-jdbc4" module="org.postgresql"/>
+            </drivers>
+
+
+6. Upewniæ siê, ¿e w kontrolerze UsersController jest ustawiony dobry port i host w callbackUrl 
+		private static final String callbackUrl = "http://193.239.56.114:4080/Jbpm_processes/handleLogged";
+		
+	Port u¿ywany przez aplikacjê jest w pliku <G³ówny folder jbossa>/standalone/configuration/standalone.xml 
+		w <socket-binding name="http" port="4080"/>
+
+7. Aby ustawiæ kodowanie URL w UTF-8 dodajemy do standalone.xml:
+	<system-properties>
+        <property name="org.apache.catalina.connector.URI_ENCODING" value="UTF-8"/>
+        <property name="org.apache.catalina.connector.USE_BODY_ENCODING_FOR_QUERY_STRING" value="true"/>
+    </system-properties>
+	
+Uwaga! W razie gdyby by³ problem z deploymentem aplikacji na jbossie w defaultowym czasie, dodaæ atrybut deployment-timeout="<liczba sekund>" do
+	taga <deployment-scanner> np. 
+		<deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" deployment-timeout="9999"/>
+	
+		
+HUMAN TASK SERVER
+
+8. Umieœciæ np. w jakimœ katalogu dostarczony z instrukcj¹ katalog human_task_server
+
+	Struktura katalogu:
+		human_task_server
+			- build.xml
+			- runtime
+				- ...
+			- task-service
+				- ...
+			- db
+				- ...
+				
+9. Konfiguracja persistence - otworzyæ .../human_task_server/task-service/resources/META-INF/persistence.xml i zmieniæ properties na:
+
+	<properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+      <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/task" />
+      <property name="hibernate.connection.username" value="task"/>
+      <property name="hibernate.connection.password" value="task"/>
+      <property name="hibernate.connection.autocommit" value="false" />
+      <property name="hibernate.max_fetch_depth" value="3"/>
+      <property name="hibernate.hbm2ddl.auto" value="update" />
+      <property name="hibernate.show_sql" value="false" />
+    </properties>
+	
+10. Umieœciæ w .../human_task_server/db/driver driver do postgresa.
+
+11. Zainstalowaæ anta.
+	apt-get install ant
+
+12. Zainstalowaæ i skonfigurowaæ sun jdk.
+	- do /etc/apt/sources.list dodaæ wpis z repo:
+	
+		deb http://ftp.pl.debian.org/debian/ squeeze non-free
+		
+	- apt-get update
+	- apt-get install sun-java6-jdk
+	- update-java-alternatives -s java-6-sun
+	
+13. Przetestowaæ czy serwer dzia³a - wejœæ do katalogu .../human_task_server i uruchomiæ
+		ant start.human.task
+		
+		Powinniœmy mieæ ouput:
+			root@moonraker:../human_task_server# ant start.human.task
+			Buildfile: .../human_task_server/build.xml
+
+			start.human.task:
+				<Mo¿liwe WARNY>
+				[javac] .../human_task_server/build.xml:15: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+				[java] Task service registered usergroup callback ...
+				[java] Task service started correctly!
+				[java] Task service running ...
+				
+		Po pierwszym uruchomieniu mo¿emy dla pewnoœci sprawdziæ czy w bazie 'task' utworzy³y siê tabele
+		
+UWAGA!
+W przypadku problemów z autoryzacj¹ podczas ³¹czenia z baz¹ danych:
+	FATAL:  password authentication failed for user "username"
+	
+w pliku pg_hba.conf upewniæ siê, ¿e metoda autentykacji to md5 a nie np. ident
+przyk³odowy wpis:
+	host	all		all		127.0.0.1/32	md5
+	
+SERWER POCZTOWY
+
+14. Zainstalowaæ serwer smtp np. Postfix:
+	apt-get install postfix
+		
+------------------------------------------- G) URUCHAMIANIE APLIKACJI PROD ---------------------------------------------------------
+	
+1. Zalogowaæ siê przez ssh na usera jbpm/jbpm.
+
+2. Upewniæ siê, ¿e postgres jest uruchomiony.
+
+3. Uruchomiæ serwer human tasków:
+	- uruchomiæ screen
+	- uruchomiæ serwer human tasków - wejœæ do katalogu ~/human_task_server i odpaliæ 'ant start.human.task'.
+	- ctrl+a, potem d (od³¹czenie od screena)
+
+4. Zdeployowaæ webappa na jbossa i odpaliæ jbossa na screenie:
+	- uruchomiæ screena
+	- odpaliæ jbossa ./standalone.sh -b 0.0.0.0
+	- ctrl+a, potem d (od³¹czenie od screena)
+
+5. Sprawdziæ w przegl¹darce czy dzia³a http://193.239.56.114:4080/Jbpm_processes/
+
+6. Mo¿na zamkn¹æ sesjê.
+
+
+
+
+
+	
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
