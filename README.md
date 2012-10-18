@@ -32,7 +32,8 @@ nawzajem. Nie zmuszamy nikogo do aktywności. Liczymy w duchu na Waszą inicjaty
 **Processiva Getting Started**
 W każdej chwili możesz **wypróbować** Processiva **online**. Udostępniamy środowisko testowe, które pozwala zapoznać się z możliwościami platformy i sprawdzić przykładowe procesy. Staramy się wszystko porządkować i dokumentować tak, aby start był jak najmniej bolesny, dokumentacja powstaje jednak przyrostowo i nie wszystko, szczególnie na początku będzie idealne.
 
-1. Jeżeli chcesz przetestować przykładowy proces, kliknij w: http://processiva.example (TODO)
-2. Jeżeli chcesz szybko zacząć prace z Provessiva, kliknij w: http://processiva.in.five.minutes (TODO)
-3. Jeżeli chcesz dowiedzieć się, jakie są zasady pracy z kodem, przeczytaj [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process)
-4. Jeżeli widzisz, że coś działa źle lub jest niedopracowane, zgłoś bład klikając [tu](https://github.com/Cohesiva/Processiva/issues)
+- Jeżeli dopiero zaczynasz przygodę z GITem, przeczytaj [Introduction To Git](http://learn.github.com/p/intro.html)
+- Jeżeli chcesz przetestować przykładowy proces, kliknij w: http://processiva.example (TODO)
+- Jeżeli chcesz szybko zacząć prace z Provessiva, kliknij w: http://processiva.in.five.minutes (TODO)
+- Jeżeli chcesz dowiedzieć się, jakie są zasady pracy z kodem, przeczytaj [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process)
+- Jeżeli widzisz, że coś działa źle lub jest niedopracowane, zgłoś bład klikając [tu](https://github.com/Cohesiva/Processiva/issues)
