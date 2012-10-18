@@ -7,6 +7,16 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Jbpm_processes Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+	<organization>
+		<name>Cohesiva</name>
+	</organization>
+	<licenses>
+		<license>
+			<name>GPLv3</name>
+			<comments>GNU General Public License version 3</comments>
+			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+		</license>
+	</licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -268,6 +278,29 @@
 						<goals>
 							<goal>stop</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<verbose>false</verbose>
+					<addSvnKeyWords>false</addSvnKeyWords>
+					<licenseName>agpl_v3</licenseName>
+					<canUpdateDescription>true</canUpdateDescription>
+				</configuration>
+				<executions>
+					<execution>
+						<id>first</id>
+						<goals>
+							<goal>update-file-header</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<licenseName>agpl_v3</licenseName>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
