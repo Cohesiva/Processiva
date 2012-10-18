@@ -34,5 +34,5 @@ W każdej chwili możesz **wypróbować** Processiva **online**. Udostępniamy �
 
 1. Jeżeli chcesz przetestować przykładowy proces, kliknij w: http://processiva.example (TODO)
 2. Jeżeli chcesz szybko zacząć prace z Provessiva, kliknij w: http://processiva.in.five.minutes (TODO)
-3. Jeżeli chcesz dowiedzieć się, jakie są zasady pracy z kodem, kliknij w: http://processiva.how.to.code (TODO)
-4. Jeżeli widzisz, że coś działa ewidentnie źle lub jest niedopracowane, pisz na: processiva.helpdesk@cohesiva.com (TODO)
+3. Jeżeli chcesz dowiedzieć się, jakie są zasady pracy z kodem, przeczytaj [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process)
+4. Jeżeli widzisz, że coś działa źle lub jest niedopracowane, zgłoś bład klikając [tu](https://github.com/Cohesiva/Processiva/issues)
