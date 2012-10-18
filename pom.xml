@@ -10,11 +10,12 @@
 	<organization>
 		<name>Cohesiva</name>
 	</organization>
+	<inceptionYear>2012</inceptionYear>
 	<licenses>
 		<license>
-			<name>GPLv3</name>
-			<comments>GNU General Public License version 3</comments>
-			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+			<name>AGPLv3</name>
+			<comments>GNU Affero General Public License version 3</comments>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
 		</license>
 	</licenses>
 
