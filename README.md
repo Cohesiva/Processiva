@@ -3,17 +3,16 @@ Processiva
 
 Cohesiva Processes Engine
 
-**Processiva** to platforma do wsparcia obsługi **procesów biznesowych** w Cohesiva. Do opisu procesów i śledzenia ich przepływu wykorzystuje silnik **jBPM**. U podstaw idei Processiva leży potrzeba automatyzacji zwykłych, codziennych lub uciążliwych czynności 
-związanych z realizacją procesów tak, aby życia w firmie stało się prostsze, łatwiejsze. Processiva chce:
-
-- zautomatyzować obieg dokumentów
-- nie kazać ludziom pamiętać o terminach - przypominać o nich
-- zarządzać seryjną korespondencją
-- wypełniać typowe dane formularzy
-- pomagać nowym lub tym, którzy mają krótką pamięć
-- porządkować komunikację
+An idea of **Processiva** is to provide a **platform** for supporting **business process** execution in Cohesiva (or any other company). Process flow and process description relies on the jBpm engine. The grassroots of this idea is that we need the business process automation for most of the rudimentary tasks that are awkward to make the company life simpler and easier for everyone. Processiva wants to:
+- automate the document flow
+- not to make people remember dates - rather remind about them
+- manage the mail merge
+- fill in repetitive form data
+- be helpful for newbie or Mr Forgetful
+- organize communication
 
 Typowe technologie, które wykorzystuje Processiva, to:
+The typical technologies employed are:
 - jBPM
 - Spring
 - Spring MVC
@@ -23,14 +22,14 @@ Typowe technologie, które wykorzystuje Processiva, to:
 
 
 
-**Dla kogo jest Processiva**
-Platforma powstała **dla każdego**, kto zechce rozwijać ją razem z Cohesiva w duchu **opensource**.
-Oferujemy gotowe środowisko do rozpoczęcia pracy i dajemy możliwość wyżycia się programistycznie mając nadzieję, że przyczyni się to do wzrostu aktywność community Cohesiva pozwalają nam jeszcze lepiej się poznać, ściślej współpracować i uczyć się od siebie 
-nawzajem. Nie zmuszamy nikogo do aktywności. Liczymy w duchu na Waszą inicjatywę, pomysłowość i chęć działania. Każdy pomysł jest tu cenny, a chęci są najważniejsze.
-
+**Who is Processiva for**
+The platform is for **everyone** who wants to develop it together with Cohesiva in spirit of **opensource**.
+We offer a ready to use environment for the start and give an opportunity to lace into coding keeping in mind that it will increase community activity and help people know each other better improving their cooperation and skills.
+We do not force any one to anything. We rathe count on people creativity and initiative. Every idea is valuable and will is principle.
 
 **Processiva Getting Started**
-W każdej chwili możesz **wypróbować** Processiva **online**. Udostępniamy środowisko testowe, które pozwala zapoznać się z możliwościami platformy i sprawdzić przykładowe procesy. Staramy się wszystko porządkować i dokumentować tak, aby start był jak najmniej bolesny, dokumentacja powstaje jednak przyrostowo i nie wszystko, szczególnie na początku będzie idealne.
+You can try Processiva at any moment. We provide you with the test environment where you can become familiar with its features and try out the example processes.
+Whe make our best to organize and document everything so that the start is painless but nothing is ideal especially early on.
 
 - Jeżeli dopiero zaczynasz przygodę z GITem, przeczytaj [Introduction To Git](http://learn.github.com/p/intro.html)
 - Jeżeli chcesz przetestować przykładowy proces, kliknij w: http://processiva.example (TODO)
