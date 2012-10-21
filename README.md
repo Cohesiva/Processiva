@@ -22,12 +22,12 @@ The typical technologies employed are:
 
 
 
-**Who is Processiva for**
+## Who is Processiva for?
 The platform is for **everyone** who wants to develop it together with Cohesiva in spirit of **opensource**.
 We offer a ready to use environment for the start and give an opportunity to lace into coding keeping in mind that it will increase community activity and help people know each other better improving their cooperation and skills.
-We do not force any one to anything. We rathe count on people creativity and initiative. Every idea is valuable and will is principle.
+We do not force any one to anything. We rathe count on people creativity and initiative. Every idea is valuable and your will is the principle.
 
-**Processiva Getting Started**
+## Processiva Getting Started
 You can try Processiva at any moment. We provide you with the test environment where you can become familiar with its features and try out the example processes.
 Whe make our best to organize and document everything so that the start is painless but nothing is ideal especially early on.
 
