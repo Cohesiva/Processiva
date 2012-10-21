@@ -32,7 +32,7 @@ You can try Processiva at any moment. We provide you with the test environment w
 Whe make our best to organize and document everything so that the start is painless but nothing is ideal especially early on.
 
 - If this is your first time with GIT, check out the [Introduction To Git](http://learn.github.com/p/intro.html)
-- If you want to try the example process, click in: [Example Processes](http://processiva.example)
-- If you want to start fast with Processiva, click in: [Processiva in 15 Minutes](https://github.com/Cohesiva/Processiva/wiki/Processiva-in-15-Minutes)
+- If you want to try the example process, click in:[Example Processes](http://processiva.example)
+- If you want to start fast with Processiva, click in [Processiva in 15 Minutes](https://github.com/Cohesiva/Processiva/wiki/Processiva-in-15-Minutes)
 - If you want to know how to work with your code and know the rules, get familiar with the [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process)
 - If you find out that something is wrong, report it by clicking [Issues](https://github.com/Cohesiva/Processiva/issues)
