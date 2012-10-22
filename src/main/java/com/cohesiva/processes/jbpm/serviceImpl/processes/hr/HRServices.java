@@ -1,3 +1,4 @@
+
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -18,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+
 package com.cohesiva.processes.jbpm.serviceImpl.processes.hr;
 
 import java.util.ArrayList;
