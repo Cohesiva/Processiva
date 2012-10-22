@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -19,18 +18,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+package com.cohesiva.processes.serviceImpl;
 
-package com.cohesiva.processes.service;
+import org.openid4java.consumer.ConsumerManager;
+import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+@Service
+public class ConsumerManagerService {
 
-/* 
- * Service for logging users in
- */
-public interface ILoginService {
-	public String loginGoogle(HttpSession session);
+	public ConsumerManager manager;
 
-	public boolean handleLogged(String email, String firstName, String surname,
-			HttpSession session, HttpServletRequest request);
+	public ConsumerManagerService() {
+		manager = new ConsumerManager();
+	}
+
+	public ConsumerManager getConsumerManager() {
+		return manager;
+	}
 }

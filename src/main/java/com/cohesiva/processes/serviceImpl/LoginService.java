@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -24,20 +23,26 @@ package com.cohesiva.processes.serviceImpl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.openid4java.association.AssociationException;
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
+import org.openid4java.consumer.VerificationResult;
 import org.openid4java.discovery.DiscoveryException;
 import org.openid4java.discovery.DiscoveryInformation;
+import org.openid4java.discovery.Identifier;
 import org.openid4java.message.AuthRequest;
 import org.openid4java.message.MessageException;
+import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.FetchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.User;
 import com.cohesiva.processes.db.UserDao;
+import com.cohesiva.processes.service.IConsumerManagerService;
 import com.cohesiva.processes.service.ILoginService;
 
 @Service(value = "loginService")
@@ -45,6 +50,9 @@ public class LoginService implements ILoginService {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private IConsumerManagerService cmService;
 
 	private static final String googleOpenIdUrl = "https://www.google.com/accounts/o8/id";
 
@@ -54,13 +62,14 @@ public class LoginService implements ILoginService {
 		this.callbackUrl = callbackUrl;
 	}
 
-	public String loginGoogle() {
+	public String loginGoogle(HttpSession session) {
 		String redirectUrl = null;
 
 		try {
 			System.out.println("logowanie z googla");
 
-			ConsumerManager manager = new ConsumerManager();
+			// ConsumerManager manager = new ConsumerManager();
+			ConsumerManager manager = cmService.getConsumerManager();
 
 			String _returnURL = callbackUrl;
 
@@ -92,6 +101,10 @@ public class LoginService implements ILoginService {
 			// wants up to three email addresses
 			fetch.setCount("Email", 3);
 
+			// store the discovery information in the user's session for later
+			// use
+			session.setAttribute("discovered", discovered);
+
 			AuthRequest authReq = manager.authenticate(discovered, _returnURL);
 			authReq.addExtension(fetch);
 
@@ -112,16 +125,51 @@ public class LoginService implements ILoginService {
 		return redirectUrl;
 	}
 
-	public void handleLogged(String email, String firstName, String surname,
-			HttpSession session) {
+	public boolean handleLogged(String email, String firstName, String surname,
+			HttpSession session, HttpServletRequest request) {
+		// extract the parameters from the authentication response
+		// (which comes in as a HTTP request from the OpenID provider)
+		ParameterList openidResp = new ParameterList(request.getParameterMap());
 
-		if (email != null) {
-			System.out.println("Logged email: " + email);
-			if (userDao.getUser(email) == null) {
+		// retrieve the previously stored discovery information
+		DiscoveryInformation discovered = (DiscoveryInformation) session
+				.getAttribute("discovered");
 
-				userDao.persist(new User(email, firstName, surname));
+		// extract the receiving URL from the HTTP request
+		StringBuffer receivingURL = request.getRequestURL();
+		String queryString = request.getQueryString();
+		if (queryString != null && queryString.length() > 0)
+			receivingURL.append("?").append(request.getQueryString());
+
+		// verify the response
+		VerificationResult verification;
+		try {
+			verification = cmService.getConsumerManager().verify(
+					receivingURL.toString(), openidResp, discovered);
+
+			// examine the verification result and extract the verified
+			// identifier
+			Identifier verified = verification.getVerifiedId();
+
+			// success, use the verified identifier to identify the user
+			if (verified != null && email != null) {
+				System.out.println("Logged email: " + email);
+				if (userDao.getUser(email) == null) {
+
+					userDao.persist(new User(email, firstName, surname));
+				}
+				session.setAttribute("loggedEmail", email);
+
+				return true;
 			}
-			session.setAttribute("loggedEmail", email);
+		} catch (MessageException e) {
+			return false;
+		} catch (DiscoveryException e) {
+			return false;
+		} catch (AssociationException e) {
+			return false;
 		}
+
+		return false;
 	}
 }
