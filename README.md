@@ -30,8 +30,9 @@ We do not force any one to anything. We rathe count on people creativity and ini
 You can try Processiva **at any moment**. We provide you with the **test environment** where you can become familiar with its features and try out the example processes.
 Whe make our best to organize and document everything so that the start is painless but nothing is ideal especially early on.
 
-- If this is your **first time** with GIT, check out the [Introduction To Git](http://learn.github.com/p/intro.html)
-- If you want to try the **example process**, click the [Example Processes](http://processiva.example)
-- If you want to **start fast** with Processiva, click the [Processiva in 15 Minutes](https://github.com/Cohesiva/Processiva/wiki/Processiva-in-15-Minutes)
-- If you want to know how to **work with your code** and know the rules, get familiar with the [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process)
-- If you find out that something is **wrong**, report it by clicking [Issues](https://github.com/Cohesiva/Processiva/issues)
+- If this is your **first time** with GIT, check out the [Introduction To Git](http://learn.github.com/p/intro.html).
+- If you want to try the **example process**, click the [Example Processes](http://processiva.example).
+- If you want to **start fast** with Processiva, click the [Processiva in 15 Minutes](https://github.com/Cohesiva/Processiva/wiki/Processiva-in-15-Minutes).
+- If you want to know how to **work with your code** and know the rules, get familiar with the [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process).
+- If you have the environment set up and are ready to **start developing your own processes**, read [New Process Development](https://github.com/Cohesiva/Processiva/wiki/New-Process-Development).
+- If you find out that something is **wrong**, report it by clicking [Issues](https://github.com/Cohesiva/Processiva/issues).
