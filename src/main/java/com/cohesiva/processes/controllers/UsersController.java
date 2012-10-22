@@ -43,8 +43,8 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/loginGoogle")
-	public String loginGoogle(HttpServletRequest request) {
-		String redirectUrl = loginService.loginGoogle();
+	public String loginGoogle(HttpServletRequest request, HttpSession session) {
+		String redirectUrl = loginService.loginGoogle(session);
 
 		return "redirect:" + redirectUrl;
 	}
@@ -58,9 +58,10 @@ public class UsersController {
 		String surname = request.getParameter("openid.ext1.value.LastName");
 
 		if (email != null) {
-			loginService.handleLogged(email, firstName, surname, session);
+			loginService.handleLogged(email, firstName, surname, session,
+					request);
 		}
-		
+
 		return "redirect:/humanTasks";
 	}
 }
