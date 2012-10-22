@@ -1,3 +1,23 @@
+/*
+ * #%L
+ * Processiva Business Processes Platform
+ * %%
+ * Copyright (C) 2012 Cohesiva
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
 package com.cohesiva.processes.jbpm.handlers.basket;
 
 import java.util.HashMap;
@@ -24,6 +44,7 @@ public class BasketWeeklySummaryWorkItemHandler implements WorkItemHandler {
 				.getParameter("playersList");
 		String date = (String) workItem.getParameter("date");
 		String emailFooter = (String) workItem.getParameter("emailFooter");
+		int eventNonCarnetPrize = (Integer) workItem.getParameter("eventNonCarnetPrize");
 
 		int size = 0;
 
@@ -40,20 +61,30 @@ public class BasketWeeklySummaryWorkItemHandler implements WorkItemHandler {
 		if (size > 0) {
 			summary.append("<br />Lista:<br />");
 
-			for(int i=0; i<size-1; i++) {
-			
-			//for (String email : playersList) {
+			for (int i = 0; i < size - 1; i++) {
 				User user = userDao.getUser(playersList.get(i));
 
-				summary.append("- "+user.getFirstName() + " " + user.getSurname()
-						+ " (" + user.getEmail() + "),<br />");
+				summary.append("- " + user.getFirstName() + " "
+						+ user.getSurname() + " (" + user.getEmail() + ")");
+
+				if (userDao.isBalanceValid(user.getEmail())) {
+					summary.append(",<br />");
+				} else {
+					summary.append(" - brak ważnego karnetu, proszę donieść opłatę "+eventNonCarnetPrize+" PLN,<br />");
+				}
 			}
 
-			User user = userDao.getUser(playersList.get(size-1));
+			User user = userDao.getUser(playersList.get(size - 1));
+
+			summary.append("- " + user.getFirstName() + " " + user.getSurname()
+					+ " (" + user.getEmail() + ")");
 			
-			summary.append("- "+user.getFirstName() + " " + user.getSurname()
-					+ " (" + user.getEmail() + ").<br />");
-			
+			if (userDao.isBalanceValid(user.getEmail())) {
+				summary.append(",<br />");
+			} else {
+				summary.append(" - brak ważnego karnetu, proszę donieść opłatę "+eventNonCarnetPrize+" PLN.<br />");
+			}
+
 			summary.append("<br />Miłej zabawy!" + emailFooter);
 		}
 

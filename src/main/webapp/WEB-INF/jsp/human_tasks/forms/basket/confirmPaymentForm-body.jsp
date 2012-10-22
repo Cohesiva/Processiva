@@ -1,3 +1,23 @@
+<%--
+  #%L
+  Processiva Business Processes Platform
+  %%
+  Copyright (C) 2012 Cohesiva
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  #L%
+  --%>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div class="container-fluid">
@@ -7,7 +27,7 @@
 			<div class="container">
 				<div class="content">
 					<form method="post" action="/Jbpm_processes/paymentBasket/confirm/handle_complete_task">
-						<legend>Użytkownik: ${userEmail} kupuje karnet Cohesiva Basket w cenie 50 PLN.</legend>
+						<legend>Użytkownik: ${userEmail} kupuje karnet Cohesiva Basket w cenie ${carnetPrize} PLN.</legend>
 						<span class="help-block">Ważność karnetu to 2 miesiące. Jeśli użytkownik ma niewykorzystane środki z poprzedniego karnetu, 
 								ich ważność zostaje przedłużona o 2 miesiące.</span>
 						<input type="hidden" name="taskId" value="${taskId}"/>
