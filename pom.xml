@@ -246,42 +246,7 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.10</version>
-				<configuration>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
-					<stopKey>foo</stopKey>
-					<stopPort>9999</stopPort>
-					<!-- <jettyConfig>src/main/webapp/WEB-INF/jetty.xml</jettyConfig> -->
-				</configuration>
-				<dependencies>
-					<!-- <dependency> <groupId>postgresql</groupId> <artifactId>postgresql</artifactId> 
-						<version>9.1-901.jdbc4</version> </dependency> <dependency> <groupId>com.atomikos</groupId> 
-						<artifactId>transactions-jdbc</artifactId> <version>3.8.0</version> </dependency> -->
-				</dependencies>
-				<executions>
-					<execution>
-						<id>start-jetty</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<scanIntervalSeconds>0</scanIntervalSeconds>
-							<daemon>true</daemon>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-jetty</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
