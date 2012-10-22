@@ -7,7 +7,7 @@
 	<!-- Define a Custom EL Function -->
 	<function>
 		<name>getUrlMapping</name>
-		<function-class>com.cohesiva.processes.jbpm.humanTask.HumanTaskFormMapper
+		<function-class>com.cohesiva.processes.jbpm.service.humanTask.HumanTaskFormMapper
 		</function-class>
 		<function-signature>java.lang.String getUrlMapping(java.lang.String,
 			java.lang.String)</function-signature>
@@ -15,7 +15,7 @@
 	
 	<function>
 		<name>isTaskImmediete</name>
-		<function-class>com.cohesiva.processes.jbpm.humanTask.HumanTaskFormMapper
+		<function-class>com.cohesiva.processes.jbpm.service.humanTask.HumanTaskFormMapper
 		</function-class>
 		<function-signature>java.lang.Boolean isTaskImmediete(java.lang.String,
 			java.lang.String)</function-signature>

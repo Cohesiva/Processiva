@@ -16,31 +16,37 @@
   <itemDefinition id="_answerBodyItem" structureRef="String" />
   <itemDefinition id="_confirmedPaymentItem" structureRef="Boolean" />
   <itemDefinition id="_emailFooterItem" structureRef="String" />
+  <itemDefinition id="_carnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_2-userEmailItem" structureRef="String" />
   <itemDefinition id="_2-answerBodyItem" structureRef="String" />
   <itemDefinition id="_2-confirmedPaymentItem" structureRef="Boolean" />
   <itemDefinition id="_2-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_2-carnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_3-userEmailItem" structureRef="String" />
   <itemDefinition id="_3-answerBodyItem" structureRef="String" />
   <itemDefinition id="_3-confirmedPaymentItem" structureRef="Boolean" />
   <itemDefinition id="_3-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_3-carnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_7-userEmailItem" structureRef="String" />
   <itemDefinition id="_7-answerBodyItem" structureRef="String" />
   <itemDefinition id="_7-confirmedPaymentItem" structureRef="Boolean" />
   <itemDefinition id="_7-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_7-carnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_8-userEmailItem" structureRef="String" />
   <itemDefinition id="_8-answerBodyItem" structureRef="String" />
   <itemDefinition id="_8-confirmedPaymentItem" structureRef="Boolean" />
   <itemDefinition id="_8-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_8-carnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_9-userEmailItem" structureRef="String" />
   <itemDefinition id="_9-answerBodyItem" structureRef="String" />
   <itemDefinition id="_9-confirmedPaymentItem" structureRef="Boolean" />
   <itemDefinition id="_9-emailFooterItem" structureRef="String" />
+  <itemDefinition id="_9-carnetPrizeItem" structureRef="Integer" />
 
   <process processType="Private" isExecutable="true" id="com.cohesiva.basket.payment" name="Zakup karnetu Cohesiva Basket" tns:packageName="defaultPackage" >
 
@@ -49,6 +55,7 @@
     <property id="answerBody" itemSubjectRef="_answerBodyItem"/>
     <property id="confirmedPayment" itemSubjectRef="_confirmedPaymentItem"/>
     <property id="emailFooter" itemSubjectRef="_emailFooterItem"/>
+    <property id="carnetPrize" itemSubjectRef="_carnetPrizeItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="StartProcess" />
@@ -76,7 +83,7 @@
       <dataInputAssociation>
         <targetRef>_2_BodyInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Proces rozpoczęty. Aby zakupić karnet, wpłać 50 PLN w sekretariacie Cohesiva.#{emailFooter}</from>
+          <from xsi:type="tFormalExpression">Proces rozpoczęty. Aby zakupić karnet, wpłać #{carnetPrize} PLN w sekretariacie Cohesiva.#{emailFooter}</from>
           <to xsi:type="tFormalExpression">_2_BodyInput</to>
         </assignment>
       </dataInputAssociation>
@@ -161,10 +168,12 @@
     <exclusiveGateway id="_6" name="Gateway" gatewayDirection="Diverging" />
     <task id="_7" name="MakeBasketPayment" tns:taskName="MakeBasketPayment" >
       <ioSpecification>
+        <dataInput id="_7_carnetPrizeInput" name="carnetPrize" />
         <dataInput id="_7_userEmailInput" name="userEmail" />
         <dataInput id="_7_emailFooterInput" name="emailFooter" />
         <dataOutput id="_7_answerBodyOutput" name="answerBody" />
         <inputSet>
+          <dataInputRefs>_7_carnetPrizeInput</dataInputRefs>
           <dataInputRefs>_7_userEmailInput</dataInputRefs>
           <dataInputRefs>_7_emailFooterInput</dataInputRefs>
         </inputSet>
@@ -172,6 +181,10 @@
           <dataOutputRefs>_7_answerBodyOutput</dataOutputRefs>
         </outputSet>
       </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>carnetPrize</sourceRef>
+        <targetRef>_7_carnetPrizeInput</targetRef>
+      </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>userEmail</sourceRef>
         <targetRef>_7_userEmailInput</targetRef>

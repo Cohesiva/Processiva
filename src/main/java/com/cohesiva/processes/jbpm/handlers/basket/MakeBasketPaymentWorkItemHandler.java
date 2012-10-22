@@ -1,3 +1,23 @@
+/*
+ * #%L
+ * Processiva Business Processes Platform
+ * %%
+ * Copyright (C) 2012 Cohesiva
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
 package com.cohesiva.processes.jbpm.handlers.basket;
 
 import java.text.DateFormat;
@@ -18,7 +38,7 @@ public class MakeBasketPaymentWorkItemHandler implements WorkItemHandler {
 
 	private UserDao userDao;
 
-	private final int PRIZE = 50;
+	// private final int PRIZE = 50;
 
 	public MakeBasketPaymentWorkItemHandler(UserDao userDao) {
 		this.userDao = userDao;
@@ -29,8 +49,9 @@ public class MakeBasketPaymentWorkItemHandler implements WorkItemHandler {
 				.getParameter("playersList");
 		String email = (String) workItem.getParameter("userEmail");
 		String emailFooter = (String) workItem.getParameter("emailFooter");
+		int prize = (Integer) workItem.getParameter("carnetPrize");
 
-		int balance = userDao.modifyBalance(email, PRIZE);
+		int balance = userDao.modifyBalance(email, prize);
 
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.MONTH, 2);
@@ -44,17 +65,13 @@ public class MakeBasketPaymentWorkItemHandler implements WorkItemHandler {
 
 		Map<String, Object> results = new HashMap<String, Object>();
 
-		/*
-		 * //stan twojego konta... jak w mejlu results.put("answerBody",
-		 * "Zakupiłeś karnet Cohesiva Basket. Stan twojego konta to: " + balance
-		 * + " PLN ważne do " + expDate + ".");
-		 */
 		String answerBody = "Zakupiłeś karnet Cohesiva Basket.<br />";
 
 		answerBody += "Stan twojego konta Cohesiva Basket:<br />- wartość: <strong>"
 				+ balance
 				+ " PLN</strong>,<br />- ważność: <strong>"
-				+ expDate + "</strong>."+emailFooter;
+				+ expDate
+				+ "</strong>." + emailFooter;
 
 		results.put("answerBody", answerBody);
 		// Notify manager that work item has been completed, pass
