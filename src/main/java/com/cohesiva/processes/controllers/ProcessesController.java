@@ -1,3 +1,23 @@
+/*
+ * #%L
+ * Processiva Business Processes Platform
+ * %%
+ * Copyright (C) 2012 Cohesiva
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
 package com.cohesiva.processes.controllers;
 
 import java.util.HashMap;
@@ -15,9 +35,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cohesiva.processes.jbpm.base.IJbpmBase;
-import com.cohesiva.processes.jbpm.processes.IProcessService;
-import com.cohesiva.processes.jbpm.processes.IProcessesVariables;
+import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
+import com.cohesiva.processes.jbpm.service.processes.IProcessService;
 
 @Controller
 public class ProcessesController {
@@ -27,9 +46,6 @@ public class ProcessesController {
 
 	@Autowired
 	private IProcessService processService;
-	
-	@Autowired
-	private IProcessesVariables processVariables;
 
 	@RequestMapping(value = "/processes")
 	public ModelAndView showProcesses(HttpServletRequest request,
@@ -46,25 +62,6 @@ public class ProcessesController {
 
 		return new ModelAndView("jsp/processes/processes.jsp", data);
 	}
-
-	/*
-	@RequestMapping(value = "/processes", method = RequestMethod.GET)
-	public @ResponseBody
-	ModelAndView showProcesses(HttpServletRequest request,
-			HttpSession httpSession) {
-
-		String email = (String) httpSession.getAttribute("loggedEmail");
-
-		Map<String, Object> data = new HashMap<String, Object>();
-
-		data.put("processes", processService.getAuthorizedProcesses(email));
-
-		data.put("userInstances",
-				processService.getRunningInstancesNames(email));
-
-		return new ModelAndView("jsp/processes/processes-body.jsp", data);
-	}
-	*/
 	
 	@RequestMapping(value = "/start_process", method = RequestMethod.GET)
 	public @ResponseBody
@@ -75,11 +72,8 @@ public class ProcessesController {
 
 		StatefulKnowledgeSession session = jbpmBase.getSession();
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = processService.getStartProcessData(processId);
 		params.put("userEmail", email);
-		
-		String emailFooter = processVariables.getEmailFooter();
-		params.put("emailFooter", emailFooter);
 
 		session.startProcess(processId, params);
 		

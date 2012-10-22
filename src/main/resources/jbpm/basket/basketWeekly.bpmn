@@ -24,6 +24,9 @@
   <itemDefinition id="_dateItem" structureRef="String" />
   <itemDefinition id="_emailFooterItem" structureRef="String" />
   <itemDefinition id="_answerLinkItem" structureRef="String" />
+  <itemDefinition id="_basketSigningFinalHourItem" structureRef="Integer" />
+  <itemDefinition id="_eventCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_eventNonCarnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_2-2-3-itemItem" />
 
@@ -55,6 +58,9 @@
   <itemDefinition id="_16-dateItem" structureRef="String" />
   <itemDefinition id="_16-emailFooterItem" structureRef="String" />
   <itemDefinition id="_16-answerLinkItem" structureRef="String" />
+  <itemDefinition id="_16-basketSigningFinalHourItem" structureRef="Integer" />
+  <itemDefinition id="_16-eventCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_16-eventNonCarnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_23-2-3-subItem" />
 
@@ -70,6 +76,9 @@
   <itemDefinition id="_22-dateItem" structureRef="String" />
   <itemDefinition id="_22-emailFooterItem" structureRef="String" />
   <itemDefinition id="_22-answerLinkItem" structureRef="String" />
+  <itemDefinition id="_22-basketSigningFinalHourItem" structureRef="Integer" />
+  <itemDefinition id="_22-eventCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_22-eventNonCarnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_25-listItem" structureRef="java.util.List" />
   <itemDefinition id="_25-playersListItem" structureRef="java.util.Vector" />
@@ -83,6 +92,9 @@
   <itemDefinition id="_25-dateItem" structureRef="String" />
   <itemDefinition id="_25-emailFooterItem" structureRef="String" />
   <itemDefinition id="_25-answerLinkItem" structureRef="String" />
+  <itemDefinition id="_25-basketSigningFinalHourItem" structureRef="Integer" />
+  <itemDefinition id="_25-eventCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_25-eventNonCarnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_30-listItem" structureRef="java.util.List" />
   <itemDefinition id="_30-playersListItem" structureRef="java.util.Vector" />
@@ -96,6 +108,9 @@
   <itemDefinition id="_30-dateItem" structureRef="String" />
   <itemDefinition id="_30-emailFooterItem" structureRef="String" />
   <itemDefinition id="_30-answerLinkItem" structureRef="String" />
+  <itemDefinition id="_30-basketSigningFinalHourItem" structureRef="Integer" />
+  <itemDefinition id="_30-eventCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_30-eventNonCarnetPrizeItem" structureRef="Integer" />
 
   <itemDefinition id="_2_multiInstanceItemType" />
 
@@ -120,6 +135,9 @@
     <property id="date" itemSubjectRef="_dateItem"/>
     <property id="emailFooter" itemSubjectRef="_emailFooterItem"/>
     <property id="answerLink" itemSubjectRef="_answerLinkItem"/>
+    <property id="basketSigningFinalHour" itemSubjectRef="_basketSigningFinalHourItem"/>
+    <property id="eventCarnetPrize" itemSubjectRef="_eventCarnetPrizeItem"/>
+    <property id="eventNonCarnetPrize" itemSubjectRef="_eventNonCarnetPrizeItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="Start" />
@@ -154,7 +172,7 @@
       <dataInputAssociation>
         <targetRef>_2-2-3_CommentInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00.</from>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00.</from>
           <to xsi:type="tFormalExpression">_2-2-3_CommentInput</to>
         </assignment>
       </dataInputAssociation>
@@ -189,7 +207,7 @@
       <dataInputAssociation>
         <targetRef>_2-2-4_BodyInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00 #{answerLink}. #{emailFooter}</from>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00 #{answerLink}. #{emailFooter}</from>
           <to xsi:type="tFormalExpression">_2-2-4_BodyInput</to>
         </assignment>
       </dataInputAssociation>
@@ -348,7 +366,7 @@
       <dataInputAssociation>
         <targetRef>_10-2-2_BodyInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00 #{answerLink}. Nie posiadasz ważnego karnetu. Opłata za zajęcia wynosi 15 PLN. #{emailFooter}</from>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00 #{answerLink}. Nie posiadasz ważnego karnetu. Opłata za zajęcia z karnetem wynosi #{eventCarnetPrize} PLN, bez karnetu - #{eventNonCarnetPrize} PLN. #{emailFooter}</from>
           <to xsi:type="tFormalExpression">_10-2-2_BodyInput</to>
         </assignment>
       </dataInputAssociation>
@@ -389,7 +407,7 @@
       <dataInputAssociation>
         <targetRef>_10-2-5_CommentInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny 14:00. Nie posiadasz ważnego karnetu. Opłata za zajęcia wynosi 15 PLN.</from>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00. Nie posiadasz ważnego karnetu. Opłata za zajęcia z karnetem wynosi #{eventCarnetPrize} PLN, bez karnetu - #{eventNonCarnetPrize} PLN. </from>
           <to xsi:type="tFormalExpression">_10-2-5_CommentInput</to>
         </assignment>
       </dataInputAssociation>
@@ -582,63 +600,23 @@
     </intermediateCatchEvent>
     <task id="_16" name="LoadPlayersList" tns:taskName="LoadPlayersList" >
       <ioSpecification>
-        <dataInput id="_16_guestListInput" name="guestList" />
-        <dataInput id="_16_sufficientPlayersNumberInput" name="sufficientPlayersNumber" />
-        <dataInput id="_16_playersListInput" name="playersList" />
-        <dataInput id="_16_listInput" name="list" />
-        <dataInput id="_16_maxPlayersNumberInput" name="maxPlayersNumber" />
-        <dataInput id="_16_subscribersInput" name="subscribers" />
         <dataOutput id="_16_guestListOutput" name="guestList" />
         <dataOutput id="_16_newPlayerBlockedOutput" name="newPlayerBlocked" />
-        <dataOutput id="_16_sufficientPlayersNumberOutput" name="sufficientPlayersNumber" />
         <dataOutput id="_16_playersListOutput" name="playersList" />
         <dataOutput id="_16_listOutput" name="list" />
-        <dataOutput id="_16_maxPlayersNumberOutput" name="maxPlayersNumber" />
         <dataOutput id="_16_subscribersOutput" name="subscribers" />
         <dataOutput id="_16_dateOutput" name="date" />
         <inputSet>
-          <dataInputRefs>_16_guestListInput</dataInputRefs>
-          <dataInputRefs>_16_sufficientPlayersNumberInput</dataInputRefs>
-          <dataInputRefs>_16_playersListInput</dataInputRefs>
-          <dataInputRefs>_16_listInput</dataInputRefs>
-          <dataInputRefs>_16_maxPlayersNumberInput</dataInputRefs>
-          <dataInputRefs>_16_subscribersInput</dataInputRefs>
         </inputSet>
         <outputSet>
           <dataOutputRefs>_16_guestListOutput</dataOutputRefs>
           <dataOutputRefs>_16_newPlayerBlockedOutput</dataOutputRefs>
-          <dataOutputRefs>_16_sufficientPlayersNumberOutput</dataOutputRefs>
           <dataOutputRefs>_16_playersListOutput</dataOutputRefs>
           <dataOutputRefs>_16_listOutput</dataOutputRefs>
-          <dataOutputRefs>_16_maxPlayersNumberOutput</dataOutputRefs>
           <dataOutputRefs>_16_subscribersOutput</dataOutputRefs>
           <dataOutputRefs>_16_dateOutput</dataOutputRefs>
         </outputSet>
       </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>guestList</sourceRef>
-        <targetRef>_16_guestListInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>sufficientPlayersNumber</sourceRef>
-        <targetRef>_16_sufficientPlayersNumberInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>playersList</sourceRef>
-        <targetRef>_16_playersListInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>list</sourceRef>
-        <targetRef>_16_listInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>maxPlayersNumber</sourceRef>
-        <targetRef>_16_maxPlayersNumberInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
-        <sourceRef>subscribers</sourceRef>
-        <targetRef>_16_subscribersInput</targetRef>
-      </dataInputAssociation>
       <dataOutputAssociation>
         <sourceRef>_16_guestListOutput</sourceRef>
         <targetRef>guestList</targetRef>
@@ -648,20 +626,12 @@
         <targetRef>newPlayerBlocked</targetRef>
       </dataOutputAssociation>
       <dataOutputAssociation>
-        <sourceRef>_16_sufficientPlayersNumberOutput</sourceRef>
-        <targetRef>sufficientPlayersNumber</targetRef>
-      </dataOutputAssociation>
-      <dataOutputAssociation>
         <sourceRef>_16_playersListOutput</sourceRef>
         <targetRef>playersList</targetRef>
       </dataOutputAssociation>
       <dataOutputAssociation>
         <sourceRef>_16_listOutput</sourceRef>
         <targetRef>list</targetRef>
-      </dataOutputAssociation>
-      <dataOutputAssociation>
-        <sourceRef>_16_maxPlayersNumberOutput</sourceRef>
-        <targetRef>maxPlayersNumber</targetRef>
       </dataOutputAssociation>
       <dataOutputAssociation>
         <sourceRef>_16_subscribersOutput</sourceRef>
@@ -785,18 +755,29 @@
           <formalExpression> przemyslaw.skrzek@cohesiva.com</formalExpression>
         </resourceAssignmentExpression>
       </potentialOwner>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression> damian.kardanski@cohesiva.com</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
     </userTask>
     <task id="_25" name="MakePayments" tns:taskName="MakePayments" >
       <ioSpecification>
+        <dataInput id="_25_eventCarnetPrizeInput" name="eventCarnetPrize" />
         <dataInput id="_25_playersListInput" name="playersList" />
         <dataInput id="_25_listInput" name="list" />
         <inputSet>
+          <dataInputRefs>_25_eventCarnetPrizeInput</dataInputRefs>
           <dataInputRefs>_25_playersListInput</dataInputRefs>
           <dataInputRefs>_25_listInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
       </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>eventCarnetPrize</sourceRef>
+        <targetRef>_25_eventCarnetPrizeInput</targetRef>
+      </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>playersList</sourceRef>
         <targetRef>_25_playersListInput</targetRef>
@@ -824,11 +805,13 @@
     <task id="_30" name="BasketWeeklySummary" tns:taskName="BasketWeeklySummary" >
       <ioSpecification>
         <dataInput id="_30_playersListInput" name="playersList" />
+        <dataInput id="_30_eventNonCarnetPrizeInput" name="eventNonCarnetPrize" />
         <dataInput id="_30_dateInput" name="date" />
         <dataInput id="_30_emailFooterInput" name="emailFooter" />
         <dataOutput id="_30_summaryReportOutput" name="summaryReport" />
         <inputSet>
           <dataInputRefs>_30_playersListInput</dataInputRefs>
+          <dataInputRefs>_30_eventNonCarnetPrizeInput</dataInputRefs>
           <dataInputRefs>_30_dateInput</dataInputRefs>
           <dataInputRefs>_30_emailFooterInput</dataInputRefs>
         </inputSet>
@@ -839,6 +822,10 @@
       <dataInputAssociation>
         <sourceRef>playersList</sourceRef>
         <targetRef>_30_playersListInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>eventNonCarnetPrize</sourceRef>
+        <targetRef>_30_eventNonCarnetPrizeInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>date</sourceRef>
