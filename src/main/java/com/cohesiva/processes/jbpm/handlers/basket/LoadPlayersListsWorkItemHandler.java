@@ -2,7 +2,6 @@ package com.cohesiva.processes.jbpm.handlers.basket;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +20,6 @@ public class LoadPlayersListsWorkItemHandler extends
 	
 	private UserDao userDao;
 	
-	private final int SUFFICIENT_PLAYERS_NUMBER = 10;
-	private final int MAX_PLAYERS_NUMBER = 12;
-	
 	public LoadPlayersListsWorkItemHandler(UserDao userDao) {
 		this.userDao = userDao;
 	}
@@ -39,7 +35,7 @@ public class LoadPlayersListsWorkItemHandler extends
 				return this;
 			}
 
-			public void run() {
+			public void run() {						
 				System.out.println("Inicjalizowanie list subskrybentów.");
 
 				List<User> subscribers = userDao.getSubscribers();
@@ -47,26 +43,18 @@ public class LoadPlayersListsWorkItemHandler extends
 				List<String> list = new Vector<String>();
 				List<String> guestList = new Vector<String>();
 
-				Date now = new Date();
-
 				for (User user : subscribers) {
 					if (user.getPlayerInfo().getBalance() > 0) {
-						Date expirationDate = user.getPlayerInfo()
-								.getBalanceExpirationDate();
-
-						if (expirationDate != null) {
-							Calendar expDate = Calendar.getInstance();
-							expDate.setTime(expirationDate);
-							expDate.add(Calendar.DATE, 1);
-
-							if (now.before(expDate.getTime())) {
-								list.add(user.getEmail());
-								continue;
-							} else {
-								//wyzeruj gosciowi konto
-								user.getPlayerInfo().setBalance(0);
-								userDao.persist(user);
-							}
+						
+						boolean isBalanceValid = userDao.isBalanceValid(user.getEmail());
+										
+						if (!isBalanceValid) {
+							//wyzeruj gosciowi konto
+							user.getPlayerInfo().setBalance(0);
+							userDao.persist(user);
+						} else {
+							list.add(user.getEmail());
+							continue;
 						}
 					}
 
@@ -80,10 +68,8 @@ public class LoadPlayersListsWorkItemHandler extends
 
 				List<String> playersList = new Vector<String>();
 				data.put("playersList", playersList);
-				data.put("sufficientPlayersNumber", SUFFICIENT_PLAYERS_NUMBER);
-				data.put("maxPlayersNumber", MAX_PLAYERS_NUMBER);
 				data.put("subscribers", subscribers);
-				data.put("newPlayerBlocked", false);
+				data.put("newPlayerBlocked", false);				
 				
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 				String today = dateFormat.format(new Date());

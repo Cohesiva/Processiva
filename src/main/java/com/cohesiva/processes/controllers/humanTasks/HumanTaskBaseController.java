@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cohesiva.processes.jbpm.auth.AuthorizationService;
-import com.cohesiva.processes.jbpm.base.IJbpmBase;
-import com.cohesiva.processes.jbpm.humanTask.HumanTaskFormMapper;
-import com.cohesiva.processes.jbpm.humanTask.IHumanTaskService;
-import com.cohesiva.processes.jbpm.processes.ProcessService;
+import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
+import com.cohesiva.processes.jbpm.service.humanTask.HumanTaskFormMapper;
+import com.cohesiva.processes.jbpm.service.humanTask.IHumanTaskService;
+import com.cohesiva.processes.jbpm.serviceImpl.auth.AuthorizationService;
+import com.cohesiva.processes.jbpm.serviceImpl.processes.ProcessService;
 
 public abstract class HumanTaskBaseController {
 

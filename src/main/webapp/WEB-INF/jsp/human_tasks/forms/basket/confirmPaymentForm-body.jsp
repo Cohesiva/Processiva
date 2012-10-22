@@ -7,7 +7,7 @@
 			<div class="container">
 				<div class="content">
 					<form method="post" action="/Jbpm_processes/paymentBasket/confirm/handle_complete_task">
-						<legend>Użytkownik: ${userEmail} kupuje karnet Cohesiva Basket w cenie 50 PLN.</legend>
+						<legend>Użytkownik: ${userEmail} kupuje karnet Cohesiva Basket w cenie ${carnetPrize} PLN.</legend>
 						<span class="help-block">Ważność karnetu to 2 miesiące. Jeśli użytkownik ma niewykorzystane środki z poprzedniego karnetu, 
 								ich ważność zostaje przedłużona o 2 miesiące.</span>
 						<input type="hidden" name="taskId" value="${taskId}"/>

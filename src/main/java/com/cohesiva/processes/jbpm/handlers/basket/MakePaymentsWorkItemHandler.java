@@ -12,8 +12,6 @@ public class MakePaymentsWorkItemHandler implements WorkItemHandler {
 
 	private UserDao userDao;
 
-	private final int BASKET_PAYMENT = 10;
-
 	public MakePaymentsWorkItemHandler(UserDao userDao) {
 		this.userDao = userDao;
 	}
@@ -21,15 +19,15 @@ public class MakePaymentsWorkItemHandler implements WorkItemHandler {
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		List<String> playersList = (List<String>) workItem
 				.getParameter("playersList");
+		
+		int basketCarnetPayment =  (Integer) workItem
+				.getParameter("eventCarnetPrize");
 
-		List<String> usersWithPositiveBalance = (List<String>) workItem
-				.getParameter("list");
-
-		// { Take payment from people who declared to come to basket and have positivie balance
+		// { Take payment from people who declared to come to basket and have positive balance
 		for (String email : playersList) {
-			if (usersWithPositiveBalance.contains(email)) {
+			if (userDao.isBalanceValid(email)) {
 				System.out.println("Making payment of player: " + email);
-				userDao.modifyBalance(email, -BASKET_PAYMENT);
+				userDao.modifyBalance(email, -basketCarnetPayment);
 			}
 		}
 		// }

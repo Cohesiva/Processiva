@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cohesiva.processes.controllers.humanTasks.HumanTaskBaseController;
-import com.cohesiva.processes.jbpm.processes.basket.IBasketProcessesService;
+import com.cohesiva.processes.jbpm.service.processes.basket.IBasketProcessesService;
 
 @Controller
 public class BasketWeeklyController extends HumanTaskBaseController {
@@ -39,8 +39,6 @@ public class BasketWeeklyController extends HumanTaskBaseController {
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 			String today = dateFormat.format(new Date());
-			data.put("date", today);
-
 			data.put("date", today);
 
 			viewPath = "jsp/human_tasks/forms/basket/confirmPresenceForm.jsp";

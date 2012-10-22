@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cohesiva.processes.jbpm.auth.AuthorizationService;
-import com.cohesiva.processes.jbpm.humanTask.HumanTaskFormMapper;
-import com.cohesiva.processes.jbpm.humanTask.IHumanTaskService;
+import com.cohesiva.processes.jbpm.service.humanTask.HumanTaskFormMapper;
+import com.cohesiva.processes.jbpm.service.humanTask.IHumanTaskService;
+import com.cohesiva.processes.jbpm.serviceImpl.auth.AuthorizationService;
 
 @Controller
 public class HumanTasksController {

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.workflow.instance.WorkflowProcessInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cohesiva.processes.controllers.humanTasks.HumanTaskBaseController;
+import com.cohesiva.processes.jbpm.service.processes.basket.IBasketVariables;
 
 @Controller
 public class BasketPaymentController extends HumanTaskBaseController {
+	
+	@Autowired
+	private IBasketVariables basketVariables;
 
 	@RequestMapping(value = "/basketPaymentProcess/confirm/{taskId}/{processInstanceId}", method = RequestMethod.GET)
 	protected ModelAndView completeTask(@PathVariable String taskId,
@@ -33,10 +38,11 @@ public class BasketPaymentController extends HumanTaskBaseController {
 					.getVariable("userEmail");
 		}
 
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, Object> data = new HashMap<String, Object>();
 
 		data.put("userEmail", userEmail);
 		data.put("taskId", taskId);
+		data.put("carnetPrize", basketVariables.getCarnetPrize());
 
 		String processId = procInstance.getProcessId();
 

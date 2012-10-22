@@ -30,17 +30,6 @@ public class BalanceInquiryWorkItemHandler implements WorkItemHandler {
 
 		int balance = userDao.getBasketBalance(email);
 		Date expirationDate = userDao.getBalanceExpirationDate(email);
-
-		/*
-		String answerBody = "Stan twojego konta to " + balance + " PLN.";
-
-		if (expirationDate != null) {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-			String expDate = dateFormat.format(expirationDate);
-
-			answerBody += " Karnet ważny do " + expDate + ".";
-		}
-		*/
 		
 		String answerBody = "Stan twojego konta Cohesiva Basket: <br />- wartość: <strong>"+balance+" PLN</strong>";
 

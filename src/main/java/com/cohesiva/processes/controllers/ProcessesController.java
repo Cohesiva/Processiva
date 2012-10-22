@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cohesiva.processes.jbpm.base.IJbpmBase;
-import com.cohesiva.processes.jbpm.processes.IProcessService;
-import com.cohesiva.processes.jbpm.processes.IProcessesVariables;
+import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
+import com.cohesiva.processes.jbpm.service.processes.IProcessService;
 
 @Controller
 public class ProcessesController {
@@ -27,9 +26,6 @@ public class ProcessesController {
 
 	@Autowired
 	private IProcessService processService;
-	
-	@Autowired
-	private IProcessesVariables processVariables;
 
 	@RequestMapping(value = "/processes")
 	public ModelAndView showProcesses(HttpServletRequest request,
@@ -46,25 +42,6 @@ public class ProcessesController {
 
 		return new ModelAndView("jsp/processes/processes.jsp", data);
 	}
-
-	/*
-	@RequestMapping(value = "/processes", method = RequestMethod.GET)
-	public @ResponseBody
-	ModelAndView showProcesses(HttpServletRequest request,
-			HttpSession httpSession) {
-
-		String email = (String) httpSession.getAttribute("loggedEmail");
-
-		Map<String, Object> data = new HashMap<String, Object>();
-
-		data.put("processes", processService.getAuthorizedProcesses(email));
-
-		data.put("userInstances",
-				processService.getRunningInstancesNames(email));
-
-		return new ModelAndView("jsp/processes/processes-body.jsp", data);
-	}
-	*/
 	
 	@RequestMapping(value = "/start_process", method = RequestMethod.GET)
 	public @ResponseBody
@@ -75,11 +52,8 @@ public class ProcessesController {
 
 		StatefulKnowledgeSession session = jbpmBase.getSession();
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = processService.getStartProcessData(processId);
 		params.put("userEmail", email);
-		
-		String emailFooter = processVariables.getEmailFooter();
-		params.put("emailFooter", emailFooter);
 
 		session.startProcess(processId, params);
 		

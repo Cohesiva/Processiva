@@ -10,15 +10,6 @@ import org.drools.runtime.process.WorkItemManager;
 
 public class HandleNewPlayerWorkItemHandler implements WorkItemHandler {
 
-	// private UserDao userDao;
-
-	// private final int BASKET_PAYMENT = 10;
-
-	/*
-	 * public HandleNewPlayerWorkItemHandler(UserDao userDao) { this.userDao =
-	 * userDao; }
-	 */
-
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		List<String> playersList = (List<String>) workItem
 				.getParameter("playersList");
@@ -31,8 +22,6 @@ public class HandleNewPlayerWorkItemHandler implements WorkItemHandler {
 
 		if (!newPlayerBlocked) {
 			playersList.add(email);
-
-			// userDao.modifyBalance(email, -BASKET_PAYMENT);
 		}
 
 		data.put("playersList", playersList);

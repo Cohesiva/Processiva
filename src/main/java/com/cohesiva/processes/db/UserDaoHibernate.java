@@ -1,5 +1,6 @@
 package com.cohesiva.processes.db;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -196,9 +197,44 @@ public class UserDaoHibernate implements UserDao {
 
 	@Transactional
 	public List<String> getUsersEmails() {
-		List<String> userEmails = currentSession().createQuery("select email from User").list();
+		List<String> userEmails = currentSession().createQuery(
+				"select email from User").list();
 
 		return userEmails;
+	}
+
+	@Transactional
+	public boolean isBalanceValid(String email) {
+		boolean result = false;
+
+		User user = this.getUser(email);
+
+		if (user != null && user.getPlayerInfo() != null) {
+			int balance = user.getPlayerInfo().getBalance();
+
+			if (balance <= 0) {
+				return false;
+			}
+
+			Date expirationDate = user.getPlayerInfo()
+					.getBalanceExpirationDate();
+
+			if (expirationDate != null) {
+				Date now = new Date();
+
+				Calendar expDate = Calendar.getInstance();
+				expDate.setTime(expirationDate);
+				expDate.add(Calendar.DATE, 1);
+
+				if (now.before(expDate.getTime())) {
+					result = true;
+				} else {
+					return false;
+				}
+			}
+		}
+
+		return result;
 	}
 
 }

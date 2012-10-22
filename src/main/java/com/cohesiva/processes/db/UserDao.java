@@ -30,5 +30,7 @@ public interface UserDao {
 	public Date getBalanceExpirationDate(String email);
 	
 	public void setBalanceExpirationDate(String email, Date date);
+	
+	public boolean isBalanceValid(String email);
 	/*BASKET PLAYER END*/
 }

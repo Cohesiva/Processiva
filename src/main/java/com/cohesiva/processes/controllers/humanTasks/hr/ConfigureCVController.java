@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cohesiva.processes.controllers.humanTasks.HumanTaskBaseController;
-import com.cohesiva.processes.jbpm.processes.hr.IHRServices;
+import com.cohesiva.processes.jbpm.service.processes.hr.IHRServices;
 
 @Controller
 public class ConfigureCVController extends HumanTaskBaseController {

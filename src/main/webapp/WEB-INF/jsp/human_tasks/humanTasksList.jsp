@@ -12,7 +12,7 @@
 %>
 
 <jsp:useBean id="humanTaskFormMapper"
-	type="com.cohesiva.processes.jbpm.humanTask.HumanTaskFormMapper"
+	type="com.cohesiva.processes.jbpm.service.humanTask.HumanTaskFormMapper"
 	scope="request" />
 <c:choose>
 	<c:when test="${not empty tasksList}">

@@ -16,6 +16,9 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<context:property-placeholder
+		ignore-unresolvable="true" location="/WEB-INF/application.properties" />
+
 	<!-- Use @Component annotations for bean definitions -->
 	<context:component-scan base-package="com.cohesiva.processes" />
 
@@ -31,15 +34,16 @@
 	<mvc:resources location="/resources/" mapping="/resources/**" />
 
 	<import resource="spring-quartz.xml" />
+	<import resource="spring-basket.xml" />
 
 	<!-- PERSISTENCE START -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url"
-			value="jdbc:postgresql://localhost:5432/jbpm_processes" />
-		<property name="username" value="jbpm_processes" />
-		<property name="password" value="jbpm_processes" />
+			value="jdbc:postgresql://${webAppDatabaseHost}:${webAppDatabasePort}/${webAppDatabaseName}" />
+		<property name="username" value="${webAppDatabaseUsername}" />
+		<property name="password" value="${webAppDatabasePass}" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -88,4 +92,33 @@
 		<property name="prefix" value="/WEB-INF/" />
 	</bean>
 
+	<!-- EMAIL WORK ITEM HANDLER -->
+	<bean id="emailWorkItemHandler" class="org.jbpm.process.workitem.email.EmailWorkItemHandler">
+		<constructor-arg type="java.lang.String">
+			<value>${emailServerHost}</value>
+		</constructor-arg>
+
+		<constructor-arg type="java.lang.String">
+			<value>${emailServerPort}</value>
+		</constructor-arg>
+
+		<constructor-arg type="java.lang.String">
+			<value>${emailServerUserName}</value>
+		</constructor-arg>
+
+		<constructor-arg type="java.lang.String">
+			<value>${emailServerPassword}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="loginService" class="com.cohesiva.processes.serviceImpl.LoginService">
+		<property name="callbackUrl"
+			value="http://${processivaHost}:${processivaPort}/Jbpm_processes/handleLogged" />
+	</bean>
+
+	<bean id="processesVariables"
+		class="com.cohesiva.processes.jbpm.serviceImpl.processes.ProcessesVariables">
+		<property name="applicationUrl"
+			value="http://${processivaHost}:${processivaPort}/Jbpm_processes" />
+	</bean>
 </beans>

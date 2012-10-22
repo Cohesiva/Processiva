@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       
+    <context:property-placeholder
+		ignore-unresolvable="true" location="/WEB-INF/basket.properties" />
 
 	<!-- START METHODS LOCATIONS TRIGGERING EVENTS -->
 	<bean id="runBasketWeekly"
@@ -51,22 +58,22 @@
 	<!-- START TIMERS DEFINITION -->
 	<bean id="triggerBasketWeeklyProcess" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="runBasketWeekly" />
-		<property name="cronExpression" value="0 40 9 ? * 2" />
+		<property name="cronExpression" value="0 28 ${basketStartHour} ? * 1" />
 	</bean>
 
 	<bean id="triggerBasekWeeklyEndEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="endBasketWeeklyEvent" />
-		<property name="cronExpression" value="00 42 9 ? * 2" />
+		<property name="cronExpression" value="00 32 ${basketSigningFinalHour} ? * 1" />
 	</bean>
 	
 	<bean id="triggerInformAllEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="informAllEvent" />
-		<property name="cronExpression" value="00 41 9 ? * 2" />
+		<property name="cronExpression" value="00 29 ${basketInformAllSubscribersHour} ? * 1" />
 	</bean>
 	
 	<bean id="triggerChargePlayersEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="chargePlayersEvent" />
-		<property name="cronExpression" value="00 43 9 ? * 2" />
+		<property name="cronExpression" value="00 34 ${basketMakePaymentsHour} ? * 1" />
 	</bean>
 	<!-- END TIMERS DEFINITION -->
 

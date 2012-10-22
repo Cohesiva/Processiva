@@ -18,7 +18,7 @@ public class MakeBasketPaymentWorkItemHandler implements WorkItemHandler {
 
 	private UserDao userDao;
 
-	private final int PRIZE = 50;
+	// private final int PRIZE = 50;
 
 	public MakeBasketPaymentWorkItemHandler(UserDao userDao) {
 		this.userDao = userDao;
@@ -29,8 +29,9 @@ public class MakeBasketPaymentWorkItemHandler implements WorkItemHandler {
 				.getParameter("playersList");
 		String email = (String) workItem.getParameter("userEmail");
 		String emailFooter = (String) workItem.getParameter("emailFooter");
+		int prize = (Integer) workItem.getParameter("carnetPrize");
 
-		int balance = userDao.modifyBalance(email, PRIZE);
+		int balance = userDao.modifyBalance(email, prize);
 
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.MONTH, 2);
@@ -44,17 +45,13 @@ public class MakeBasketPaymentWorkItemHandler implements WorkItemHandler {
 
 		Map<String, Object> results = new HashMap<String, Object>();
 
-		/*
-		 * //stan twojego konta... jak w mejlu results.put("answerBody",
-		 * "Zakupiłeś karnet Cohesiva Basket. Stan twojego konta to: " + balance
-		 * + " PLN ważne do " + expDate + ".");
-		 */
 		String answerBody = "Zakupiłeś karnet Cohesiva Basket.<br />";
 
 		answerBody += "Stan twojego konta Cohesiva Basket:<br />- wartość: <strong>"
 				+ balance
 				+ " PLN</strong>,<br />- ważność: <strong>"
-				+ expDate + "</strong>."+emailFooter;
+				+ expDate
+				+ "</strong>." + emailFooter;
 
 		results.put("answerBody", answerBody);
 		// Notify manager that work item has been completed, pass
