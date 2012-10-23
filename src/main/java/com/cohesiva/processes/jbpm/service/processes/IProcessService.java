@@ -29,10 +29,10 @@ import org.drools.definition.process.Process;
 import org.drools.runtime.process.ProcessInstance;
 
 /*
- * Service for managing jbpm processes
+ * Service for managing access and view of processes for users
  */
 public interface IProcessService {
-	public String getStartInfo(String procId);
+	//public String getStartInfo(String procId);
 
 	public ProcessInstance getProcessInstance(long processInstanceId);
 
@@ -42,5 +42,5 @@ public interface IProcessService {
 	
 	public List<String> getRunningInstancesNames(String userId);
 	
-	public Map<String, Object> getStartProcessData(String processId);
+	//public Map<String, Object> getStartProcessData(String processId);
 }

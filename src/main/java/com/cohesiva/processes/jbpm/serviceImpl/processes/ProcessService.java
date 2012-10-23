@@ -24,11 +24,7 @@ package com.cohesiva.processes.jbpm.serviceImpl.processes;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.drools.definition.process.Process;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -42,8 +38,6 @@ import com.cohesiva.processes.jbpm.service.auth.IAuthorizationService;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.processes.IProcessService;
 import com.cohesiva.processes.jbpm.service.processes.IProcessesConstraintsService;
-import com.cohesiva.processes.jbpm.service.processes.IProcessesVariables;
-import com.cohesiva.processes.jbpm.service.processes.basket.IBasketVariables;
 
 @Service
 public class ProcessService implements IProcessService {
@@ -59,34 +53,6 @@ public class ProcessService implements IProcessService {
 
 	@Autowired
 	private ProcessInstanceInfoDao processInstanceInfoDao;
-
-	@Autowired
-	private IProcessesVariables processVariables;
-
-	@Autowired
-	private IBasketVariables basketVariables;
-
-	private Map<String, String> startInfoMap = new HashMap<String, String>();
-
-	@PostConstruct
-	public void init() {
-		startInfoMap
-				.put("com.cohesiva.basket.subscribe",
-						"Zostaniesz powiadomiony mailowo, kiedy twoje zgłoszenie subskrypcji grupy Cohesiva Basket zostanie zatwierdzone.");
-		startInfoMap
-				.put("com.cohesiva.basket.unsubscribe",
-						"Zglosiłeś chęć zakończenia subskrypcji grupy Cohesiva Basket. Sprawdź email, aby upewnić się, że zakończyłeś subskypcję.");
-		startInfoMap.put("com.cohesiva.basket.payment",
-				"Aby zakupić karnet, wpłać " + basketVariables.getCarnetPrize()
-						+ " PLN w sekretariacie Cohesiva.");
-		startInfoMap
-				.put("com.cohesiva.basket.balance.inquiry",
-						"Informacje o stanie Twojego konta zostały wysłane na Twój adres email.");
-	}
-
-	public String getStartInfo(String procId) {
-		return startInfoMap.get(procId);
-	}
 
 	public ProcessInstance getProcessInstance(long processInstanceId) {
 		StatefulKnowledgeSession ksession = jbpmBase.getSession();
@@ -163,18 +129,5 @@ public class ProcessService implements IProcessService {
 		}
 
 		return result;
-	}
-
-	public Map<String, Object> getStartProcessData(String processId) {
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		String emailFooter = processVariables.getEmailFooter();
-		params.put("emailFooter", emailFooter);
-
-		if (processId.equals("com.cohesiva.basket.payment")) {
-			params.put("carnetPrize", basketVariables.getCarnetPrize());
-		}
-
-		return params;
 	}
 }

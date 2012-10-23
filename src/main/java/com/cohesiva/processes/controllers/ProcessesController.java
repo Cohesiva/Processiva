@@ -37,15 +37,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.processes.IProcessService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
 
 @Controller
 public class ProcessesController {
 
 	@Autowired
-	private IJbpmBase jbpmBase;
+	private IProcessService processService;
 
 	@Autowired
-	private IProcessService processService;
+	private IProcessStarterService processStarterService;
 
 	@RequestMapping(value = "/processes")
 	public ModelAndView showProcesses(HttpServletRequest request,
@@ -62,7 +63,7 @@ public class ProcessesController {
 
 		return new ModelAndView("jsp/processes/processes.jsp", data);
 	}
-	
+
 	@RequestMapping(value = "/start_process", method = RequestMethod.GET)
 	public @ResponseBody
 	ModelAndView startProcess(@RequestParam String processId,
@@ -70,20 +71,15 @@ public class ProcessesController {
 
 		String email = (String) httpSession.getAttribute("loggedEmail");
 
-		StatefulKnowledgeSession session = jbpmBase.getSession();
+		processStarterService.startProcess(processId, email);
 
-		Map<String, Object> params = processService.getStartProcessData(processId);
-		params.put("userEmail", email);
-
-		session.startProcess(processId, params);
-		
 		Map<String, Object> data = new HashMap<String, Object>();
 
 		data.put("processes", processService.getAuthorizedProcesses(email));
 		data.put("userInstances",
 				processService.getRunningInstancesNames(email));
 
-		String startInfo = processService.getStartInfo(processId);
+		String startInfo = processStarterService.getStartInfo(processId);
 		data.put("info", startInfo);
 
 		return new ModelAndView("jsp/processes/processes-body.jsp", data);

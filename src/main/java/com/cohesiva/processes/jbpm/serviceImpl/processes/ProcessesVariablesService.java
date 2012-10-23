@@ -23,10 +23,10 @@ package com.cohesiva.processes.jbpm.serviceImpl.processes;
 
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.jbpm.service.processes.IProcessesVariables;
+import com.cohesiva.processes.jbpm.service.processes.IProcessesVariablesService;
 
 @Service(value = "processesVariables")
-public class ProcessesVariables implements IProcessesVariables {
+public class ProcessesVariablesService implements IProcessesVariablesService {
 
 	private String applicationUrl;
 

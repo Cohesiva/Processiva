@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -19,17 +18,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+package com.cohesiva.processes.jbpm.service.processes;
 
-package com.cohesiva.processes.jbpm.service.shedules;
+import java.util.Map;
 
 /*
- * Service for starting processes and trigerring events in processes for
- * external scheduler usage
+ * Service for starting new processes
  */
-public interface IEventStarter {
-	//public void startBasketWeeklyProcess();
+public interface IProcessStarterService {
+	public String getStartInfo(String procId);
 	
-	public void startProcess(String processId);	
+	//public Map<String, Object> getStartProcessData(String processId);
 	
-	public void signal(String signal, String processId);
+	public void startProcess(String processId, String userId);
 }

@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  #%L
-  Processiva Business Processes Platform
-  %%
-  Copyright (C) 2012 Cohesiva
-  %%
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Affero General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU Affero General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  #L%
-  -->
+<!-- #%L Processiva Business Processes Platform %% Copyright (C) 2012 Cohesiva 
+	%% This program is free software: you can redistribute it and/or modify it 
+	under the terms of the GNU Affero General Public License as published by 
+	the Free Software Foundation, either version 3 of the License, or (at your 
+	option) any later version. This program is distributed in the hope that it 
+	will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+	of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+	Public License for more details. You should have received a copy of the GNU 
+	Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. 
+	#L% -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
@@ -28,15 +18,21 @@
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-       
-    <context:property-placeholder
+
+	<context:property-placeholder
 		ignore-unresolvable="true" location="/WEB-INF/basket.properties" />
 
 	<!-- START METHODS LOCATIONS TRIGGERING EVENTS -->
 	<bean id="runBasketWeekly"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="eventStarter" />
-		<property name="targetMethod" value="startBasketWeeklyProcess" />
+		<!-- <property name="targetMethod" value="startBasketWeeklyProcess" /> -->
+		<property name="targetMethod" value="startProcess" />
+		<property name="arguments">
+			<array value-type="java.lang.String">
+				<value>com.cohesiva.basket.weekly</value>
+			</array>
+		</property>
 	</bean>
 
 	<bean id="endBasketWeeklyEvent"
@@ -50,7 +46,7 @@
 			</array>
 		</property>
 	</bean>
-	
+
 	<bean id="informAllEvent"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="eventStarter" />
@@ -62,7 +58,7 @@
 			</array>
 		</property>
 	</bean>
-	
+
 	<bean id="chargePlayersEvent"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="eventStarter" />
@@ -79,22 +75,23 @@
 	<!-- START TIMERS DEFINITION -->
 	<bean id="triggerBasketWeeklyProcess" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="runBasketWeekly" />
-		<property name="cronExpression" value="0 02 ${basketStartHour} ? * 3" />
+		<property name="cronExpression" value="0 7 ${basketStartHour} ? * 3" />
 	</bean>
 
 	<bean id="triggerBasekWeeklyEndEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="endBasketWeeklyEvent" />
-		<property name="cronExpression" value="00 03 ${basketSigningFinalHour} ? * 3" />
+		<property name="cronExpression" value="00 10 ${basketSigningFinalHour} ? * 3" />
 	</bean>
-	
+
 	<bean id="triggerInformAllEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="informAllEvent" />
-		<property name="cronExpression" value="00 02 ${basketInformAllSubscribersHour} ? * 3" />
+		<property name="cronExpression"
+			value="00 8 ${basketInformAllSubscribersHour} ? * 3" />
 	</bean>
-	
+
 	<bean id="triggerChargePlayersEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="chargePlayersEvent" />
-		<property name="cronExpression" value="00 04 ${basketMakePaymentsHour} ? * 3" />
+		<property name="cronExpression" value="00 11 ${basketMakePaymentsHour} ? * 3" />
 	</bean>
 	<!-- END TIMERS DEFINITION -->
 
