@@ -21,14 +21,9 @@
 
 package com.cohesiva.processes.jbpm.serviceImpl.shedules;
 
-import java.util.List;
-
-import org.drools.runtime.StatefulKnowledgeSession;
-import org.jbpm.persistence.processinstance.ProcessInstanceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.db.jbpm.ProcessInstanceInfoDao;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
 import com.cohesiva.processes.jbpm.service.shedules.IEventStarter;
@@ -40,9 +35,6 @@ public class EventStarter implements IEventStarter {
 	protected IJbpmBase jbpmBase;
 
 	@Autowired
-	private ProcessInstanceInfoDao processInstanceInfoDao;
-
-	@Autowired
 	private IProcessStarterService processStarterService;
 
 	public void startProcess(String processId) {
@@ -50,13 +42,6 @@ public class EventStarter implements IEventStarter {
 	}
 
 	public void signal(String signal, String processId) {
-		StatefulKnowledgeSession ksession = jbpmBase.getSession();
-
-		List<ProcessInstanceInfo> runningInstances = processInstanceInfoDao
-				.getRunningInstances(processId);
-
-		for (ProcessInstanceInfo instance : runningInstances) {
-			ksession.signalEvent(signal, null, instance.getId());
-		}
+		jbpmBase.signalEvent(signal, processId);
 	}
 }

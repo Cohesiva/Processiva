@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -88,10 +87,10 @@ public class JbpmBase implements IJbpmBase {
 
 	@Autowired
 	private ProcessInstanceInfoDao processInstanceInfoDao;
-	
+
 	@Autowired
 	private EmailWorkItemHandler emailWorkItemHandler;
-	
+
 	@Autowired
 	private IBasketProcessesService basketProcessServie;
 
@@ -110,7 +109,8 @@ public class JbpmBase implements IJbpmBase {
 		try {
 			if (ksession == null) {
 
-				System.out.println("DEFOLT CZARSET: "+Charset.defaultCharset());
+				System.out.println("DEFOLT CZARSET: "
+						+ Charset.defaultCharset());
 				// load up the knowledge base
 				KnowledgeBase kbase = readKnowledgeBase();
 
@@ -148,7 +148,7 @@ public class JbpmBase implements IJbpmBase {
 	private KnowledgeBase readKnowledgeBase() throws Exception {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
 				.newKnowledgeBuilder();
-		
+
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketWeekly.bpmn"),
 				ResourceType.BPMN2);
@@ -157,16 +157,16 @@ public class JbpmBase implements IJbpmBase {
 				ResourceType.BPMN2);
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketUnsubscribe.bpmn"),
-				ResourceType.BPMN2);		
+				ResourceType.BPMN2);
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketPayment.bpmn"),
 				ResourceType.BPMN2);
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketBalanceInquiry.bpmn"),
-				ResourceType.BPMN2);	
-		kbuilder.add(ResourceFactory
-				.newClassPathResource("jbpm/hr/getCV.bpmn"),
-				ResourceType.BPMN2);		
+				ResourceType.BPMN2);
+		kbuilder.add(
+				ResourceFactory.newClassPathResource("jbpm/hr/getCV.bpmn"),
+				ResourceType.BPMN2);
 
 		return kbuilder.newKnowledgeBase();
 	}
@@ -239,10 +239,12 @@ public class JbpmBase implements IJbpmBase {
 				userDao);
 		BalanceInquiryWorkItemHandler balanceInquiryWorkItemHandler = new BalanceInquiryWorkItemHandler(
 				userDao);
-		MakePaymentsWorkItemHandler makePaymentsWorkItemHandler = new MakePaymentsWorkItemHandler(userDao);
-		
-		BasketWeeklySummaryWorkItemHandler basketWeeklySummaryWorkItemHandler = new BasketWeeklySummaryWorkItemHandler(userDao);
-		
+		MakePaymentsWorkItemHandler makePaymentsWorkItemHandler = new MakePaymentsWorkItemHandler(
+				userDao);
+
+		BasketWeeklySummaryWorkItemHandler basketWeeklySummaryWorkItemHandler = new BasketWeeklySummaryWorkItemHandler(
+				userDao);
+
 		getCVWorkItemHandler getCVWorkItemHandler = new getCVWorkItemHandler();
 		getCVWorkItemHandler.setKSession(ksession);
 
@@ -265,10 +267,8 @@ public class JbpmBase implements IJbpmBase {
 				makePaymentsWorkItemHandler);
 		workItemManager.registerWorkItemHandler("BasketWeeklySummary",
 				basketWeeklySummaryWorkItemHandler);
-		workItemManager.registerWorkItemHandler("GetCV",
-				getCVWorkItemHandler);
-		workItemManager.registerWorkItemHandler("Email",
-				emailWorkItemHandler);
+		workItemManager.registerWorkItemHandler("GetCV", getCVWorkItemHandler);
+		workItemManager.registerWorkItemHandler("Email", emailWorkItemHandler);
 	}
 
 	/*
@@ -283,28 +283,6 @@ public class JbpmBase implements IJbpmBase {
 				.getRunningInstances("com.cohesiva.basket.weekly");
 
 		if (basketWeeklyInstances != null) {
-
-			/*
-			Calendar now = Calendar.getInstance();
-			int dayToday = now.get(Calendar.DAY_OF_WEEK);
-
-			boolean toKill = false;
-
-			if (dayToday == Calendar.FRIDAY) {
-
-				Calendar processFinishedTime = Calendar.getInstance();
-				processFinishedTime.set(Calendar.HOUR_OF_DAY, 14);
-				processFinishedTime.set(Calendar.MINUTE, 0);
-				processFinishedTime.set(Calendar.SECOND, 0);
-
-				if (now.after(processFinishedTime)) {
-					toKill = true;
-				}
-			} else {
-				toKill = true;
-			}
-			*/
-			
 			boolean toKill = basketProcessServie.isTooLateToSignUp();
 
 			if (toKill) {
@@ -371,7 +349,16 @@ public class JbpmBase implements IJbpmBase {
 		}
 	}
 
-	public MinaHTWorkItemHandler getWorkItemHandler() {
+	public MinaHTWorkItemHandler getHumanTaskHandler() {
 		return this.humanTaskHandler;
+	}
+
+	public void signalEvent(String event, String processId) {
+		List<ProcessInstanceInfo> runningInstances = processInstanceInfoDao
+				.getRunningInstances(processId);
+
+		for (ProcessInstanceInfo instance : runningInstances) {
+			ksession.signalEvent(event, null, instance.getId());
+		}
 	}
 }

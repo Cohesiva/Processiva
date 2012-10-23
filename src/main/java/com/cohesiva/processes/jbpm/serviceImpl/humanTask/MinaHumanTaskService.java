@@ -72,7 +72,7 @@ public class MinaHumanTaskService implements IHumanTaskService {
 	}
 
 	private ContentData getContentData(Map<String, Object> map) {
-		MinaHTWorkItemHandler workItemHandler = jbpmBase.getWorkItemHandler();
+		MinaHTWorkItemHandler workItemHandler = jbpmBase.getHumanTaskHandler();
 
 		ContentData contentData = null;
 
