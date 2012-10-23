@@ -74,7 +74,7 @@ public class EventStarter implements IEventStarter {
 		params.put("maxPlayersNumber", basketVariables.getBasketMaxPlayersNumber());
 		params.put("basketSigningFinalHour", basketVariables.getBasketSigningFinalHour());
 			
-		String answerLink = "<a href\""+processVariables.getApplicationUrl()+"\">tutaj</a>";
+		String answerLink = processVariables.getApplicationUrl();
 		
 		params.put("answerLink", answerLink);
 

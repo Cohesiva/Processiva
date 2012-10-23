@@ -23,8 +23,10 @@ package com.cohesiva.processes.serviceImpl;
 import org.openid4java.consumer.ConsumerManager;
 import org.springframework.stereotype.Service;
 
+import com.cohesiva.processes.service.IConsumerManagerService;
+
 @Service
-public class ConsumerManagerService {
+public class ConsumerManagerService implements IConsumerManagerService{
 
 	public ConsumerManager manager;
 

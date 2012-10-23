@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -40,8 +39,8 @@ public class ProcessesVariables implements IProcessesVariables {
 	}
 
 	public String getEmailFooter() {
-		String footer = "<br /><br /> <hr align=\"left\" width=\"600\"/> Cohesiva Process Engine: "
-				+ this.getApplicationUrl();
+		String footer = "<br /><br /> <hr align=\"left\" width=\"600\"/> <a href=\""
+				+ this.getApplicationUrl() + "\">Cohesiva Process Engine </a>";
 
 		return footer;
 	}

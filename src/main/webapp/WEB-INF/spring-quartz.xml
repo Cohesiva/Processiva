@@ -79,22 +79,22 @@
 	<!-- START TIMERS DEFINITION -->
 	<bean id="triggerBasketWeeklyProcess" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="runBasketWeekly" />
-		<property name="cronExpression" value="0 28 ${basketStartHour} ? * 1" />
+		<property name="cronExpression" value="0 02 ${basketStartHour} ? * 3" />
 	</bean>
 
 	<bean id="triggerBasekWeeklyEndEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="endBasketWeeklyEvent" />
-		<property name="cronExpression" value="00 32 ${basketSigningFinalHour} ? * 1" />
+		<property name="cronExpression" value="00 03 ${basketSigningFinalHour} ? * 3" />
 	</bean>
 	
 	<bean id="triggerInformAllEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="informAllEvent" />
-		<property name="cronExpression" value="00 29 ${basketInformAllSubscribersHour} ? * 1" />
+		<property name="cronExpression" value="00 02 ${basketInformAllSubscribersHour} ? * 3" />
 	</bean>
 	
 	<bean id="triggerChargePlayersEvent" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="chargePlayersEvent" />
-		<property name="cronExpression" value="00 34 ${basketMakePaymentsHour} ? * 1" />
+		<property name="cronExpression" value="00 04 ${basketMakePaymentsHour} ? * 3" />
 	</bean>
 	<!-- END TIMERS DEFINITION -->
 
