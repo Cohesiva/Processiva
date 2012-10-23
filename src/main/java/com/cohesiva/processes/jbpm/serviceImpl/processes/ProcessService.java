@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -34,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.jbpm.ProcessInstanceInfoDao;
+import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.auth.IAuthorizationService;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.processes.IProcessService;
@@ -53,6 +53,9 @@ public class ProcessService implements IProcessService {
 
 	@Autowired
 	private ProcessInstanceInfoDao processInstanceInfoDao;
+
+	@Autowired
+	private List<ProcessivaProcess> processivaProcesses;
 
 	public ProcessInstance getProcessInstance(long processInstanceId) {
 		StatefulKnowledgeSession ksession = jbpmBase.getSession();
@@ -125,6 +128,20 @@ public class ProcessService implements IProcessService {
 						}
 					}
 				}
+			}
+		}
+
+		return result;
+	}
+
+	public ProcessivaProcess getProcessivaProcess(String processId) {
+		ProcessivaProcess result = null;
+
+		for (ProcessivaProcess proc : processivaProcesses) {
+			String procId = proc.getProcessId();
+
+			if (procId != null && procId.equals(processId)) {
+				return proc;
 			}
 		}
 

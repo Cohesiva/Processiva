@@ -27,32 +27,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.auth.IAuthorizationService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessService;
 
 @Service
 public class AuthorizationService implements IAuthorizationService {
+	
+	@Autowired
+	private IProcessService processService;
 
 	private static Map<String, List<String>> userGroupsMapping = new HashMap<String, List<String>>();
 
-	private static Map<String, List<String>> processGroupsMapping = new HashMap<String, List<String>>();
+	//private static Map<String, List<String>> processGroupsMapping = new HashMap<String, List<String>>();
 
 	public AuthorizationService() {
 		mapUserGroups();
-		mapProcessGroups();
+		//mapProcessGroups();
 	}
 
 	public List<String> getUserGroups(String userId) {
 		return userGroupsMapping.get(userId);
 	}
 
-	private List<String> getProcAllowedGroups(String processId) {
-		return processGroupsMapping.get(processId);
-	}
+	//private List<String> getProcAllowedGroups(String processId) {
+	//	return processGroupsMapping.get(processId);
+	//}
 
 	public boolean isAuthorized(String processId, String userId) {
-		List<String> allowedGroups = getProcAllowedGroups(processId);
+		//List<String> allowedGroups = getProcAllowedGroups(processId);
+		
+		ProcessivaProcess processivaProc = processService.getProcessivaProcess(processId);
+		
+		List<String> allowedGroups = null;
+		
+		if (processivaProc != null) {
+			allowedGroups = processivaProc.getAuthorizedGroups();
+		}
 
 		if (allowedGroups == null) {
 			return false;
@@ -83,6 +97,7 @@ public class AuthorizationService implements IAuthorizationService {
 		userGroupsMapping.put("kardanski.damian@gmail.com", kardanskiGroups);
 	}
 
+	/*
 	private void mapProcessGroups() {
 		List<String> pocProcGroups = new ArrayList<String>();
 		pocProcGroups.add("group 1");
@@ -106,25 +121,7 @@ public class AuthorizationService implements IAuthorizationService {
 		List<String> basketBalanceInquiryGroups = new ArrayList<String>();
 		basketBalanceInquiryGroups.add("ALL");
 		processGroupsMapping.put("com.cohesiva.basket.balance.inquiry",
-				basketBalanceInquiryGroups);
-
-		/*
-		List<String> testGroups = new ArrayList<String>();
-		testGroups.add("ALL");
-		processGroupsMapping.put("com.cohesiva.test", testGroups);
-		*/
-		
-		/*
-		List<String> basketWeeklyGroup = new ArrayList<String>();
-		basketWeeklyGroup.add("ALL");
-		processGroupsMapping.put("com.cohesiva.basket.weekly", basketWeeklyGroup);
-		*/
-		
-		/*
-		List<String> getCVGroup = new ArrayList<String>();
-		getCVGroup.add("ALL");
-		processGroupsMapping.put("com.cohesiva.hr.getCV", getCVGroup);
-		*/
-		
+				basketBalanceInquiryGroups);		
 	}
+	*/
 }

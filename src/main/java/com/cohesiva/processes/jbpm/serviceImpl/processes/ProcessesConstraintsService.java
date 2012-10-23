@@ -22,39 +22,42 @@
 
 package com.cohesiva.processes.jbpm.serviceImpl.processes;
 
-import java.util.List;
-
-import org.drools.definition.process.Process;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.UserDao;
+import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.processes.IProcessService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
 import com.cohesiva.processes.jbpm.service.processes.IProcessesConstraintsService;
 
 @Service
-public class ProcessesContraintsService implements IProcessesConstraintsService {
+public class ProcessesConstraintsService implements IProcessesConstraintsService {
 
 	@Autowired
 	private UserDao userDao;
 
 	@Autowired
+	private IProcessStarterService processStarterService;
+	
+	@Autowired
 	private IProcessService processService;
 
 	public boolean isProcessAllowed(String processId, String userId) {
+		/*
 		if (processId.equals("com.cohesiva.basket.subscribe")) {
 			if (userDao.isSubscribingBasket(userId)
-					|| isAlreadyStartedByUser(processId, userId)) {
+					|| processStarterService.isProcessStartedByUser(processId, userId)) {
 				return false;
 			}
 		} else if (processId.equals("com.cohesiva.basket.unsubscribe")) {
 			if (!userDao.isSubscribingBasket(userId)
-					|| isAlreadyStartedByUser(processId, userId)) {
+					|| processStarterService.isProcessStartedByUser(processId, userId)) {
 				return false;
 			}
 		} else if (processId.equals("com.cohesiva.basket.payment")) {
 			if (!userDao.isSubscribingBasket(userId)
-					|| isAlreadyStartedByUser(processId, userId)) {
+					|| processStarterService.isProcessStartedByUser(processId, userId)) {
 				return false;
 			}
 		} else if (processId.equals("com.cohesiva.basket.balance.inquiry")) {
@@ -64,8 +67,20 @@ public class ProcessesContraintsService implements IProcessesConstraintsService 
 		}
 
 		return true;
+		*/
+		
+		boolean result = true;
+		
+		ProcessivaProcess processivaProc = processService.getProcessivaProcess(processId);
+		
+		if (processivaProc!=null) {
+			result = processivaProc.isAllowedToViewNow(userId);
+		}
+		
+		return result;
 	}
 
+	/*
 	private boolean isAlreadyStartedByUser(String processId, String userId) {
 		boolean result = false;
 
@@ -84,4 +99,5 @@ public class ProcessesContraintsService implements IProcessesConstraintsService 
 
 		return result;
 	}
+	*/
 }

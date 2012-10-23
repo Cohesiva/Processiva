@@ -31,4 +31,6 @@ public interface IProcessStarterService {
 	//public Map<String, Object> getStartProcessData(String processId);
 	
 	public void startProcess(String processId, String userId);
+	
+	public boolean isProcessStartedByUser(String processId, String userId);
 }

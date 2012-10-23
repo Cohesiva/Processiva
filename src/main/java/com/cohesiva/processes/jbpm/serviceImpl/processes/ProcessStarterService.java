@@ -21,15 +21,19 @@
 package com.cohesiva.processes.jbpm.serviceImpl.processes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.drools.definition.process.Process;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
+import com.cohesiva.processes.jbpm.service.processes.IProcessService;
 import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
 import com.cohesiva.processes.jbpm.service.processes.IProcessesVariablesService;
 import com.cohesiva.processes.jbpm.service.processes.basket.IBasketVariables;
@@ -41,11 +45,15 @@ public class ProcessStarterService implements IProcessStarterService {
 	IJbpmBase jbpmBase;
 
 	@Autowired
+	private IProcessService processService;
+
+	@Autowired
 	private IBasketVariables basketVariables;
 
 	@Autowired
 	private IProcessesVariablesService processVariables;
 
+	/*
 	private Map<String, String> startInfoMap = new HashMap<String, String>();
 
 	@PostConstruct
@@ -66,18 +74,28 @@ public class ProcessStarterService implements IProcessStarterService {
 
 	public String getStartInfo(String procId) {
 		return startInfoMap.get(procId);
+	}*/
+
+	
+	public String getStartInfo(String procId) {
+		ProcessivaProcess processivaProc = processService.getProcessivaProcess(procId);
+		
+		String result = "Process started!";
+		
+		if (processivaProc != null) {
+			result = processivaProc.getStartProcessInfo();
+		}
+		
+		return result;
 	}
-
+	
 	private Map<String, Object> getStartProcessData(String processId) {
+		/*
 		Map<String, Object> params = new HashMap<String, Object>();
-
-		String emailFooter = processVariables.getEmailFooter();
-		params.put("emailFooter", emailFooter);
 
 		if (processId.equals("com.cohesiva.basket.payment")) {
 			params.put("carnetPrize", basketVariables.getCarnetPrize());
 		} else if (processId.equals("com.cohesiva.basket.weekly")) {
-
 			params.put("eventCarnetPrize",
 					basketVariables.getEventCarnetPrize());
 			params.put("eventNonCarnetPrize",
@@ -92,15 +110,52 @@ public class ProcessStarterService implements IProcessStarterService {
 		}
 
 		return params;
+		*/
+		 Map<String, Object> result = null;
+		 
+		ProcessivaProcess processivaProc = processService.getProcessivaProcess(processId);
+		
+		if (processivaProc != null) {
+			result = processivaProc.getInitData();
+		}
+		
+		return result;
 	}
 
 	public void startProcess(String processId, String userId) {
 		StatefulKnowledgeSession session = jbpmBase.getSession();
 
 		Map<String, Object> params = this.getStartProcessData(processId);
+		
+		if (params == null) {
+			params = new HashMap<String, Object>();
+		}
+		
 		params.put("userEmail", userId);
 
+		String emailFooter = processVariables.getEmailFooter();
+		params.put("emailFooter", emailFooter);
+
 		session.startProcess(processId, params);
+	}
+
+	public boolean isProcessStartedByUser(String processId, String userId) {
+		boolean result = false;
+
+		Process proc = processService.getProcess(processId);
+
+		if (proc != null) {
+			String procName = proc.getName();
+
+			List<String> runningInstancesNames = processService
+					.getRunningInstancesNames(userId);
+
+			if (runningInstancesNames.contains(procName)) {
+				return true;
+			}
+		}
+
+		return result;
 	}
 
 }
