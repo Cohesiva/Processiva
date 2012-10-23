@@ -36,11 +36,16 @@ public class BasketSubscriptionProcess extends ProcessivaProcess {
 	@Autowired
 	private IProcessStarterService processStarterService;
 
-	protected String startProcessInfo = "Zostaniesz powiadomiony mailowo, kiedy twoje zgłoszenie subskrypcji grupy Cohesiva Basket zostanie zatwierdzone.";
-
 	@Override
 	protected void initProcessId() {
 		setProcessId("com.cohesiva.basket.subscribe");
+	}
+
+	@Override
+	protected void initStartProcessInfo() {
+		super.initStartProcessInfo();
+
+		this.setStartProcessInfo("Zostaniesz powiadomiony mailowo, kiedy twoje zgłoszenie subskrypcji grupy Cohesiva Basket zostanie zatwierdzone.");
 	}
 
 	@Override

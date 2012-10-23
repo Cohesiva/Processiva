@@ -36,11 +36,18 @@ public class BasketUnsubscribeProcess extends ProcessivaProcess {
 	@Autowired
 	private IProcessStarterService processStarterService;
 
-	protected String startProcessInfo = "Zglosiłeś chęć zakończenia subskrypcji grupy Cohesiva Basket. Sprawdź email, aby upewnić się, że zakończyłeś subskypcję.";
+	protected String startProcessInfo;
 
 	@Override
 	protected void initProcessId() {
 		setProcessId("com.cohesiva.basket.unsubscribe");
+	}
+
+	@Override
+	protected void initStartProcessInfo() {
+		super.initStartProcessInfo();
+
+		this.setStartProcessInfo("Zglosiłeś chęć zakończenia subskrypcji grupy Cohesiva Basket. Sprawdź email, aby upewnić się, że zakończyłeś subskypcję.");
 	}
 
 	@Override

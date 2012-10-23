@@ -27,15 +27,16 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class ProcessivaProcess {
-	protected String processId =  null;
+	protected String processId;
 	
-	protected String startProcessInfo = "Process started!";
+	protected String startProcessInfo;
 	
-	// All users can start process by default
-	protected List<String> authorizedGroups = new ArrayList<String>(Arrays.asList("ALL"));
+	protected List<String> authorizedGroups;
 
 	protected ProcessivaProcess() {
 		initProcessId();
+		initStartProcessInfo();
+		initAuthorizedGroups();
 	}
 	
 	// All authorized users can view process at any time by default
@@ -51,6 +52,13 @@ public abstract class ProcessivaProcess {
 
 	protected abstract void initProcessId();
 	
+	protected void initStartProcessInfo() {};
+	
+	// All users can start process by default
+	protected void initAuthorizedGroups(){ 
+		this.authorizedGroups = new ArrayList<String>(Arrays.asList("ALL"));
+	}
+	
 	public String getProcessId() {
 		return processId;
 	}
@@ -59,21 +67,20 @@ public abstract class ProcessivaProcess {
 		this.processId = processId;
 	}
 
-	public String getStartProcessInfo() {
-		return startProcessInfo;
-	}
-
 	public void setStartProcessInfo(String startProcessInfo) {
 		this.startProcessInfo = startProcessInfo;
-	}
-
-	public List<String> getAuthorizedGroups() {
-		return authorizedGroups;
 	}
 
 	public void setAuthorizedGroups(List<String> authorizedGroups) {
 		this.authorizedGroups = authorizedGroups;
 	}
-	
+
+	public String getStartProcessInfo() {
+		return startProcessInfo;
+	}
+
+	public List<String> getAuthorizedGroups() {
+		return authorizedGroups;
+	}
 	
 }
