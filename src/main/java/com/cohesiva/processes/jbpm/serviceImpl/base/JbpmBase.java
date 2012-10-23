@@ -49,22 +49,13 @@ import org.jbpm.process.workitem.wsht.MinaHTWorkItemHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.db.UserDao;
 import com.cohesiva.processes.db.jbpm.ProcessInstanceInfoDao;
 import com.cohesiva.processes.db.jbpm.WorkItemInfoDao;
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.GetSpreadsheetValueWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.AddSubscriberWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.BalanceInquiryWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.BasketWeeklySummaryWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.HandleNewPlayerWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.LoadPlayersListsWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.MakeBasketPaymentWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.MakePaymentsWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.RemoveSubscriberWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.hr.getCVWorkItemHandler;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.base.ISessionManager;
+import com.cohesiva.processes.jbpm.service.handlers.IHandlersService;
 import com.cohesiva.processes.jbpm.service.processes.basket.IBasketProcessesService;
 
 @Service
@@ -83,7 +74,7 @@ public class JbpmBase implements IJbpmBase {
 	private WorkItemInfoDao workItemInfoDao;
 
 	@Autowired
-	private UserDao userDao;
+	private IHandlersService handlersService;
 
 	@Autowired
 	private ProcessInstanceInfoDao processInstanceInfoDao;
@@ -220,55 +211,32 @@ public class JbpmBase implements IJbpmBase {
 		// connect on startup to listen for notifications from human task server
 		humanTaskHandler.connect();
 
-		GetSpreadsheetValueWorkItemHandler getSpreadsheetValueHandler = new GetSpreadsheetValueWorkItemHandler();
-		getSpreadsheetValueHandler.setKSession(ksession);
-
-		LoadPlayersListsWorkItemHandler loadPlayersHandler = new LoadPlayersListsWorkItemHandler(
-				userDao);
-		loadPlayersHandler.setKSession(ksession);
-
-		HandleNewPlayerWorkItemHandler handleNewPlayerWorkItemHandler = new HandleNewPlayerWorkItemHandler();
-
-		AddSubscriberWorkItemHandler addSubscriberWorkItemHandler = new AddSubscriberWorkItemHandler(
-				userDao);
-
-		RemoveSubscriberWorkItemHandler removeSubscriberWorkItemHandler = new RemoveSubscriberWorkItemHandler(
-				userDao);
-
-		MakeBasketPaymentWorkItemHandler makeBasketPaymentrWorkItemHandler = new MakeBasketPaymentWorkItemHandler(
-				userDao);
-		BalanceInquiryWorkItemHandler balanceInquiryWorkItemHandler = new BalanceInquiryWorkItemHandler(
-				userDao);
-		MakePaymentsWorkItemHandler makePaymentsWorkItemHandler = new MakePaymentsWorkItemHandler(
-				userDao);
-
-		BasketWeeklySummaryWorkItemHandler basketWeeklySummaryWorkItemHandler = new BasketWeeklySummaryWorkItemHandler(
-				userDao);
-
-		getCVWorkItemHandler getCVWorkItemHandler = new getCVWorkItemHandler();
-		getCVWorkItemHandler.setKSession(ksession);
-
-		workItemManager.registerWorkItemHandler("Human Task", humanTaskHandler);
-		workItemManager.registerWorkItemHandler("GetSpreadsheetValue",
-				getSpreadsheetValueHandler);
-		workItemManager.registerWorkItemHandler("LoadPlayersList",
-				loadPlayersHandler);
-		workItemManager.registerWorkItemHandler("HandleNewPlayer",
-				handleNewPlayerWorkItemHandler);
-		workItemManager.registerWorkItemHandler("AddSubscriber",
-				addSubscriberWorkItemHandler);
-		workItemManager.registerWorkItemHandler("RemoveSubscriber",
-				removeSubscriberWorkItemHandler);
-		workItemManager.registerWorkItemHandler("MakeBasketPayment",
-				makeBasketPaymentrWorkItemHandler);
-		workItemManager.registerWorkItemHandler("BalanceInquiry",
-				balanceInquiryWorkItemHandler);
-		workItemManager.registerWorkItemHandler("MakePayments",
-				makePaymentsWorkItemHandler);
-		workItemManager.registerWorkItemHandler("BasketWeeklySummary",
-				basketWeeklySummaryWorkItemHandler);
-		workItemManager.registerWorkItemHandler("GetCV", getCVWorkItemHandler);
+		// register email work item handler
 		workItemManager.registerWorkItemHandler("Email", emailWorkItemHandler);
+
+		// register human task work item handler
+		workItemManager.registerWorkItemHandler("Human Task", humanTaskHandler);
+
+		// {{ register custom work item handlers
+		List<BaseSynchronousWorkItemHandler> syncHandlers = handlersService
+				.getCustomSyncHandlers();
+
+		for (BaseSynchronousWorkItemHandler syncHandler : syncHandlers) {
+			workItemManager.registerWorkItemHandler(
+					syncHandler.getWorkItemId(), syncHandler);
+		}
+
+		List<BaseAsynchronousWorkItemHandler> asyncHandlers = handlersService
+				.getCustomAsyncHandlers();
+
+		for (BaseAsynchronousWorkItemHandler asyncHandler : asyncHandlers) {
+
+			asyncHandler.setKSession(ksession);
+
+			workItemManager.registerWorkItemHandler(
+					asyncHandler.getWorkItemId(), asyncHandler);
+		}
+		// }
 	}
 
 	/*

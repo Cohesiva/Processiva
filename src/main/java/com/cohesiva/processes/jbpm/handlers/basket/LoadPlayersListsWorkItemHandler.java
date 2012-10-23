@@ -30,19 +30,19 @@ import java.util.Vector;
 
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.User;
 import com.cohesiva.processes.db.UserDao;
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
 
+@Service
 public class LoadPlayersListsWorkItemHandler extends
 		BaseAsynchronousWorkItemHandler {
 	
+	@Autowired
 	private UserDao userDao;
-	
-	public LoadPlayersListsWorkItemHandler(UserDao userDao) {
-		this.userDao = userDao;
-	}
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
@@ -104,5 +104,10 @@ public class LoadPlayersListsWorkItemHandler extends
 
 			}
 		}.setData(workItem)).start();
+	}
+
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "LoadPlayersList";
 	}
 }

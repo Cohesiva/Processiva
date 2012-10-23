@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.stereotype.Service;
 
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
@@ -48,6 +49,7 @@ import com.google.gdata.util.ServiceException;
 /*
  * Domain specific node used for getting a value from a spreadsheet from google docs
  */
+@Service
 public class GetSpreadsheetValueWorkItemHandler extends BaseAsynchronousWorkItemHandler {
 
 	@Override
@@ -187,6 +189,11 @@ public class GetSpreadsheetValueWorkItemHandler extends BaseAsynchronousWorkItem
 				}
 			}
 		}.setData(workItem)).start();
+	}
+
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "GetSpreadsheetValue";
 	}
 
 }

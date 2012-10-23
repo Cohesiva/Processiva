@@ -18,19 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-package com.cohesiva.processes.jbpm.handlers;
+package com.cohesiva.processes.jbpm.service.handlers;
 
-import org.drools.runtime.StatefulKnowledgeSession;
+import java.util.List;
 
-/*
- * Base class for asynchronous workitem handlers.
- */
-public abstract class BaseAsynchronousWorkItemHandler extends
-		BaseWorkItemHandler {
+import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 
-	protected StatefulKnowledgeSession ksession;
-
-	public void setKSession(StatefulKnowledgeSession ksession) {
-		this.ksession = ksession;
-	}
+public interface IHandlersService {
+	public List<BaseAsynchronousWorkItemHandler> getCustomAsyncHandlers();
+	
+	public List<BaseSynchronousWorkItemHandler> getCustomSyncHandlers();
 }

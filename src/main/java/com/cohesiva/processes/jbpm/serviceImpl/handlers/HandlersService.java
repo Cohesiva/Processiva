@@ -18,42 +18,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+package com.cohesiva.processes.jbpm.serviceImpl.handlers;
 
-package com.cohesiva.processes.jbpm.serviceImpl.processes.basket;
-
-import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.jbpm.service.processes.basket.IBasketProcessesService;
-import com.cohesiva.processes.jbpm.service.processes.basket.IBasketVariables;
+import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
+import com.cohesiva.processes.jbpm.service.handlers.IHandlersService;
 
 @Service
-public class BasketProcessService implements IBasketProcessesService {
+public class HandlersService implements IHandlersService {
 
 	@Autowired
-	private IBasketVariables basketVariables;
+	private List<BaseAsynchronousWorkItemHandler> customAsyncHandlers;
+	
+	@Autowired
+	private List<BaseSynchronousWorkItemHandler> customSyncHandlers;
 
-	public boolean isTooLateToSignUp() {
-		/*
-		boolean tooLate = false;
-
-		Calendar now = Calendar.getInstance();
-
-		Calendar finalTime = Calendar.getInstance();
-		finalTime.set(Calendar.HOUR_OF_DAY,
-				new Integer(basketVariables.getBasketSigningFinalHour()));
-		finalTime.set(Calendar.MINUTE, 0);
-		finalTime.set(Calendar.SECOND, 0);
-
-		if (now.after(finalTime)) {
-			tooLate = true;
-		}
-
-		return tooLate;
-		*/
-		return false;
+	public List<BaseAsynchronousWorkItemHandler> getCustomAsyncHandlers() {
+		return customAsyncHandlers;
 	}
 
+	public List<BaseSynchronousWorkItemHandler> getCustomSyncHandlers() {
+		return customSyncHandlers;
+	}
 }

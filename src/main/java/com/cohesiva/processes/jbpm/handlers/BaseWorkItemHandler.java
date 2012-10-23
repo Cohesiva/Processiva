@@ -20,17 +20,34 @@
  */
 package com.cohesiva.processes.jbpm.handlers;
 
-import org.drools.runtime.StatefulKnowledgeSession;
+import javax.annotation.PostConstruct;
+
+import org.drools.runtime.process.WorkItem;
+import org.drools.runtime.process.WorkItemHandler;
+import org.drools.runtime.process.WorkItemManager;
 
 /*
- * Base class for asynchronous workitem handlers.
+ * Base class for Work Item Handler
  */
-public abstract class BaseAsynchronousWorkItemHandler extends
-		BaseWorkItemHandler {
+public abstract class BaseWorkItemHandler implements WorkItemHandler{
+	protected String workItemId;
+	
+	@PostConstruct
+	protected void init() {
+		setWorkItemId();
+	}
 
-	protected StatefulKnowledgeSession ksession;
+	protected abstract void setWorkItemId();
 
-	public void setKSession(StatefulKnowledgeSession ksession) {
-		this.ksession = ksession;
+	// Execution of work item handler.
+	public abstract void executeWorkItem(WorkItem workItem,
+			WorkItemManager manager);
+
+	// Code executed when handler is aborted.
+	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+	}
+	
+	public String getWorkItemId(){
+		return workItemId;
 	}
 }

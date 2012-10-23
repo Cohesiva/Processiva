@@ -25,26 +25,28 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.User;
 import com.cohesiva.processes.db.UserDao;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 
-public class BasketWeeklySummaryWorkItemHandler implements WorkItemHandler {
+@Service
+public class BasketWeeklySummaryWorkItemHandler extends
+		BaseSynchronousWorkItemHandler {
 
+	@Autowired
 	private UserDao userDao;
-
-	public BasketWeeklySummaryWorkItemHandler(UserDao userDao) {
-		this.userDao = userDao;
-	}
 
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		List<String> playersList = (List<String>) workItem
 				.getParameter("playersList");
 		String date = (String) workItem.getParameter("date");
 		String emailFooter = (String) workItem.getParameter("emailFooter");
-		int eventNonCarnetPrize = (Integer) workItem.getParameter("eventNonCarnetPrize");
+		int eventNonCarnetPrize = (Integer) workItem
+				.getParameter("eventNonCarnetPrize");
 
 		int size = 0;
 
@@ -70,7 +72,8 @@ public class BasketWeeklySummaryWorkItemHandler implements WorkItemHandler {
 				if (userDao.isBalanceValid(user.getEmail())) {
 					summary.append(",<br />");
 				} else {
-					summary.append(" - brak ważnego karnetu, proszę donieść opłatę "+eventNonCarnetPrize+" PLN,<br />");
+					summary.append(" - brak ważnego karnetu, proszę donieść opłatę "
+							+ eventNonCarnetPrize + " PLN,<br />");
 				}
 			}
 
@@ -78,11 +81,12 @@ public class BasketWeeklySummaryWorkItemHandler implements WorkItemHandler {
 
 			summary.append("- " + user.getFirstName() + " " + user.getSurname()
 					+ " (" + user.getEmail() + ")");
-			
+
 			if (userDao.isBalanceValid(user.getEmail())) {
 				summary.append(",<br />");
 			} else {
-				summary.append(" - brak ważnego karnetu, proszę donieść opłatę "+eventNonCarnetPrize+" PLN.<br />");
+				summary.append(" - brak ważnego karnetu, proszę donieść opłatę "
+						+ eventNonCarnetPrize + " PLN.<br />");
 			}
 
 			summary.append("<br />Miłej zabawy!" + emailFooter);
@@ -95,6 +99,8 @@ public class BasketWeeklySummaryWorkItemHandler implements WorkItemHandler {
 		manager.completeWorkItem(workItem.getId(), results);
 	}
 
-	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "BasketWeeklySummary";
 	}
 }

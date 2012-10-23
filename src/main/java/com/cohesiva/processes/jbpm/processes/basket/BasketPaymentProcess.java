@@ -22,6 +22,8 @@ package com.cohesiva.processes.jbpm.processes.basket;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,16 @@ public class BasketPaymentProcess extends ProcessivaProcess {
 	@Override
 	protected void initProcessId() {
 		setProcessId("com.cohesiva.basket.payment");
+	}
+	
+	@Override
+	protected void initInitData() {
+		Map<String,Object> initData = new HashMap<String, Object>();
+		
+		initData.put("carnetPrize",
+				basketVariables.getCarnetPrize());
+		
+		this.setInitData(initData);
 	}
 
 	@Override

@@ -20,17 +20,10 @@
  */
 package com.cohesiva.processes.jbpm.handlers;
 
-import org.drools.runtime.StatefulKnowledgeSession;
 
 /*
- * Base class for asynchronous workitem handlers.
+ * Base class for synchronous workitem handlers.
  */
-public abstract class BaseAsynchronousWorkItemHandler extends
+public abstract class BaseSynchronousWorkItemHandler extends
 		BaseWorkItemHandler {
-
-	protected StatefulKnowledgeSession ksession;
-
-	public void setKSession(StatefulKnowledgeSession ksession) {
-		this.ksession = ksession;
-	}
 }
