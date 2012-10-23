@@ -20,11 +20,10 @@
  */
 package com.cohesiva.processes.jbpm.processes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 public abstract class ProcessivaProcess {
 	protected String processId;
@@ -32,32 +31,37 @@ public abstract class ProcessivaProcess {
 	protected String startProcessInfo;
 	
 	protected List<String> authorizedGroups;
+	
+	protected Map<String, Object> initData;
 
-	protected ProcessivaProcess() {
+	@PostConstruct
+	protected void init() {
 		initProcessId();
 		initStartProcessInfo();
 		initAuthorizedGroups();
+		initInitData();
 	}
 	
 	// All authorized users can view process at any time by default
 	public boolean isAllowedToViewNow(String userId) {
 		return true;
 	}
-	
+
 	public Map<String, Object> getInitData() {
-		Map<String, Object> data = new HashMap<String, Object>();
-		
-		return data;	
+		return initData;
+	}
+
+	public void setInitData(Map<String, Object> initData) {
+		this.initData = initData;
 	}
 
 	protected abstract void initProcessId();
 	
 	protected void initStartProcessInfo() {};
 	
-	// All users can start process by default
-	protected void initAuthorizedGroups(){ 
-		this.authorizedGroups = new ArrayList<String>(Arrays.asList("ALL"));
-	}
+	protected void initAuthorizedGroups() {};
+	
+	protected void initInitData() {};
 	
 	public String getProcessId() {
 		return processId;

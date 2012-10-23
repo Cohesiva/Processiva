@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -35,23 +34,23 @@ public class BasketProcessService implements IBasketProcessesService {
 
 	@Autowired
 	private IBasketVariables basketVariables;
-	
-	public boolean isTooLateToSignUp() {/*
+
+	public boolean isTooLateToSignUp() {
 		boolean tooLate = false;
 
 		Calendar now = Calendar.getInstance();
 
 		Calendar finalTime = Calendar.getInstance();
-		finalTime.set(Calendar.HOUR_OF_DAY, new Integer(basketVariables.getBasketSigningFinalHour()));
+		finalTime.set(Calendar.HOUR_OF_DAY,
+				new Integer(basketVariables.getBasketSigningFinalHour()));
 		finalTime.set(Calendar.MINUTE, 0);
 		finalTime.set(Calendar.SECOND, 0);
 
 		if (now.after(finalTime)) {
 			tooLate = true;
 		}
-		
-		return tooLate;*/
-		return false;
+
+		return tooLate;
 	}
 
 }

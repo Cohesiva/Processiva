@@ -31,7 +31,7 @@ import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
 
 @Service
-public class BasketUnsubscribeProcess extends ProcessivaProcess {
+public class BasketBalanceInquiryProcess extends ProcessivaProcess {
 
 	@Autowired
 	private UserDao userDao;
@@ -39,20 +39,18 @@ public class BasketUnsubscribeProcess extends ProcessivaProcess {
 	@Autowired
 	private IProcessStarterService processStarterService;
 
-	protected String startProcessInfo;
-
 	@Override
 	protected void initProcessId() {
-		setProcessId("com.cohesiva.basket.unsubscribe");
+		setProcessId("com.cohesiva.basket.balance.inquiry");
 	}
 
 	@Override
 	protected void initStartProcessInfo() {
 		super.initStartProcessInfo();
 
-		this.setStartProcessInfo("Zglosiłeś chęć zakończenia subskrypcji grupy Cohesiva Basket. Sprawdź email, aby upewnić się, że zakończyłeś subskypcję.");
+		this.setStartProcessInfo("Informacje o stanie Twojego konta zostały wysłane na Twój adres email.");
 	}
-	
+
 	@Override
 	protected void initAuthorizedGroups() {
 		super.initAuthorizedGroups();

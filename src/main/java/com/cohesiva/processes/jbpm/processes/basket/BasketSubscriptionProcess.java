@@ -20,6 +20,9 @@
  */
 package com.cohesiva.processes.jbpm.processes.basket;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +49,13 @@ public class BasketSubscriptionProcess extends ProcessivaProcess {
 		super.initStartProcessInfo();
 
 		this.setStartProcessInfo("Zostaniesz powiadomiony mailowo, kiedy twoje zgłoszenie subskrypcji grupy Cohesiva Basket zostanie zatwierdzone.");
+	}
+
+	@Override
+	protected void initAuthorizedGroups() {
+		super.initAuthorizedGroups();
+		
+		this.authorizedGroups = new ArrayList<String>(Arrays.asList("ALL"));
 	}
 
 	@Override

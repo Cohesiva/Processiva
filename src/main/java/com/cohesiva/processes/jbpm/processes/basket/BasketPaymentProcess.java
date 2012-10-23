@@ -29,35 +29,38 @@ import org.springframework.stereotype.Service;
 import com.cohesiva.processes.db.UserDao;
 import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
+import com.cohesiva.processes.jbpm.service.processes.basket.IBasketVariables;
 
 @Service
-public class BasketUnsubscribeProcess extends ProcessivaProcess {
+public class BasketPaymentProcess extends ProcessivaProcess {
 
 	@Autowired
 	private UserDao userDao;
 
 	@Autowired
 	private IProcessStarterService processStarterService;
-
-	protected String startProcessInfo;
+	
+	@Autowired
+	private IBasketVariables basketVariables;
 
 	@Override
 	protected void initProcessId() {
-		setProcessId("com.cohesiva.basket.unsubscribe");
+		setProcessId("com.cohesiva.basket.payment");
 	}
 
-	@Override
-	protected void initStartProcessInfo() {
-		super.initStartProcessInfo();
-
-		this.setStartProcessInfo("Zglosiłeś chęć zakończenia subskrypcji grupy Cohesiva Basket. Sprawdź email, aby upewnić się, że zakończyłeś subskypcję.");
-	}
-	
 	@Override
 	protected void initAuthorizedGroups() {
 		super.initAuthorizedGroups();
 		
 		this.authorizedGroups = new ArrayList<String>(Arrays.asList("ALL"));
+	}
+	
+	@Override
+	protected void initStartProcessInfo() {
+		super.initStartProcessInfo();
+
+		this.setStartProcessInfo("Aby zakupić karnet, wpłać " + basketVariables.getCarnetPrize()
+				+ " PLN w sekretariacie Cohesiva.");
 	}
 
 	@Override

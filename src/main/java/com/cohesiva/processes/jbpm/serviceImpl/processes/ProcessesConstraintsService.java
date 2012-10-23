@@ -25,50 +25,17 @@ package com.cohesiva.processes.jbpm.serviceImpl.processes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.db.UserDao;
 import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.processes.IProcessService;
-import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
 import com.cohesiva.processes.jbpm.service.processes.IProcessesConstraintsService;
 
 @Service
 public class ProcessesConstraintsService implements IProcessesConstraintsService {
-
-	@Autowired
-	private UserDao userDao;
-
-	@Autowired
-	private IProcessStarterService processStarterService;
 	
 	@Autowired
 	private IProcessService processService;
 
-	public boolean isProcessAllowed(String processId, String userId) {
-		/*
-		if (processId.equals("com.cohesiva.basket.subscribe")) {
-			if (userDao.isSubscribingBasket(userId)
-					|| processStarterService.isProcessStartedByUser(processId, userId)) {
-				return false;
-			}
-		} else if (processId.equals("com.cohesiva.basket.unsubscribe")) {
-			if (!userDao.isSubscribingBasket(userId)
-					|| processStarterService.isProcessStartedByUser(processId, userId)) {
-				return false;
-			}
-		} else if (processId.equals("com.cohesiva.basket.payment")) {
-			if (!userDao.isSubscribingBasket(userId)
-					|| processStarterService.isProcessStartedByUser(processId, userId)) {
-				return false;
-			}
-		} else if (processId.equals("com.cohesiva.basket.balance.inquiry")) {
-			if (!userDao.isSubscribingBasket(userId)) {
-				return false;
-			}
-		}
-
-		return true;
-		*/
-		
+	public boolean isProcessAllowed(String processId, String userId) {	
 		boolean result = true;
 		
 		ProcessivaProcess processivaProc = processService.getProcessivaProcess(processId);
@@ -79,25 +46,4 @@ public class ProcessesConstraintsService implements IProcessesConstraintsService
 		
 		return result;
 	}
-
-	/*
-	private boolean isAlreadyStartedByUser(String processId, String userId) {
-		boolean result = false;
-
-		Process proc = processService.getProcess(processId);
-
-		if (proc != null) {
-			String procName = proc.getName();
-
-			List<String> runningInstancesNames = processService
-					.getRunningInstancesNames(userId);
-
-			if (runningInstancesNames.contains(procName)) {
-				return true;
-			}
-		}
-
-		return result;
-	}
-	*/
 }

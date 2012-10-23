@@ -20,58 +20,51 @@
  */
 package com.cohesiva.processes.jbpm.processes.basket;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.db.UserDao;
 import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
-import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessesVariablesService;
+import com.cohesiva.processes.jbpm.service.processes.basket.IBasketVariables;
 
 @Service
-public class BasketUnsubscribeProcess extends ProcessivaProcess {
-
+public class BasketWeeklyProcess extends ProcessivaProcess {
+	
 	@Autowired
-	private UserDao userDao;
-
+	private IBasketVariables basketVariables;
+	
 	@Autowired
-	private IProcessStarterService processStarterService;
-
-	protected String startProcessInfo;
+	private IProcessesVariablesService processVariables;
 
 	@Override
 	protected void initProcessId() {
-		setProcessId("com.cohesiva.basket.unsubscribe");
+		setProcessId("com.cohesiva.basket.weekly");
 	}
 
 	@Override
-	protected void initStartProcessInfo() {
-		super.initStartProcessInfo();
-
-		this.setStartProcessInfo("Zglosiłeś chęć zakończenia subskrypcji grupy Cohesiva Basket. Sprawdź email, aby upewnić się, że zakończyłeś subskypcję.");
-	}
-	
-	@Override
-	protected void initAuthorizedGroups() {
-		super.initAuthorizedGroups();
+	protected void initInitData() {
+		Map<String,Object> initData = new HashMap<String, Object>();
 		
-		this.authorizedGroups = new ArrayList<String>(Arrays.asList("ALL"));
+		initData.put("eventCarnetPrize",
+				basketVariables.getEventCarnetPrize());
+		initData.put("eventNonCarnetPrize",
+				basketVariables.getEventNonCarnetPrize());
+		initData.put("sufficientPlayersNumber",
+				basketVariables.getBasketSufficientPlayersNumber());
+		initData.put("maxPlayersNumber",
+				basketVariables.getBasketMaxPlayersNumber());
+		initData.put("basketSigningFinalHour",
+				basketVariables.getBasketSigningFinalHour());
+		initData.put("answerLink", processVariables.getApplicationUrl());
+		
+		this.setInitData(initData);
 	}
 
 	@Override
 	public boolean isAllowedToViewNow(String userId) {
-		boolean result = true;
-
-		if (!userDao.isSubscribingBasket(userId)) {
-			return false;
-		}
-
-		if (processStarterService.isProcessStartedByUser(processId, userId)) {
-			return false;
-		}
-
-		return result;
+		return false;
 	}
 }

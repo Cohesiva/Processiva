@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -36,34 +35,26 @@ import com.cohesiva.processes.jbpm.service.processes.IProcessService;
 
 @Service
 public class AuthorizationService implements IAuthorizationService {
-	
+
 	@Autowired
 	private IProcessService processService;
 
 	private static Map<String, List<String>> userGroupsMapping = new HashMap<String, List<String>>();
 
-	//private static Map<String, List<String>> processGroupsMapping = new HashMap<String, List<String>>();
-
 	public AuthorizationService() {
 		mapUserGroups();
-		//mapProcessGroups();
 	}
 
 	public List<String> getUserGroups(String userId) {
 		return userGroupsMapping.get(userId);
 	}
 
-	//private List<String> getProcAllowedGroups(String processId) {
-	//	return processGroupsMapping.get(processId);
-	//}
-
 	public boolean isAuthorized(String processId, String userId) {
-		//List<String> allowedGroups = getProcAllowedGroups(processId);
-		
-		ProcessivaProcess processivaProc = processService.getProcessivaProcess(processId);
-		
+		ProcessivaProcess processivaProc = processService
+				.getProcessivaProcess(processId);
+
 		List<String> allowedGroups = null;
-		
+
 		if (processivaProc != null) {
 			allowedGroups = processivaProc.getAuthorizedGroups();
 		}
@@ -96,32 +87,4 @@ public class AuthorizationService implements IAuthorizationService {
 		kardanskiGroups.add("asd");
 		userGroupsMapping.put("kardanski.damian@gmail.com", kardanskiGroups);
 	}
-
-	/*
-	private void mapProcessGroups() {
-		List<String> pocProcGroups = new ArrayList<String>();
-		pocProcGroups.add("group 1");
-		processGroupsMapping.put("com.sample.bpmn.poc", pocProcGroups);
-
-		List<String> basketSubscribeGroups = new ArrayList<String>();
-		basketSubscribeGroups.add("ALL");
-		processGroupsMapping.put("com.cohesiva.basket.subscribe",
-				basketSubscribeGroups);
-
-		List<String> basketUnsubscribeGroups = new ArrayList<String>();
-		basketUnsubscribeGroups.add("ALL");
-		processGroupsMapping.put("com.cohesiva.basket.unsubscribe",
-				basketUnsubscribeGroups);
-
-		List<String> basketPaymentGroups = new ArrayList<String>();
-		basketPaymentGroups.add("ALL");
-		processGroupsMapping.put("com.cohesiva.basket.payment",
-				basketPaymentGroups);
-		
-		List<String> basketBalanceInquiryGroups = new ArrayList<String>();
-		basketBalanceInquiryGroups.add("ALL");
-		processGroupsMapping.put("com.cohesiva.basket.balance.inquiry",
-				basketBalanceInquiryGroups);		
-	}
-	*/
 }
