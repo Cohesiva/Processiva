@@ -18,23 +18,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-package com.cohesiva.processes.serviceImpl;
+package com.cohesiva.processes.jbpm.service.handlers;
 
-import org.openid4java.consumer.ConsumerManager;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-import com.cohesiva.processes.service.IConsumerManagerService;
+import org.drools.persistence.info.WorkItemInfo;
 
-@Service
-public class ConsumerManagerService implements IConsumerManagerService{
+import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 
-	public ConsumerManager manager;
-
-	public ConsumerManagerService() {
-		manager = new ConsumerManager();
-	}
-
-	public ConsumerManager getConsumerManager() {
-		return manager;
-	}
+public interface IHandlersService {
+	public List<BaseAsynchronousWorkItemHandler> getCustomAsyncHandlers();
+	
+	public List<BaseSynchronousWorkItemHandler> getCustomSyncHandlers();
+	
+	public List<WorkItemInfo> getPersistedHandlers();
+	
+	public BaseAsynchronousWorkItemHandler getAsyncHandler(String handlerId);
 }

@@ -18,30 +18,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+package com.cohesiva.processes.jbpm.processes.basket;
 
-package com.cohesiva.processes.jbpm.serviceImpl.shedules;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
+import com.cohesiva.processes.db.UserDao;
+import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 import com.cohesiva.processes.jbpm.service.processes.IProcessStarterService;
-import com.cohesiva.processes.jbpm.service.shedules.IEventStarter;
 
-@Service(value = "eventStarter")
-public class EventStarter implements IEventStarter {
+@Service
+public class BasketBalanceInquiryProcess extends ProcessivaProcess {
 
 	@Autowired
-	protected IJbpmBase jbpmBase;
+	private UserDao userDao;
 
 	@Autowired
 	private IProcessStarterService processStarterService;
 
-	public void startProcess(String processId) {
-		processStarterService.startProcess(processId, "SCHEDULER");
+	@Override
+	protected void initProcessId() {
+		setProcessId("com.cohesiva.basket.balance.inquiry");
 	}
 
-	public void signal(String signal, String processId) {
-		jbpmBase.signalEvent(signal, processId);
+	@Override
+	protected void initStartProcessInfo() {
+		super.initStartProcessInfo();
+
+		this.setStartProcessInfo("Informacje o stanie Twojego konta zostały wysłane na Twój adres email.");
+	}
+
+	@Override
+	protected void initAuthorizedGroups() {
+		super.initAuthorizedGroups();
+		
+		this.authorizedGroups = new ArrayList<String>(Arrays.asList("ALL"));
+	}
+
+	@Override
+	public boolean isAllowedToViewNow(String userId) {
+		boolean result = true;
+
+		if (!userDao.isSubscribingBasket(userId)) {
+			return false;
+		}
+
+		if (processStarterService.isProcessStartedByUser(processId, userId)) {
+			return false;
+		}
+
+		return result;
 	}
 }

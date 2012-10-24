@@ -20,29 +20,15 @@
  * #L%
  */
 
-package com.cohesiva.processes.jbpm.serviceImpl.processes;
+package com.cohesiva.processes.jbpm.service.processes;
 
-import org.springframework.stereotype.Service;
-
-import com.cohesiva.processes.jbpm.service.processes.IProcessesVariables;
-
-@Service(value = "processesVariables")
-public class ProcessesVariables implements IProcessesVariables {
-
-	private String applicationUrl;
-
-	public String getApplicationUrl() {
-		return applicationUrl;
-	}
-
-	public void setApplicationUrl(String applicationUrl) {
-		this.applicationUrl = applicationUrl;
-	}
-
-	public String getEmailFooter() {
-		String footer = "<br /><br /> <hr align=\"left\" width=\"600\"/> Cohesiva Process Engine: "
-				+ this.getApplicationUrl();
-
-		return footer;
-	}
+/*
+ * Service for managing variables connected with all processes
+ */
+public interface IProcessesVariablesService {
+	public String getApplicationUrl();
+	
+	public String getEmailFooter();
+	
+	public String getKillSignal();
 }

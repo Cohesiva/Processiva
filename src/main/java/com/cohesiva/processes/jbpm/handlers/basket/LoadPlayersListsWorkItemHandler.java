@@ -30,19 +30,24 @@ import java.util.Vector;
 
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.User;
 import com.cohesiva.processes.db.UserDao;
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
+import com.cohesiva.processes.jbpm.service.processes.basket.IBasketProcessesService;
 
+@Service
 public class LoadPlayersListsWorkItemHandler extends
 		BaseAsynchronousWorkItemHandler {
 	
+	@Autowired
 	private UserDao userDao;
 	
-	public LoadPlayersListsWorkItemHandler(UserDao userDao) {
-		this.userDao = userDao;
-	}
+	@Autowired
+	private IBasketProcessesService basketProcessService;
+
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
@@ -105,4 +110,24 @@ public class LoadPlayersListsWorkItemHandler extends
 			}
 		}.setData(workItem)).start();
 	}
+
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "LoadPlayersList";
+	}
+
+	@Override
+	public boolean shouldBeRestored() {
+		boolean result = true;
+
+		// { if the time for signing on basket has passed, don't restore the handler
+		if (basketProcessService.isTooLateToSignUp()) {
+			return false;
+		}
+		// }
+
+		return result;
+	}
+	
+	
 }

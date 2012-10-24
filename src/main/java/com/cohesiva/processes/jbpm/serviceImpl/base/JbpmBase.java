@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -50,23 +49,13 @@ import org.jbpm.process.workitem.wsht.MinaHTWorkItemHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.db.UserDao;
-import com.cohesiva.processes.db.jbpm.ProcessInstanceInfoDao;
-import com.cohesiva.processes.db.jbpm.WorkItemInfoDao;
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.GetSpreadsheetValueWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.AddSubscriberWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.BalanceInquiryWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.BasketWeeklySummaryWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.HandleNewPlayerWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.LoadPlayersListsWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.MakeBasketPaymentWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.MakePaymentsWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.basket.RemoveSubscriberWorkItemHandler;
-import com.cohesiva.processes.jbpm.handlers.hr.getCVWorkItemHandler;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.base.ISessionManager;
-import com.cohesiva.processes.jbpm.service.processes.basket.IBasketProcessesService;
+import com.cohesiva.processes.jbpm.service.handlers.IHandlersService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessesVariablesService;
+import com.cohesiva.processes.jbpm.serviceImpl.processes.ProcessService;
 
 @Service
 public class JbpmBase implements IJbpmBase {
@@ -81,28 +70,20 @@ public class JbpmBase implements IJbpmBase {
 	private ISessionManager sessionManager;
 
 	@Autowired
-	private WorkItemInfoDao workItemInfoDao;
+	private ProcessService processService;
 
 	@Autowired
-	private UserDao userDao;
+	private IHandlersService handlersService;
 
-	@Autowired
-	private ProcessInstanceInfoDao processInstanceInfoDao;
-	
 	@Autowired
 	private EmailWorkItemHandler emailWorkItemHandler;
-	
+
 	@Autowired
-	private IBasketProcessesService basketProcessServie;
+	private IProcessesVariablesService processVariables;
 
 	// Injected database connection:
 	@PersistenceUnit(unitName = "jbpmPU")
 	private EntityManagerFactory emf;
-
-	private final String WORK_ITEM_HANDLER_CLASS_SUFFIX = "WorkItemHandler";
-	private String[] workItemHandlersPackages = {
-			"com.cohesiva.processes.jbpm.handlers.basket",
-			"com.cohesiva.processes.jbpm.handlers" };
 
 	// Service initialization method - load jbpm session
 	@PostConstruct
@@ -110,7 +91,8 @@ public class JbpmBase implements IJbpmBase {
 		try {
 			if (ksession == null) {
 
-				System.out.println("DEFOLT CZARSET: "+Charset.defaultCharset());
+				System.out.println("DEFOLT CZARSET: "
+						+ Charset.defaultCharset());
 				// load up the knowledge base
 				KnowledgeBase kbase = readKnowledgeBase();
 
@@ -148,7 +130,7 @@ public class JbpmBase implements IJbpmBase {
 	private KnowledgeBase readKnowledgeBase() throws Exception {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
 				.newKnowledgeBuilder();
-		
+
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketWeekly.bpmn"),
 				ResourceType.BPMN2);
@@ -157,16 +139,18 @@ public class JbpmBase implements IJbpmBase {
 				ResourceType.BPMN2);
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketUnsubscribe.bpmn"),
-				ResourceType.BPMN2);		
+				ResourceType.BPMN2);
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketPayment.bpmn"),
 				ResourceType.BPMN2);
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketBalanceInquiry.bpmn"),
-				ResourceType.BPMN2);	
-		kbuilder.add(ResourceFactory
-				.newClassPathResource("jbpm/hr/getCV.bpmn"),
-				ResourceType.BPMN2);		
+				ResourceType.BPMN2);
+		/*
+		 * kbuilder.add(
+		 * ResourceFactory.newClassPathResource("jbpm/hr/getCV.bpmn"),
+		 * ResourceType.BPMN2);
+		 */
 
 		return kbuilder.newKnowledgeBase();
 	}
@@ -204,9 +188,6 @@ public class JbpmBase implements IJbpmBase {
 		// Restore asynchronous work item that were not finished.
 		this.restoreWorkItems(ksession);
 
-		// Kill process that shouldn't be restored
-		this.killUnwantedProcesses(ksession);
-
 		return ksession;
 	}
 
@@ -220,158 +201,81 @@ public class JbpmBase implements IJbpmBase {
 		// connect on startup to listen for notifications from human task server
 		humanTaskHandler.connect();
 
-		GetSpreadsheetValueWorkItemHandler getSpreadsheetValueHandler = new GetSpreadsheetValueWorkItemHandler();
-		getSpreadsheetValueHandler.setKSession(ksession);
+		// register email work item handler
+		workItemManager.registerWorkItemHandler("Email", emailWorkItemHandler);
 
-		LoadPlayersListsWorkItemHandler loadPlayersHandler = new LoadPlayersListsWorkItemHandler(
-				userDao);
-		loadPlayersHandler.setKSession(ksession);
-
-		HandleNewPlayerWorkItemHandler handleNewPlayerWorkItemHandler = new HandleNewPlayerWorkItemHandler();
-
-		AddSubscriberWorkItemHandler addSubscriberWorkItemHandler = new AddSubscriberWorkItemHandler(
-				userDao);
-
-		RemoveSubscriberWorkItemHandler removeSubscriberWorkItemHandler = new RemoveSubscriberWorkItemHandler(
-				userDao);
-
-		MakeBasketPaymentWorkItemHandler makeBasketPaymentrWorkItemHandler = new MakeBasketPaymentWorkItemHandler(
-				userDao);
-		BalanceInquiryWorkItemHandler balanceInquiryWorkItemHandler = new BalanceInquiryWorkItemHandler(
-				userDao);
-		MakePaymentsWorkItemHandler makePaymentsWorkItemHandler = new MakePaymentsWorkItemHandler(userDao);
-		
-		BasketWeeklySummaryWorkItemHandler basketWeeklySummaryWorkItemHandler = new BasketWeeklySummaryWorkItemHandler(userDao);
-		
-		getCVWorkItemHandler getCVWorkItemHandler = new getCVWorkItemHandler();
-		getCVWorkItemHandler.setKSession(ksession);
-
+		// register human task work item handler
 		workItemManager.registerWorkItemHandler("Human Task", humanTaskHandler);
-		workItemManager.registerWorkItemHandler("GetSpreadsheetValue",
-				getSpreadsheetValueHandler);
-		workItemManager.registerWorkItemHandler("LoadPlayersList",
-				loadPlayersHandler);
-		workItemManager.registerWorkItemHandler("HandleNewPlayer",
-				handleNewPlayerWorkItemHandler);
-		workItemManager.registerWorkItemHandler("AddSubscriber",
-				addSubscriberWorkItemHandler);
-		workItemManager.registerWorkItemHandler("RemoveSubscriber",
-				removeSubscriberWorkItemHandler);
-		workItemManager.registerWorkItemHandler("MakeBasketPayment",
-				makeBasketPaymentrWorkItemHandler);
-		workItemManager.registerWorkItemHandler("BalanceInquiry",
-				balanceInquiryWorkItemHandler);
-		workItemManager.registerWorkItemHandler("MakePayments",
-				makePaymentsWorkItemHandler);
-		workItemManager.registerWorkItemHandler("BasketWeeklySummary",
-				basketWeeklySummaryWorkItemHandler);
-		workItemManager.registerWorkItemHandler("GetCV",
-				getCVWorkItemHandler);
-		workItemManager.registerWorkItemHandler("Email",
-				emailWorkItemHandler);
-	}
 
-	/*
-	 * Function sends kill signal to processes that should't be restored on
-	 * startup although they are not finished
-	 */
-	private void killUnwantedProcesses(StatefulKnowledgeSession ksession) {
+		// {{ register custom work item handlers
+		List<BaseSynchronousWorkItemHandler> syncHandlers = handlersService
+				.getCustomSyncHandlers();
 
-		// { Kill basket weekly jesli jest juz po czasie, w ktorym mozna sie
-		// zapisywac - piątek 14:00.
-		List<ProcessInstanceInfo> basketWeeklyInstances = processInstanceInfoDao
-				.getRunningInstances("com.cohesiva.basket.weekly");
+		for (BaseSynchronousWorkItemHandler syncHandler : syncHandlers) {
+			workItemManager.registerWorkItemHandler(
+					syncHandler.getWorkItemId(), syncHandler);
+		}
 
-		if (basketWeeklyInstances != null) {
+		List<BaseAsynchronousWorkItemHandler> asyncHandlers = handlersService
+				.getCustomAsyncHandlers();
 
-			/*
-			Calendar now = Calendar.getInstance();
-			int dayToday = now.get(Calendar.DAY_OF_WEEK);
+		for (BaseAsynchronousWorkItemHandler asyncHandler : asyncHandlers) {
 
-			boolean toKill = false;
+			asyncHandler.setKSession(ksession);
 
-			if (dayToday == Calendar.FRIDAY) {
-
-				Calendar processFinishedTime = Calendar.getInstance();
-				processFinishedTime.set(Calendar.HOUR_OF_DAY, 14);
-				processFinishedTime.set(Calendar.MINUTE, 0);
-				processFinishedTime.set(Calendar.SECOND, 0);
-
-				if (now.after(processFinishedTime)) {
-					toKill = true;
-				}
-			} else {
-				toKill = true;
-			}
-			*/
-			
-			boolean toKill = basketProcessServie.isTooLateToSignUp();
-
-			if (toKill) {
-				for (ProcessInstanceInfo processInstance : basketWeeklyInstances) {
-					ksession.signalEvent("basketWeeklyKill", null,
-							processInstance.getId());
-				}
-			}
+			workItemManager.registerWorkItemHandler(
+					asyncHandler.getWorkItemId(), asyncHandler);
 		}
 		// }
 	}
-
+	
 	/*
-	 * Function restores asynchronous work items of unfinished processes
+	 * Function restores asynchronous work items of unfinished processes 
+	 * or kills process instance if work item shouldn't be restored
 	 */
 	private void restoreWorkItems(StatefulKnowledgeSession ksession) {
-		List<WorkItemInfo> persistedWorkItems = workItemInfoDao
-				.getPersistedWorkItems();
+		List<WorkItemInfo> persistedWorkItems = handlersService
+				.getPersistedHandlers();
 
 		for (WorkItemInfo workItemInfo : persistedWorkItems) {
+			String handlerId = workItemInfo.getName();
 
-			String workItemName = workItemInfo.getName();
+			BaseAsynchronousWorkItemHandler asyncHandler = handlersService
+					.getAsyncHandler(handlerId);
 
-			WorkItem workItem = workItemInfo.getWorkItem(
-					ksession.getEnvironment(), null);
+			if (asyncHandler != null && asyncHandler.shouldBeRestored()) {
+				// { restore handler and continue process
+				WorkItem workItem = workItemInfo.getWorkItem(
+						ksession.getEnvironment(), null);
 
-			String workItemHandlerClassName = null;
+				if (workItem != null) {
+					asyncHandler.setKSession(ksession);
 
-			for (String packageName : workItemHandlersPackages) {
-				try {
-					workItemHandlerClassName = packageName + "." + workItemName
-							+ WORK_ITEM_HANDLER_CLASS_SUFFIX;
-
-					Class customWorkItemHandlerClass = Class
-							.forName(workItemHandlerClassName);
-
-					BaseAsynchronousWorkItemHandler customWorkItemHandler = (BaseAsynchronousWorkItemHandler) customWorkItemHandlerClass
-							.newInstance();
-
-					customWorkItemHandler.setKSession(ksession);
-
-					customWorkItemHandler.executeWorkItem(workItem,
+					asyncHandler.executeWorkItem(workItem,
 							ksession.getWorkItemManager());
-
-					break;
-
-				} catch (ClassNotFoundException e) {
-					System.out.println("Class " + workItemHandlerClassName
-							+ " not found");
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				// }
+			} else {
+				// { kill process
+				long instanceId = workItemInfo.getProcessInstanceId();
+
+				ksession.signalEvent(processVariables.getKillSignal(), null,
+						instanceId);
+				// }
 			}
 		}
 	}
 
-	public MinaHTWorkItemHandler getWorkItemHandler() {
+	public MinaHTWorkItemHandler getHumanTaskHandler() {
 		return this.humanTaskHandler;
+	}
+
+	public void signalEvent(String event, String processId) {
+		List<ProcessInstanceInfo> runningInstances = processService
+				.getRunningInstances(processId);
+
+		for (ProcessInstanceInfo instance : runningInstances) {
+			ksession.signalEvent(event, null, instance.getId());
+		}
 	}
 }

@@ -46,6 +46,8 @@ public class BasketVariables implements IBasketVariables {
 
 	private int eventNonCarnetPrize;
 
+	private int basketWeeklyDay;
+	
 	public String getBasketSigningFinalHour() {
 		return basketSigningFinalHour;
 	}
@@ -118,5 +120,13 @@ public class BasketVariables implements IBasketVariables {
 
 	public void setEventNonCarnetPrize(int eventNonCarnetPrize) {
 		this.eventNonCarnetPrize = eventNonCarnetPrize;
+	}
+
+	public int getBasketWeeklyDay() {
+		return basketWeeklyDay;
+	}
+
+	public void setBasketWeeklyDay(int basketWeeklyDay) {
+		this.basketWeeklyDay = basketWeeklyDay;
 	}
 }

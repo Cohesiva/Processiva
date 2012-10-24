@@ -28,18 +28,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.UserDao;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 
-public class BalanceInquiryWorkItemHandler implements WorkItemHandler {
+@Service
+public class BalanceInquiryWorkItemHandler extends
+BaseSynchronousWorkItemHandler {
 
+	@Autowired
 	private UserDao userDao;
-
-	public BalanceInquiryWorkItemHandler(UserDao userDao) {
-		this.userDao = userDao;
-	}
 
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		List<String> playersList = (List<String>) workItem
@@ -71,6 +72,8 @@ public class BalanceInquiryWorkItemHandler implements WorkItemHandler {
 		manager.completeWorkItem(workItem.getId(), results);
 	}
 
-	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "BalanceInquiry";
 	}
 }

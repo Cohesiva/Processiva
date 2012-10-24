@@ -23,18 +23,19 @@ package com.cohesiva.processes.jbpm.handlers.basket;
 import java.util.List;
 
 import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.UserDao;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 
-public class AddSubscriberWorkItemHandler implements WorkItemHandler {
+@Service
+public class AddSubscriberWorkItemHandler extends
+		BaseSynchronousWorkItemHandler {
 
+	@Autowired
 	private UserDao userDao;
-
-	public AddSubscriberWorkItemHandler(UserDao userDao) {
-		this.userDao = userDao;
-	}
 
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		List<String> playersList = (List<String>) workItem
@@ -48,6 +49,8 @@ public class AddSubscriberWorkItemHandler implements WorkItemHandler {
 		manager.completeWorkItem(workItem.getId(), null);
 	}
 
-	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "AddSubscriber";
 	}
 }

@@ -52,6 +52,8 @@
 			value="${eventCarnetPrize}" />
 		<property name="eventNonCarnetPrize"
 			value="${eventNonCarnetPrize}" />
+		<property name="basketWeeklyDay"
+			value="${basketDay}" />
 	</bean>
 
 </beans>

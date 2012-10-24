@@ -18,33 +18,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 package com.cohesiva.processes.jbpm.service.processes;
 
-import java.util.List;
-
-import org.drools.definition.process.Process;
-import org.drools.runtime.process.ProcessInstance;
-import org.jbpm.persistence.processinstance.ProcessInstanceInfo;
-
-import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
+import java.util.Map;
 
 /*
- * Service for providing processes and instances
+ * Service for starting new processes
  */
-public interface IProcessService {
-
-	public ProcessInstance getProcessInstance(long processInstanceId);
-
-	public Process getProcess(String processId);
-
-	public List<Process> getAuthorizedProcesses(String userId);
-
-	public List<String> getRunningInstancesNames(String userId);
+public interface IProcessStarterService {
+	public String getStartInfo(String procId);
 	
-	public List<ProcessInstanceInfo> getRunningInstances(String processId);
+	//public Map<String, Object> getStartProcessData(String processId);
 	
-	public List<ProcessInstanceInfo> getRunningInstances();
+	public void startProcess(String processId, String userId);
 	
-	public ProcessivaProcess getProcessivaProcess(String processId);
+	public boolean isProcessStartedByUser(String processId, String userId);
 }

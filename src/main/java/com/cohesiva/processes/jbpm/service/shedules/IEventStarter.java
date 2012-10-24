@@ -27,7 +27,7 @@ package com.cohesiva.processes.jbpm.service.shedules;
  * external scheduler usage
  */
 public interface IEventStarter {
-	public void startBasketWeeklyProcess();
+	//public void startBasketWeeklyProcess();
 	
 	public void startProcess(String processId);	
 	

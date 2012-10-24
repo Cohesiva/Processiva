@@ -25,10 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.stereotype.Service;
 
-public class HandleNewPlayerWorkItemHandler implements WorkItemHandler {
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
+
+@Service
+public class HandleNewPlayerWorkItemHandler extends
+BaseSynchronousWorkItemHandler {
 
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		List<String> playersList = (List<String>) workItem
@@ -51,6 +55,8 @@ public class HandleNewPlayerWorkItemHandler implements WorkItemHandler {
 		manager.completeWorkItem(workItem.getId(), data);
 	}
 
-	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "HandleNewPlayer";
 	}
 }

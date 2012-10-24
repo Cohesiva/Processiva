@@ -27,6 +27,7 @@
   <itemDefinition id="_basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_killSignalItem" structureRef="String" />
 
   <itemDefinition id="_2-2-3-itemItem" />
 
@@ -61,6 +62,7 @@
   <itemDefinition id="_16-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_16-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_16-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_16-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_23-2-3-subItem" />
 
@@ -79,6 +81,7 @@
   <itemDefinition id="_22-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_22-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_22-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_22-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_25-listItem" structureRef="java.util.List" />
   <itemDefinition id="_25-playersListItem" structureRef="java.util.Vector" />
@@ -95,6 +98,7 @@
   <itemDefinition id="_25-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_25-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_25-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_25-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_30-listItem" structureRef="java.util.List" />
   <itemDefinition id="_30-playersListItem" structureRef="java.util.Vector" />
@@ -111,6 +115,7 @@
   <itemDefinition id="_30-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_30-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_30-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_30-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_2_multiInstanceItemType" />
 
@@ -138,6 +143,7 @@
     <property id="basketSigningFinalHour" itemSubjectRef="_basketSigningFinalHourItem"/>
     <property id="eventCarnetPrize" itemSubjectRef="_eventCarnetPrizeItem"/>
     <property id="eventNonCarnetPrize" itemSubjectRef="_eventNonCarnetPrizeItem"/>
+    <property id="killSignal" itemSubjectRef="_killSignalItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="Start" />
@@ -207,7 +213,7 @@
       <dataInputAssociation>
         <targetRef>_2-2-4_BodyInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00 #{answerLink}. #{emailFooter}</from>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00 &lt;a href="#{answerLink}"&gt; tutaj&lt;/a&gt;. #{emailFooter}</from>
           <to xsi:type="tFormalExpression">_2-2-4_BodyInput</to>
         </assignment>
       </dataInputAssociation>
@@ -366,7 +372,7 @@
       <dataInputAssociation>
         <targetRef>_10-2-2_BodyInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00 #{answerLink}. Nie posiadasz ważnego karnetu. Opłata za zajęcia z karnetem wynosi #{eventCarnetPrize} PLN, bez karnetu - #{eventNonCarnetPrize} PLN. #{emailFooter}</from>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00 &lt;a href="#{answerLink}"&gt; tutaj&lt;/a&gt;. Opłata za zajęcia z karnetem wynosi #{eventCarnetPrize} PLN, bez karnetu - #{eventNonCarnetPrize} PLN. #{emailFooter}</from>
           <to xsi:type="tFormalExpression">_10-2-2_BodyInput</to>
         </assignment>
       </dataInputAssociation>
@@ -407,7 +413,7 @@
       <dataInputAssociation>
         <targetRef>_10-2-5_CommentInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00. Nie posiadasz ważnego karnetu. Opłata za zajęcia z karnetem wynosi #{eventCarnetPrize} PLN, bez karnetu - #{eventNonCarnetPrize} PLN. </from>
+          <from xsi:type="tFormalExpression">Pytanie z grupy Cohesiva Basket - czy będziesz dzisiaj #{date} na zajęciach? Odpowiedz do godziny #{basketSigningFinalHour}:00. Opłata za zajęcia z karnetem wynosi #{eventCarnetPrize} PLN, bez karnetu - #{eventNonCarnetPrize} PLN. </from>
           <to xsi:type="tFormalExpression">_10-2-5_CommentInput</to>
         </assignment>
       </dataInputAssociation>
@@ -596,7 +602,7 @@
     <sequenceFlow id="_15-2-1-_15-2-3" sourceRef="_15-2-1" targetRef="_15-2-3" />
     </subProcess>
     <intermediateCatchEvent id="_17" name="Signal" >
-      <signalEventDefinition signalRef="basketWeeklyKill"/>
+      <signalEventDefinition signalRef="kill"/>
     </intermediateCatchEvent>
     <task id="_16" name="LoadPlayersList" tns:taskName="LoadPlayersList" >
       <ioSpecification>
