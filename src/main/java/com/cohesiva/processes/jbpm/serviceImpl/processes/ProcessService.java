@@ -29,6 +29,7 @@ import org.drools.definition.process.Process;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.process.WorkflowProcessInstance;
+import org.jbpm.persistence.processinstance.ProcessInstanceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -146,5 +147,9 @@ public class ProcessService implements IProcessService {
 		}
 
 		return result;
+	}
+
+	public List<ProcessInstanceInfo> getRunningInstances(String processId) {
+		return processInstanceInfoDao.getRunningInstances(processId);
 	}
 }

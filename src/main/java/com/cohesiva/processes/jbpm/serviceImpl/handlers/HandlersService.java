@@ -22,9 +22,11 @@ package com.cohesiva.processes.jbpm.serviceImpl.handlers;
 
 import java.util.List;
 
+import org.drools.persistence.info.WorkItemInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cohesiva.processes.db.jbpm.WorkItemInfoDao;
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.service.handlers.IHandlersService;
@@ -34,9 +36,12 @@ public class HandlersService implements IHandlersService {
 
 	@Autowired
 	private List<BaseAsynchronousWorkItemHandler> customAsyncHandlers;
-	
+
 	@Autowired
 	private List<BaseSynchronousWorkItemHandler> customSyncHandlers;
+
+	@Autowired
+	private WorkItemInfoDao workItemInfoDao;
 
 	public List<BaseAsynchronousWorkItemHandler> getCustomAsyncHandlers() {
 		return customAsyncHandlers;
@@ -44,5 +49,9 @@ public class HandlersService implements IHandlersService {
 
 	public List<BaseSynchronousWorkItemHandler> getCustomSyncHandlers() {
 		return customSyncHandlers;
+	}
+
+	public List<WorkItemInfo> getPersistedHandlers() {
+		return workItemInfoDao.getPersistedWorkItems();
 	}
 }

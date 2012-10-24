@@ -49,14 +49,12 @@ import org.jbpm.process.workitem.wsht.MinaHTWorkItemHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.db.jbpm.ProcessInstanceInfoDao;
-import com.cohesiva.processes.db.jbpm.WorkItemInfoDao;
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.base.ISessionManager;
 import com.cohesiva.processes.jbpm.service.handlers.IHandlersService;
-import com.cohesiva.processes.jbpm.service.processes.basket.IBasketProcessesService;
+import com.cohesiva.processes.jbpm.serviceImpl.processes.ProcessService;
 
 @Service
 public class JbpmBase implements IJbpmBase {
@@ -69,21 +67,15 @@ public class JbpmBase implements IJbpmBase {
 
 	@Autowired
 	private ISessionManager sessionManager;
-
+	
 	@Autowired
-	private WorkItemInfoDao workItemInfoDao;
+	private ProcessService processService;
 
 	@Autowired
 	private IHandlersService handlersService;
 
 	@Autowired
-	private ProcessInstanceInfoDao processInstanceInfoDao;
-
-	@Autowired
 	private EmailWorkItemHandler emailWorkItemHandler;
-
-	@Autowired
-	private IBasketProcessesService basketProcessServie;
 
 	// Injected database connection:
 	@PersistenceUnit(unitName = "jbpmPU")
@@ -155,9 +147,9 @@ public class JbpmBase implements IJbpmBase {
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketBalanceInquiry.bpmn"),
 				ResourceType.BPMN2);
-		kbuilder.add(
+		/*kbuilder.add(
 				ResourceFactory.newClassPathResource("jbpm/hr/getCV.bpmn"),
-				ResourceType.BPMN2);
+				ResourceType.BPMN2);*/
 
 		return kbuilder.newKnowledgeBase();
 	}
@@ -245,6 +237,7 @@ public class JbpmBase implements IJbpmBase {
 	 */
 	private void killUnwantedProcesses(StatefulKnowledgeSession ksession) {
 
+		/*
 		// { Kill basket weekly jesli jest juz po czasie, w ktorym mozna sie
 		// zapisywac - piątek 14:00.
 		List<ProcessInstanceInfo> basketWeeklyInstances = processInstanceInfoDao
@@ -261,15 +254,16 @@ public class JbpmBase implements IJbpmBase {
 			}
 		}
 		// }
+		 * 
+		 */
 	}
 
 	/*
 	 * Function restores asynchronous work items of unfinished processes
 	 */
 	private void restoreWorkItems(StatefulKnowledgeSession ksession) {
-		List<WorkItemInfo> persistedWorkItems = workItemInfoDao
-				.getPersistedWorkItems();
-
+		List<WorkItemInfo> persistedWorkItems = handlersService.getPersistedHandlers();
+		
 		for (WorkItemInfo workItemInfo : persistedWorkItems) {
 
 			String workItemName = workItemInfo.getName();
@@ -321,9 +315,8 @@ public class JbpmBase implements IJbpmBase {
 		return this.humanTaskHandler;
 	}
 
-	public void signalEvent(String event, String processId) {
-		List<ProcessInstanceInfo> runningInstances = processInstanceInfoDao
-				.getRunningInstances(processId);
+	public void signalEvent(String event, String processId) {		
+		List<ProcessInstanceInfo> runningInstances = processService.getRunningInstances(processId);
 
 		for (ProcessInstanceInfo instance : runningInstances) {
 			ksession.signalEvent(event, null, instance.getId());

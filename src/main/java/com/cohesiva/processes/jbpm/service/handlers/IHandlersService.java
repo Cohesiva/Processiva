@@ -22,6 +22,8 @@ package com.cohesiva.processes.jbpm.service.handlers;
 
 import java.util.List;
 
+import org.drools.persistence.info.WorkItemInfo;
+
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 
@@ -29,4 +31,6 @@ public interface IHandlersService {
 	public List<BaseAsynchronousWorkItemHandler> getCustomAsyncHandlers();
 	
 	public List<BaseSynchronousWorkItemHandler> getCustomSyncHandlers();
+	
+	public List<WorkItemInfo> getPersistedHandlers();
 }

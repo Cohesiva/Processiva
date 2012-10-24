@@ -25,11 +25,12 @@ import java.util.List;
 
 import org.drools.definition.process.Process;
 import org.drools.runtime.process.ProcessInstance;
+import org.jbpm.persistence.processinstance.ProcessInstanceInfo;
 
 import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
 
 /*
- * Service for managing access and view of processes for users
+ * Service for providing processes and instances
  */
 public interface IProcessService {
 
@@ -40,6 +41,8 @@ public interface IProcessService {
 	public List<Process> getAuthorizedProcesses(String userId);
 
 	public List<String> getRunningInstancesNames(String userId);
+	
+	public List<ProcessInstanceInfo> getRunningInstances(String processId);
 	
 	public ProcessivaProcess getProcessivaProcess(String processId);
 }
