@@ -33,7 +33,7 @@ Whe make our best to organize and document everything so that the start is painl
 - If this is your **first time** with GIT, check out the [Introduction To Git](http://learn.github.com/p/intro.html).
 - If you want to try the **example process**, click the [Example Processes](http://processiva.example).
 - If you want to **start fast** with Processiva, click the [Processiva in 15 Minutes](https://github.com/Cohesiva/Processiva/wiki/Processiva-in-15-Minutes).
-- If you want to **get familiar with Processiva web application** and learn **what it is for** check out this [User Manual](http://wwww.google.com).
+- If you want to **get familiar with Processiva web application** and learn **what it is for** check out this [User Manual](https://github.com/Cohesiva/Processiva/wiki/User-Manual).
 - If you want to know how to **work with your code** and know the rules, get familiar with the [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process).
 - If you have the environment set up and are ready to start **developing your own processes**, read [New Process Development](https://github.com/Cohesiva/Processiva/wiki/New-Process-Development).
 - If you find out that something is **wrong**, report it by clicking [Issues](https://github.com/Cohesiva/Processiva/issues).
