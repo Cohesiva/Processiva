@@ -29,4 +29,6 @@ public interface IProcessesVariablesService {
 	public String getApplicationUrl();
 	
 	public String getEmailFooter();
+	
+	public String getKillSignal();
 }

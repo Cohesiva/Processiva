@@ -67,4 +67,6 @@ public class BasketWeeklyProcess extends ProcessivaProcess {
 	public boolean isAllowedToViewNow(String userId) {
 		return false;
 	}
+	
+	
 }

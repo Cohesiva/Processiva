@@ -44,5 +44,7 @@ public interface IProcessService {
 	
 	public List<ProcessInstanceInfo> getRunningInstances(String processId);
 	
+	public List<ProcessInstanceInfo> getRunningInstances();
+	
 	public ProcessivaProcess getProcessivaProcess(String processId);
 }

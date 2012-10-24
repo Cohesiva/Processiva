@@ -33,4 +33,6 @@ public interface IHandlersService {
 	public List<BaseSynchronousWorkItemHandler> getCustomSyncHandlers();
 	
 	public List<WorkItemInfo> getPersistedHandlers();
+	
+	public BaseAsynchronousWorkItemHandler getAsyncHandler(String handlerId);
 }

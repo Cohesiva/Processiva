@@ -54,4 +54,14 @@ public class HandlersService implements IHandlersService {
 	public List<WorkItemInfo> getPersistedHandlers() {
 		return workItemInfoDao.getPersistedWorkItems();
 	}
+
+	public BaseAsynchronousWorkItemHandler getAsyncHandler(String handlerId) {
+		for (BaseAsynchronousWorkItemHandler asyncHandler : customAsyncHandlers) {
+			if (asyncHandler.getWorkItemId().equals(handlerId)) {
+				return asyncHandler;
+			}
+		}
+		
+		return null;
+	}
 }

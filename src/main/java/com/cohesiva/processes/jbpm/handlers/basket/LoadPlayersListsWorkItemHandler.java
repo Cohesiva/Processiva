@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import com.cohesiva.processes.db.User;
 import com.cohesiva.processes.db.UserDao;
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
+import com.cohesiva.processes.jbpm.service.processes.basket.IBasketProcessesService;
 
 @Service
 public class LoadPlayersListsWorkItemHandler extends
@@ -43,6 +44,10 @@ public class LoadPlayersListsWorkItemHandler extends
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private IBasketProcessesService basketProcessService;
+
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
@@ -110,4 +115,19 @@ public class LoadPlayersListsWorkItemHandler extends
 	protected void setWorkItemId() {
 		this.workItemId = "LoadPlayersList";
 	}
+
+	@Override
+	public boolean shouldBeRestored() {
+		boolean result = true;
+
+		// { if the time for signing on basket has passed, don't restore the handler
+		if (basketProcessService.isTooLateToSignUp()) {
+			return false;
+		}
+		// }
+
+		return result;
+	}
+	
+	
 }

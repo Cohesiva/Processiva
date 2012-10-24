@@ -29,6 +29,8 @@ import com.cohesiva.processes.jbpm.service.processes.IProcessesVariablesService;
 public class ProcessesVariablesService implements IProcessesVariablesService {
 
 	private String applicationUrl;
+	
+	private String killSignal = "kill";
 
 	public String getApplicationUrl() {
 		return applicationUrl;
@@ -43,5 +45,9 @@ public class ProcessesVariablesService implements IProcessesVariablesService {
 				+ this.getApplicationUrl() + "\">Cohesiva Process Engine </a>";
 
 		return footer;
+	}
+
+	public String getKillSignal() {
+		return this.killSignal;
 	}
 }

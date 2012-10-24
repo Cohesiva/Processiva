@@ -27,6 +27,7 @@
   <itemDefinition id="_basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_killSignalItem" structureRef="String" />
 
   <itemDefinition id="_2-2-3-itemItem" />
 
@@ -61,6 +62,7 @@
   <itemDefinition id="_16-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_16-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_16-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_16-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_23-2-3-subItem" />
 
@@ -79,6 +81,7 @@
   <itemDefinition id="_22-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_22-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_22-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_22-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_25-listItem" structureRef="java.util.List" />
   <itemDefinition id="_25-playersListItem" structureRef="java.util.Vector" />
@@ -95,6 +98,7 @@
   <itemDefinition id="_25-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_25-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_25-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_25-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_30-listItem" structureRef="java.util.List" />
   <itemDefinition id="_30-playersListItem" structureRef="java.util.Vector" />
@@ -111,6 +115,7 @@
   <itemDefinition id="_30-basketSigningFinalHourItem" structureRef="Integer" />
   <itemDefinition id="_30-eventCarnetPrizeItem" structureRef="Integer" />
   <itemDefinition id="_30-eventNonCarnetPrizeItem" structureRef="Integer" />
+  <itemDefinition id="_30-killSignalItem" structureRef="String" />
 
   <itemDefinition id="_2_multiInstanceItemType" />
 
@@ -138,6 +143,7 @@
     <property id="basketSigningFinalHour" itemSubjectRef="_basketSigningFinalHourItem"/>
     <property id="eventCarnetPrize" itemSubjectRef="_eventCarnetPrizeItem"/>
     <property id="eventNonCarnetPrize" itemSubjectRef="_eventNonCarnetPrizeItem"/>
+    <property id="killSignal" itemSubjectRef="_killSignalItem"/>
 
     <!-- nodes -->
     <startEvent id="_1" name="Start" />
@@ -596,7 +602,7 @@
     <sequenceFlow id="_15-2-1-_15-2-3" sourceRef="_15-2-1" targetRef="_15-2-3" />
     </subProcess>
     <intermediateCatchEvent id="_17" name="Signal" >
-      <signalEventDefinition signalRef="basketWeeklyKill"/>
+      <signalEventDefinition signalRef="kill"/>
     </intermediateCatchEvent>
     <task id="_16" name="LoadPlayersList" tns:taskName="LoadPlayersList" >
       <ioSpecification>
@@ -763,24 +769,24 @@
     </userTask>
     <task id="_25" name="MakePayments" tns:taskName="MakePayments" >
       <ioSpecification>
-        <dataInput id="_25_playersListInput" name="playersList" />
         <dataInput id="_25_eventCarnetPrizeInput" name="eventCarnetPrize" />
+        <dataInput id="_25_playersListInput" name="playersList" />
         <dataInput id="_25_listInput" name="list" />
         <inputSet>
-          <dataInputRefs>_25_playersListInput</dataInputRefs>
           <dataInputRefs>_25_eventCarnetPrizeInput</dataInputRefs>
+          <dataInputRefs>_25_playersListInput</dataInputRefs>
           <dataInputRefs>_25_listInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>playersList</sourceRef>
-        <targetRef>_25_playersListInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>eventCarnetPrize</sourceRef>
         <targetRef>_25_eventCarnetPrizeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>playersList</sourceRef>
+        <targetRef>_25_playersListInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>list</sourceRef>
@@ -805,14 +811,14 @@
     <task id="_30" name="BasketWeeklySummary" tns:taskName="BasketWeeklySummary" >
       <ioSpecification>
         <dataInput id="_30_playersListInput" name="playersList" />
-        <dataInput id="_30_dateInput" name="date" />
         <dataInput id="_30_eventNonCarnetPrizeInput" name="eventNonCarnetPrize" />
+        <dataInput id="_30_dateInput" name="date" />
         <dataInput id="_30_emailFooterInput" name="emailFooter" />
         <dataOutput id="_30_summaryReportOutput" name="summaryReport" />
         <inputSet>
           <dataInputRefs>_30_playersListInput</dataInputRefs>
-          <dataInputRefs>_30_dateInput</dataInputRefs>
           <dataInputRefs>_30_eventNonCarnetPrizeInput</dataInputRefs>
+          <dataInputRefs>_30_dateInput</dataInputRefs>
           <dataInputRefs>_30_emailFooterInput</dataInputRefs>
         </inputSet>
         <outputSet>
@@ -824,12 +830,12 @@
         <targetRef>_30_playersListInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
-        <sourceRef>date</sourceRef>
-        <targetRef>_30_dateInput</targetRef>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <sourceRef>eventNonCarnetPrize</sourceRef>
         <targetRef>_30_eventNonCarnetPrizeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>date</sourceRef>
+        <targetRef>_30_dateInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <sourceRef>emailFooter</sourceRef>

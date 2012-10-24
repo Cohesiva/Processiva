@@ -152,4 +152,8 @@ public class ProcessService implements IProcessService {
 	public List<ProcessInstanceInfo> getRunningInstances(String processId) {
 		return processInstanceInfoDao.getRunningInstances(processId);
 	}
+
+	public List<ProcessInstanceInfo> getRunningInstances() {
+		return processInstanceInfoDao.getRunningInstances();
+	}
 }

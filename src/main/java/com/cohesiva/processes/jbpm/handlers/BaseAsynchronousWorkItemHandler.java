@@ -33,4 +33,8 @@ public abstract class BaseAsynchronousWorkItemHandler extends
 	public void setKSession(StatefulKnowledgeSession ksession) {
 		this.ksession = ksession;
 	}
+	
+	public boolean shouldBeRestored() {
+		return true;
+	}
 }

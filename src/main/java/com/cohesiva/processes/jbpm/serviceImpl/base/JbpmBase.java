@@ -54,6 +54,7 @@ import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 import com.cohesiva.processes.jbpm.service.base.IJbpmBase;
 import com.cohesiva.processes.jbpm.service.base.ISessionManager;
 import com.cohesiva.processes.jbpm.service.handlers.IHandlersService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessesVariablesService;
 import com.cohesiva.processes.jbpm.serviceImpl.processes.ProcessService;
 
 @Service
@@ -67,7 +68,7 @@ public class JbpmBase implements IJbpmBase {
 
 	@Autowired
 	private ISessionManager sessionManager;
-	
+
 	@Autowired
 	private ProcessService processService;
 
@@ -77,14 +78,12 @@ public class JbpmBase implements IJbpmBase {
 	@Autowired
 	private EmailWorkItemHandler emailWorkItemHandler;
 
+	@Autowired
+	private IProcessesVariablesService processVariables;
+
 	// Injected database connection:
 	@PersistenceUnit(unitName = "jbpmPU")
 	private EntityManagerFactory emf;
-
-	private final String WORK_ITEM_HANDLER_CLASS_SUFFIX = "WorkItemHandler";
-	private String[] workItemHandlersPackages = {
-			"com.cohesiva.processes.jbpm.handlers.basket",
-			"com.cohesiva.processes.jbpm.handlers" };
 
 	// Service initialization method - load jbpm session
 	@PostConstruct
@@ -147,9 +146,11 @@ public class JbpmBase implements IJbpmBase {
 		kbuilder.add(ResourceFactory
 				.newClassPathResource("jbpm/basket/basketBalanceInquiry.bpmn"),
 				ResourceType.BPMN2);
-		/*kbuilder.add(
-				ResourceFactory.newClassPathResource("jbpm/hr/getCV.bpmn"),
-				ResourceType.BPMN2);*/
+		/*
+		 * kbuilder.add(
+		 * ResourceFactory.newClassPathResource("jbpm/hr/getCV.bpmn"),
+		 * ResourceType.BPMN2);
+		 */
 
 		return kbuilder.newKnowledgeBase();
 	}
@@ -186,9 +187,6 @@ public class JbpmBase implements IJbpmBase {
 
 		// Restore asynchronous work item that were not finished.
 		this.restoreWorkItems(ksession);
-
-		// Kill process that shouldn't be restored
-		this.killUnwantedProcesses(ksession);
 
 		return ksession;
 	}
@@ -230,83 +228,40 @@ public class JbpmBase implements IJbpmBase {
 		}
 		// }
 	}
-
+	
 	/*
-	 * Function sends kill signal to processes that should't be restored on
-	 * startup although they are not finished
-	 */
-	private void killUnwantedProcesses(StatefulKnowledgeSession ksession) {
-
-		/*
-		// { Kill basket weekly jesli jest juz po czasie, w ktorym mozna sie
-		// zapisywac - piątek 14:00.
-		List<ProcessInstanceInfo> basketWeeklyInstances = processInstanceInfoDao
-				.getRunningInstances("com.cohesiva.basket.weekly");
-
-		if (basketWeeklyInstances != null) {
-			boolean toKill = basketProcessServie.isTooLateToSignUp();
-
-			if (toKill) {
-				for (ProcessInstanceInfo processInstance : basketWeeklyInstances) {
-					ksession.signalEvent("basketWeeklyKill", null,
-							processInstance.getId());
-				}
-			}
-		}
-		// }
-		 * 
-		 */
-	}
-
-	/*
-	 * Function restores asynchronous work items of unfinished processes
+	 * Function restores asynchronous work items of unfinished processes 
+	 * or kills process instance if work item shouldn't be restored
 	 */
 	private void restoreWorkItems(StatefulKnowledgeSession ksession) {
-		List<WorkItemInfo> persistedWorkItems = handlersService.getPersistedHandlers();
-		
+		List<WorkItemInfo> persistedWorkItems = handlersService
+				.getPersistedHandlers();
+
 		for (WorkItemInfo workItemInfo : persistedWorkItems) {
+			String handlerId = workItemInfo.getName();
 
-			String workItemName = workItemInfo.getName();
+			BaseAsynchronousWorkItemHandler asyncHandler = handlersService
+					.getAsyncHandler(handlerId);
 
-			WorkItem workItem = workItemInfo.getWorkItem(
-					ksession.getEnvironment(), null);
+			if (asyncHandler != null && asyncHandler.shouldBeRestored()) {
+				// { restore handler and continue process
+				WorkItem workItem = workItemInfo.getWorkItem(
+						ksession.getEnvironment(), null);
 
-			String workItemHandlerClassName = null;
+				if (workItem != null) {
+					asyncHandler.setKSession(ksession);
 
-			for (String packageName : workItemHandlersPackages) {
-				try {
-					workItemHandlerClassName = packageName + "." + workItemName
-							+ WORK_ITEM_HANDLER_CLASS_SUFFIX;
-
-					Class customWorkItemHandlerClass = Class
-							.forName(workItemHandlerClassName);
-
-					BaseAsynchronousWorkItemHandler customWorkItemHandler = (BaseAsynchronousWorkItemHandler) customWorkItemHandlerClass
-							.newInstance();
-
-					customWorkItemHandler.setKSession(ksession);
-
-					customWorkItemHandler.executeWorkItem(workItem,
+					asyncHandler.executeWorkItem(workItem,
 							ksession.getWorkItemManager());
-
-					break;
-
-				} catch (ClassNotFoundException e) {
-					System.out.println("Class " + workItemHandlerClassName
-							+ " not found");
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				// }
+			} else {
+				// { kill process
+				long instanceId = workItemInfo.getProcessInstanceId();
+
+				ksession.signalEvent(processVariables.getKillSignal(), null,
+						instanceId);
+				// }
 			}
 		}
 	}
@@ -315,8 +270,9 @@ public class JbpmBase implements IJbpmBase {
 		return this.humanTaskHandler;
 	}
 
-	public void signalEvent(String event, String processId) {		
-		List<ProcessInstanceInfo> runningInstances = processService.getRunningInstances(processId);
+	public void signalEvent(String event, String processId) {
+		List<ProcessInstanceInfo> runningInstances = processService
+				.getRunningInstances(processId);
 
 		for (ProcessInstanceInfo instance : runningInstances) {
 			ksession.signalEvent(event, null, instance.getId());
