@@ -35,5 +35,5 @@ Whe make our best to organize and document everything so that the start is painl
 - If you want to **get familiar with Processiva web application** and learn **what it is for** check out this [User Manual](https://github.com/Cohesiva/Processiva/wiki/User-Manual).
 - If you want to know how to **work with your code** and know the rules, get familiar with the [Development Process](https://github.com/Cohesiva/Processiva/wiki/Development-Process).
 - If you have the environment set up and are ready to start **developing your own processes**, read [New Process Development](https://github.com/Cohesiva/Processiva/wiki/New-Process-Development). 
-Looking at an overview of a simple, [Example Process](http://www.google.com) may be helpful to get a general idea.
+Looking at a simple, [Example Process](https://github.com/Cohesiva/Processiva/wiki/Example-process) from a user's point of view may be helpful to get a general idea.
 - If you find out that something is **wrong**, report it by clicking [Issues](https://github.com/Cohesiva/Processiva/issues).
