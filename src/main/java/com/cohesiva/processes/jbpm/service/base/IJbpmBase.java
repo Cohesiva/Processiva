@@ -32,5 +32,7 @@ public interface IJbpmBase {
 
 	public StatefulKnowledgeSession getSession();	
 	
-	public MinaHTWorkItemHandler getWorkItemHandler();	
+	public MinaHTWorkItemHandler getHumanTaskHandler();
+	
+	public void signalEvent(String event, String processId);
 }

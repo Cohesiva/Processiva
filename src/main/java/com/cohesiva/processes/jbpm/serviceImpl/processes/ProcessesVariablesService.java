@@ -18,23 +18,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-package com.cohesiva.processes.serviceImpl;
 
-import org.openid4java.consumer.ConsumerManager;
+package com.cohesiva.processes.jbpm.serviceImpl.processes;
+
 import org.springframework.stereotype.Service;
 
-import com.cohesiva.processes.service.IConsumerManagerService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessesVariablesService;
 
-@Service
-public class ConsumerManagerService implements IConsumerManagerService{
+@Service(value = "processesVariables")
+public class ProcessesVariablesService implements IProcessesVariablesService {
 
-	public ConsumerManager manager;
+	private String applicationUrl;
+	
+	private String killSignal = "kill";
 
-	public ConsumerManagerService() {
-		manager = new ConsumerManager();
+	public String getApplicationUrl() {
+		return applicationUrl;
 	}
 
-	public ConsumerManager getConsumerManager() {
-		return manager;
+	public void setApplicationUrl(String applicationUrl) {
+		this.applicationUrl = applicationUrl;
+	}
+
+	public String getEmailFooter() {
+		String footer = "<br /><br /> <hr align=\"left\" width=\"600\"/> <a href=\""
+				+ this.getApplicationUrl() + "\">Cohesiva Process Engine </a>";
+
+		return footer;
+	}
+
+	public String getKillSignal() {
+		return this.killSignal;
 	}
 }

@@ -138,7 +138,7 @@
 	</bean>
 
 	<bean id="processesVariables"
-		class="com.cohesiva.processes.jbpm.serviceImpl.processes.ProcessesVariables">
+		class="com.cohesiva.processes.jbpm.serviceImpl.processes.ProcessesVariablesService">
 		<property name="applicationUrl"
 			value="http://${processivaHost}:${processivaPort}/Jbpm_processes" />
 	</bean>

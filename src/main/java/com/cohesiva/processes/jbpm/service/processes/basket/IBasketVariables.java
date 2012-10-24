@@ -43,4 +43,6 @@ public interface IBasketVariables {
 	public int getEventCarnetPrize();
 
 	public int getEventNonCarnetPrize();
+	
+	public int getBasketWeeklyDay();
 }

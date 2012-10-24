@@ -58,6 +58,23 @@ public class ProcessInstanceInfoDao {
 	}
 
 	@Transactional
+	public List<ProcessInstanceInfo> getRunningInstances() {
+		EntityManager em = emf.createEntityManager();
+
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+
+		Query query = em.createNativeQuery("Select * from processinstanceinfo",
+				ProcessInstanceInfo.class);
+
+		List<ProcessInstanceInfo> list = query.getResultList();
+
+		tx.commit();
+
+		return list;
+	}
+
+	@Transactional
 	public List<Long> getRunningInstancesIds() {
 		EntityManager em = emf.createEntityManager();
 

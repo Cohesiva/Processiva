@@ -23,27 +23,28 @@ package com.cohesiva.processes.jbpm.handlers.basket;
 import java.util.List;
 
 import org.drools.runtime.process.WorkItem;
-import org.drools.runtime.process.WorkItemHandler;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.db.UserDao;
+import com.cohesiva.processes.jbpm.handlers.BaseSynchronousWorkItemHandler;
 
-public class MakePaymentsWorkItemHandler implements WorkItemHandler {
+@Service
+public class MakePaymentsWorkItemHandler extends BaseSynchronousWorkItemHandler {
 
+	@Autowired
 	private UserDao userDao;
-
-	public MakePaymentsWorkItemHandler(UserDao userDao) {
-		this.userDao = userDao;
-	}
 
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		List<String> playersList = (List<String>) workItem
 				.getParameter("playersList");
-		
-		int basketCarnetPayment =  (Integer) workItem
+
+		int basketCarnetPayment = (Integer) workItem
 				.getParameter("eventCarnetPrize");
 
-		// { Take payment from people who declared to come to basket and have positive balance
+		// { Take payment from people who declared to come to basket and have
+		// positive balance
 		for (String email : playersList) {
 			if (userDao.isBalanceValid(email)) {
 				System.out.println("Making payment of player: " + email);
@@ -57,6 +58,8 @@ public class MakePaymentsWorkItemHandler implements WorkItemHandler {
 		manager.completeWorkItem(workItem.getId(), null);
 	}
 
-	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "MakePayments";
 	}
 }

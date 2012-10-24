@@ -1,3 +1,4 @@
+
 /*
  * #%L
  * Processiva Business Processes Platform
@@ -19,32 +20,30 @@
  * #L%
  */
 
-package com.cohesiva.processes.jbpm.service.processes;
+package com.cohesiva.processes.jbpm.serviceImpl.processes;
 
-import java.util.List;
-
-import org.drools.definition.process.Process;
-import org.drools.runtime.process.ProcessInstance;
-import org.jbpm.persistence.processinstance.ProcessInstanceInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.jbpm.processes.ProcessivaProcess;
+import com.cohesiva.processes.jbpm.service.processes.IProcessService;
+import com.cohesiva.processes.jbpm.service.processes.IProcessesConstraintsService;
 
-/*
- * Service for providing processes and instances
- */
-public interface IProcessService {
-
-	public ProcessInstance getProcessInstance(long processInstanceId);
-
-	public Process getProcess(String processId);
-
-	public List<Process> getAuthorizedProcesses(String userId);
-
-	public List<String> getRunningInstancesNames(String userId);
+@Service
+public class ProcessesConstraintsService implements IProcessesConstraintsService {
 	
-	public List<ProcessInstanceInfo> getRunningInstances(String processId);
-	
-	public List<ProcessInstanceInfo> getRunningInstances();
-	
-	public ProcessivaProcess getProcessivaProcess(String processId);
+	@Autowired
+	private IProcessService processService;
+
+	public boolean isProcessAllowed(String processId, String userId) {	
+		boolean result = true;
+		
+		ProcessivaProcess processivaProc = processService.getProcessivaProcess(processId);
+		
+		if (processivaProc!=null) {
+			result = processivaProc.isAllowedToViewNow(userId);
+		}
+		
+		return result;
+	}
 }

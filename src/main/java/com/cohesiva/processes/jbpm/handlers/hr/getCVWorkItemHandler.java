@@ -25,9 +25,11 @@ import java.util.Map;
 
 import org.drools.runtime.process.WorkItem;
 import org.drools.runtime.process.WorkItemManager;
+import org.springframework.stereotype.Service;
 
 import com.cohesiva.processes.jbpm.handlers.BaseAsynchronousWorkItemHandler;
 
+@Service
 public class getCVWorkItemHandler extends BaseAsynchronousWorkItemHandler{
 
 	@Override
@@ -59,5 +61,10 @@ public class getCVWorkItemHandler extends BaseAsynchronousWorkItemHandler{
 						workItem.getId(), data);
 			}
 		}.setData(workItem)).start();
+	}
+
+	@Override
+	protected void setWorkItemId() {
+		this.workItemId = "GetCV";
 	}
 }

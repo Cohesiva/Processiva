@@ -18,23 +18,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-package com.cohesiva.processes.serviceImpl;
+package com.cohesiva.processes.jbpm.handlers;
 
-import org.openid4java.consumer.ConsumerManager;
-import org.springframework.stereotype.Service;
+import javax.annotation.PostConstruct;
 
-import com.cohesiva.processes.service.IConsumerManagerService;
+import org.drools.runtime.process.WorkItem;
+import org.drools.runtime.process.WorkItemHandler;
+import org.drools.runtime.process.WorkItemManager;
 
-@Service
-public class ConsumerManagerService implements IConsumerManagerService{
-
-	public ConsumerManager manager;
-
-	public ConsumerManagerService() {
-		manager = new ConsumerManager();
+/*
+ * Base class for Work Item Handler
+ */
+public abstract class BaseWorkItemHandler implements WorkItemHandler{
+	protected String workItemId;
+	
+	@PostConstruct
+	protected void init() {
+		setWorkItemId();
 	}
 
-	public ConsumerManager getConsumerManager() {
-		return manager;
+	protected abstract void setWorkItemId();
+
+	// Execution of work item handler.
+	public abstract void executeWorkItem(WorkItem workItem,
+			WorkItemManager manager);
+
+	// Code executed when handler is aborted.
+	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+	}
+	
+	public String getWorkItemId(){
+		return workItemId;
 	}
 }
